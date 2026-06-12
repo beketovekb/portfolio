@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Бекзат Бекетов — Инженер-программист · IoT · Автоматизация · Астана</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.28/build/spline-viewer.js"></script>
+<style>
+/* ─── Design tokens (UI/UX Pro Max · Dark OLED + Motion-Driven + Portfolio/Personal) ─── */
+:root {
+  --bg-0:    #000000;
+  --bg-1:    #080c14;
+  --bg-2:    #0d1220;
+  --bg-3:    #111827;
+  --bg-4:    #1a2235;
+  --cyan:    #00d4ff;
+  --cyan-dim:#007a95;
+  --gold:    #f59e0b;
+  --green:   #10b981;
+  --purple:  #8b5cf6;
+  --text-hi: #ffffff;
+  --text-md: #e2e8f0;
+  --text-lo: #94a3b8;
+  --text-xs: #64748b;
+  --border:  rgba(0,212,255,0.10);
+  --border-h:rgba(0,212,255,0.28);
+  --f-head: 'Space Grotesk', system-ui, sans-serif;
+  --f-body: 'DM Sans', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono', monospace;
+  --s1:.5rem;--s2:1rem;--s3:1.5rem;--s4:2rem;--s6:3rem;--s8:4rem;--s12:6rem;
+  --ease: cubic-bezier(.25,.46,.45,.94);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+  --dur-fast:150ms;--dur-med:250ms;--dur-slow:450ms;
+  --r-sm:8px;--r-md:14px;--r-lg:20px;--r-xl:28px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{background:var(--bg-0);color:var(--text-md);font-family:var(--f-body);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg-0);}::-webkit-scrollbar-thumb{background:var(--cyan-dim);border-radius:2px;}
+
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(0,212,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px);
+  background-size:72px 72px;}
+.radial-glow{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 60% at 20% 10%,rgba(0,212,255,.06),transparent 60%),
+             radial-gradient(ellipse 60% 50% at 80% 90%,rgba(245,158,11,.04),transparent 60%);}
+
+section{position:relative;z-index:1;}
+.wrap{max-width:1160px;margin:0 auto;padding:0 var(--s4);}
+.section-pad{padding:var(--s12) 0;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 var(--s4);
+  background:rgba(0,0,0,.72);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);
+  transition:background var(--dur-med) var(--ease);}
+.nav-logo{font-family:var(--f-head);font-weight:700;font-size:1.05rem;color:var(--text-hi);text-decoration:none;display:flex;align-items:center;gap:var(--s1);}
+.nav-logo .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:pulse-dot 2s ease-in-out infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.nav-links{display:flex;gap:var(--s4);list-style:none;}
+.nav-links a{font-size:.825rem;font-weight:500;color:var(--text-lo);text-decoration:none;letter-spacing:.02em;transition:color var(--dur-fast) var(--ease);}
+.nav-links a:hover,.nav-links a.active{color:var(--cyan);}
+.nav-cta{font-family:var(--f-head);font-size:.825rem;font-weight:600;padding:.45rem 1.2rem;border-radius:var(--r-sm);border:1px solid var(--cyan);color:var(--cyan);background:transparent;text-decoration:none;cursor:pointer;transition:all var(--dur-fast) var(--ease);}
+.nav-cta:hover{background:var(--cyan);color:#000;}
+.nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.nav-burger span{display:block;width:22px;height:2px;background:var(--text-md);border-radius:2px;transition:all var(--dur-med) var(--ease);}
+
+/* HERO */
+#hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;gap:var(--s8);align-items:center;
+  padding:calc(60px + var(--s8)) var(--s4) var(--s8);max-width:1160px;margin:0 auto;}
+.hero-badge{display:inline-flex;align-items:center;gap:var(--s1);padding:.35rem 1rem;border-radius:100px;
+  background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.18);
+  font-family:var(--f-mono);font-size:.7rem;font-weight:500;color:var(--cyan);letter-spacing:.08em;text-transform:uppercase;margin-bottom:var(--s3);}
+.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);}
+.hero-name{font-family:var(--f-head);font-size:clamp(2.6rem,6vw,4.5rem);font-weight:800;line-height:1.05;color:var(--text-hi);margin-bottom:var(--s1);letter-spacing:-.02em;}
+.hero-name .accent{color:var(--cyan);}
+.hero-roles{font-family:var(--f-mono);font-size:.9rem;color:var(--text-lo);display:flex;flex-wrap:wrap;gap:.3rem var(--s2);margin-bottom:var(--s3);}
+.hero-roles span{color:var(--text-md);}
+.hero-desc{font-size:1rem;color:var(--text-lo);line-height:1.75;margin-bottom:var(--s4);max-width:500px;}
+.hero-desc strong{color:var(--text-md);font-weight:500;}
+.hero-btns{display:flex;gap:var(--s2);flex-wrap:wrap;margin-bottom:var(--s6);}
+.btn-primary{display:inline-flex;align-items:center;gap:var(--s1);padding:.85rem 1.75rem;border-radius:var(--r-sm);background:var(--cyan);color:#000;font-family:var(--f-head);font-size:.9rem;font-weight:700;text-decoration:none;border:none;cursor:pointer;transition:all var(--dur-med) var(--ease-spring);}
+.btn-primary:hover{background:#33ddff;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,255,.3);}
+.btn-secondary{display:inline-flex;align-items:center;gap:var(--s1);padding:.85rem 1.75rem;border-radius:var(--r-sm);background:transparent;color:var(--text-md);font-family:var(--f-head);font-size:.9rem;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,.12);cursor:pointer;transition:all var(--dur-med) var(--ease);}
+.btn-secondary:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,.05);}
+.hero-stats{display:grid;grid-template-columns:repeat(3,auto);gap:var(--s4);width:fit-content;}
+.stat-num{font-family:var(--f-head);font-size:1.9rem;font-weight:800;color:var(--cyan);line-height:1;margin-bottom:.2rem;}
+.stat-label{font-size:.75rem;color:var(--text-xs);letter-spacing:.03em;}
+
+.hero-right{display:flex;justify-content:center;align-items:center;position:relative;}
+.spline-wrap{width:100%;height:520px;position:relative;}
+.spline-wrap spline-viewer{width:100%;height:100%;}
+/* hide spline watermark */
+.spline-wrap::after{content:'';position:absolute;bottom:0;right:0;width:160px;height:36px;background:var(--bg-0);z-index:10;}
+.terminal-body{padding:1.25rem;font-family:var(--f-mono);font-size:.8rem;line-height:1.9;}
+.t-line{display:block;color:var(--text-lo);}
+.t-prompt{color:var(--cyan);}.t-cmd{color:var(--text-hi);}.t-key{color:var(--gold);}.t-val{color:var(--green);}.t-comment{color:var(--text-xs);font-style:italic;}
+.t-cursor{display:inline-block;width:8px;height:14px;background:var(--cyan);animation:blink-cur .8s step-end infinite;vertical-align:middle;}
+@keyframes blink-cur{0%,100%{opacity:1}50%{opacity:0}}
+
+/* SECTION headers */
+.sec-eyebrow{display:inline-flex;align-items:center;gap:var(--s1);font-family:var(--f-mono);font-size:.72rem;font-weight:500;text-transform:uppercase;letter-spacing:.14em;color:var(--cyan);margin-bottom:.75rem;}
+.sec-eyebrow::before{content:'';display:block;width:20px;height:1.5px;background:var(--cyan);}
+.sec-title{font-family:var(--f-head);font-size:clamp(1.75rem,3vw,2.5rem);font-weight:800;color:var(--text-hi);letter-spacing:-.02em;margin-bottom:var(--s2);}
+.sec-sub{font-size:.975rem;color:var(--text-lo);max-width:520px;line-height:1.7;}
+
+/* ABOUT */
+#about{background:linear-gradient(180deg,var(--bg-0) 0%,var(--bg-1) 100%);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s8);align-items:start;}
+.about-body p{color:var(--text-lo);font-size:.975rem;line-height:1.8;margin-bottom:var(--s2);}
+.about-body p strong{color:var(--text-md);font-weight:500;}
+.about-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:var(--s3);}
+.tag{padding:.28rem .75rem;border-radius:6px;font-family:var(--f-mono);font-size:.7rem;font-weight:500;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.13);color:var(--cyan);letter-spacing:.04em;transition:all var(--dur-fast) var(--ease);}
+.tag:hover{background:rgba(0,212,255,.12);border-color:rgba(0,212,255,.3);}
+.info-list{display:flex;flex-direction:column;gap:var(--s2);}
+.info-item{display:flex;align-items:flex-start;gap:var(--s2);padding:var(--s2) var(--s3);background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-md);transition:border-color var(--dur-fast) var(--ease),transform var(--dur-med) var(--ease);}
+.info-item:hover{border-color:var(--border-h);transform:translateX(4px);}
+.info-icon{width:38px;height:38px;border-radius:9px;background:rgba(0,212,255,.08);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.info-item h4{font-family:var(--f-head);font-size:.85rem;font-weight:600;color:var(--text-hi);margin-bottom:.2rem;}
+.info-item p{font-size:.8rem;color:var(--text-lo);line-height:1.55;}
+
+/* EXPERIENCE */
+#experience{background:var(--bg-1);}
+.exp-header{text-align:center;margin-bottom:var(--s8);}
+.exp-header .sec-sub{margin:0 auto;}
+.timeline{position:relative;max-width:800px;margin:0 auto;}
+.timeline::before{content:'';position:absolute;left:18px;top:6px;bottom:0;width:1px;background:linear-gradient(180deg,var(--cyan) 0%,rgba(0,212,255,.1) 100%);}
+.t-item{position:relative;padding-left:56px;margin-bottom:var(--s4);}
+.t-item:last-child{margin-bottom:0;}
+.t-node{position:absolute;left:11px;top:14px;width:16px;height:16px;border-radius:50%;background:var(--bg-1);border:2px solid var(--cyan);box-shadow:0 0 12px rgba(0,212,255,.4);transition:box-shadow var(--dur-med) var(--ease);}
+.t-item:hover .t-node{box-shadow:0 0 20px rgba(0,212,255,.7);}
+.t-card{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s3) var(--s4);transition:border-color var(--dur-fast) var(--ease),transform var(--dur-med) var(--ease);}
+.t-card:hover{border-color:var(--border-h);transform:translateX(4px);}
+.t-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:.5rem;margin-bottom:.25rem;}
+.t-company{font-family:var(--f-head);font-size:1rem;font-weight:700;color:var(--text-hi);}
+.t-period{font-family:var(--f-mono);font-size:.72rem;color:var(--cyan);font-weight:500;white-space:nowrap;}
+.t-role{font-size:.85rem;font-weight:600;color:var(--gold);margin-bottom:var(--s1);}
+.t-desc{font-size:.875rem;color:var(--text-lo);line-height:1.65;}
+.ws-card{margin-top:var(--s6);padding:var(--s4) var(--s6);background:linear-gradient(135deg,rgba(245,158,11,.07),rgba(0,212,255,.04));border:1px solid rgba(245,158,11,.22);border-radius:var(--r-lg);display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap;}
+.ws-trophy{font-size:3.5rem;flex-shrink:0;}
+.ws-card h4{font-family:var(--f-head);font-size:1.15rem;font-weight:700;color:var(--text-hi);margin-bottom:.3rem;}
+.ws-card p{font-size:.875rem;color:var(--text-lo);line-height:1.6;}
+
+/* SKILLS */
+#skills{background:var(--bg-0);}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--s2);}
+.skill-card{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--s4);transition:all var(--dur-med) var(--ease);position:relative;overflow:hidden;}
+.skill-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),transparent);opacity:0;transition:opacity var(--dur-med) var(--ease);}
+.skill-card:hover{border-color:var(--border-h);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.3);}
+.skill-card:hover::before{opacity:1;}
+.sk-icon{font-size:2rem;margin-bottom:var(--s2);}
+.sk-name{font-family:var(--f-head);font-size:1rem;font-weight:700;color:var(--text-hi);margin-bottom:.4rem;}
+.sk-desc{font-size:.825rem;color:var(--text-lo);line-height:1.6;margin-bottom:var(--s2);}
+.sk-tags{display:flex;flex-wrap:wrap;gap:.3rem;}
+.sk-tag{padding:.2rem .6rem;border-radius:5px;font-family:var(--f-mono);font-size:.68rem;font-weight:500;background:rgba(255,255,255,.05);color:var(--text-xs);border:1px solid rgba(255,255,255,.07);}
+
+/* PROJECTS */
+#projects{background:var(--bg-1);}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:var(--s2);}
+.proj-card{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;transition:all var(--dur-med) var(--ease);display:flex;flex-direction:column;}
+.proj-card:hover{border-color:var(--border-h);transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.45);}
+.proj-thumb{height:150px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;overflow:hidden;}
+.proj-thumb-emoji{position:relative;z-index:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5));}
+.pt-1{background:linear-gradient(135deg,#0a1628 0%,#0d2010 100%);}
+.pt-2{background:linear-gradient(135deg,#1a0d37 0%,#0a0028 100%);}
+.pt-3{background:linear-gradient(135deg,#0a1628 0%,#002020 100%);}
+.pt-4{background:linear-gradient(135deg,#1a0d0d 0%,#200800 100%);}
+.pt-5{background:linear-gradient(135deg,#0a1628 0%,#001a10 100%);}
+.pt-6{background:linear-gradient(135deg,#0a1628 0%,#0d0a30 100%);}
+.proj-body{padding:var(--s3);flex:1;display:flex;flex-direction:column;}
+.proj-cat{font-family:var(--f-mono);font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--cyan);margin-bottom:.4rem;}
+.proj-title{font-family:var(--f-head);font-size:1rem;font-weight:700;color:var(--text-hi);margin-bottom:.55rem;}
+.proj-desc{font-size:.825rem;color:var(--text-lo);line-height:1.6;margin-bottom:var(--s2);flex:1;}
+.proj-stack{display:flex;flex-wrap:wrap;gap:.3rem;}
+.proj-tag{padding:.18rem .6rem;border-radius:5px;font-family:var(--f-mono);font-size:.68rem;font-weight:500;background:rgba(0,212,255,.07);color:var(--cyan);border:1px solid rgba(0,212,255,.12);}
+
+/* SERVICES */
+#services{background:var(--bg-0);}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s2);}
+.srv-card{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--s4);position:relative;overflow:hidden;transition:all var(--dur-med) var(--ease);}
+.srv-card::after{content:'';position:absolute;inset:0;border-radius:var(--r-lg);background:radial-gradient(circle at bottom right,rgba(0,212,255,.06),transparent 60%);opacity:0;transition:opacity var(--dur-slow) var(--ease);}
+.srv-card:hover{border-color:var(--border-h);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3);}
+.srv-card:hover::after{opacity:1;}
+.srv-num{font-family:var(--f-mono);font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);opacity:.6;margin-bottom:var(--s2);}
+.srv-icon{font-size:2rem;margin-bottom:var(--s2);}
+.srv-name{font-family:var(--f-head);font-size:1rem;font-weight:700;color:var(--text-hi);margin-bottom:.55rem;}
+.srv-desc{font-size:.825rem;color:var(--text-lo);line-height:1.65;}
+
+/* CONTACT */
+#contact{background:var(--bg-1);}
+.contact-inner{max-width:780px;margin:0 auto;}
+.contact-links{display:flex;flex-wrap:wrap;gap:var(--s2);margin-bottom:var(--s4);}
+.clink{display:flex;align-items:center;gap:.65rem;padding:.9rem 1.5rem;border-radius:var(--r-md);background:var(--bg-2);border:1px solid var(--border);color:var(--text-md);text-decoration:none;font-size:.875rem;font-weight:500;transition:all var(--dur-med) var(--ease);}
+.clink:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.3);}
+.clink-icon{font-size:1.15rem;}
+.contact-form{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s4);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);}
+.fg{margin-bottom:var(--s2);}
+.fg label{display:block;font-size:.8rem;font-weight:500;color:var(--text-lo);margin-bottom:.4rem;font-family:var(--f-mono);letter-spacing:.03em;}
+.fg input,.fg textarea{width:100%;padding:.8rem 1rem;border-radius:var(--r-sm);background:var(--bg-3);border:1px solid rgba(255,255,255,.08);color:var(--text-hi);font-family:var(--f-body);font-size:.9rem;outline:none;transition:border-color var(--dur-fast) var(--ease);}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--text-xs);}
+.fg input:focus,.fg textarea:focus{border-color:var(--cyan);background:rgba(0,212,255,.03);}
+.fg textarea{resize:vertical;min-height:110px;}
+.form-submit{width:100%;padding:.95rem;margin-top:.25rem;border-radius:var(--r-sm);background:var(--cyan);color:#000;border:none;cursor:pointer;font-family:var(--f-head);font-size:.95rem;font-weight:700;transition:all var(--dur-med) var(--ease-spring);}
+.form-submit:hover{background:#33ddff;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,255,.3);}
+
+footer{padding:var(--s4);text-align:center;border-top:1px solid var(--border);font-size:.8rem;color:var(--text-xs);}
+footer a{color:var(--cyan);text-decoration:none;}
+
+/* Scroll animations */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity var(--dur-slow) var(--ease),transform var(--dur-slow) var(--ease);}
+.reveal.visible{opacity:1;transform:none;}
+.reveal-left{opacity:0;transform:translateX(-24px);transition:opacity var(--dur-slow) var(--ease),transform var(--dur-slow) var(--ease);}
+.reveal-left.visible{opacity:1;transform:none;}
+.reveal-right{opacity:0;transform:translateX(24px);transition:opacity var(--dur-slow) var(--ease),transform var(--dur-slow) var(--ease);}
+.reveal-right.visible{opacity:1;transform:none;}
+.reveal-delay-1{transition-delay:80ms;}.reveal-delay-2{transition-delay:160ms;}.reveal-delay-3{transition-delay:240ms;}
+.reveal-delay-4{transition-delay:320ms;}.reveal-delay-5{transition-delay:400ms;}.reveal-delay-6{transition-delay:480ms;}
+
+/* Mobile */
+.mob-menu{position:fixed;top:60px;left:0;right:0;z-index:99;background:rgba(8,12,20,.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:var(--s4);display:none;flex-direction:column;gap:var(--s3);}
+.mob-menu.open{display:flex;}
+.mob-menu a{color:var(--text-md);text-decoration:none;font-size:1rem;font-weight:500;padding:.5rem 0;border-bottom:1px solid var(--border);}
+.mob-menu a:last-child{border:none;color:var(--cyan);}
+@media(max-width:900px){
+  #hero{grid-template-columns:1fr;padding-top:calc(60px + var(--s6));}
+  .spline-wrap{height:320px;}
+  .about-grid{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+  .nav-links,.nav-cta{display:none;}
+  .nav-burger{display:flex;}
+}
+@media(max-width:600px){
+  .wrap{padding:0 var(--s2);}.section-pad{padding:var(--s8) 0;}
+  .hero-stats{gap:var(--s2);}  .stat-num{font-size:1.5rem;}
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="radial-glow"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <div class="dot"></div>
+    Бекзат <span style="color:var(--text-lo);font-weight:400">Бекетов</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">О себе</a></li>
+    <li><a href="#experience">Опыт</a></li>
+    <li><a href="#skills">Навыки</a></li>
+    <li><a href="#projects">Проекты</a></li>
+    <li><a href="#services">Услуги</a></li>
+    <li><a href="#contact">Контакты</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Написать</a>
+  <div class="nav-burger" id="burger" onclick="toggleMenu()" role="button" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <a href="#about" onclick="toggleMenu()">О себе</a>
+  <a href="#experience" onclick="toggleMenu()">Опыт</a>
+  <a href="#skills" onclick="toggleMenu()">Навыки</a>
+  <a href="#projects" onclick="toggleMenu()">Проекты</a>
+  <a href="#services" onclick="toggleMenu()">Услуги</a>
+  <a href="#contact" onclick="toggleMenu()">Написать →</a>
+</div>
+
+<!-- HERO -->
+<section id="hero" style="position:relative;z-index:1">
+  <div style="max-width:580px">
+    <div class="hero-badge reveal">⚡ Открыт к проектам · Астана, Казахстан</div>
+    <h1 class="hero-name reveal reveal-delay-1">Бекзат<br><span class="accent">Бекетов</span></h1>
+    <div class="hero-roles reveal reveal-delay-2">
+      <span>Инженер-программист</span>
+      <span style="color:var(--text-xs)">·</span><span>IoT</span>
+      <span style="color:var(--text-xs)">·</span><span>Автоматизация</span>
+      <span style="color:var(--text-xs)">·</span><span>Machine Vision</span>
+      <span style="color:var(--text-xs)">·</span><span>ЧПУ / CNC</span>
+    </div>
+    <p class="hero-desc reveal reveal-delay-3">
+      Создаю программно-аппаратные комплексы с нуля — от <strong>схемотехники и прошивок</strong> до <strong>веб-порталов и систем машинного зрения</strong>. Автоматизирую производства, разрабатываю IoT-устройства и станки на базе ЧПУ.
+    </p>
+    <div class="hero-btns reveal reveal-delay-4">
+      <a href="#projects" class="btn-primary">Мои проекты →</a>
+      <a href="#contact" class="btn-secondary">Связаться</a>
+    </div>
+    <div class="hero-stats reveal reveal-delay-5">
+      <div><div class="stat-num">9+</div><div class="stat-label">Лет опыта</div></div>
+      <div><div class="stat-num">50+</div><div class="stat-label">Проектов</div></div>
+      <div><div class="stat-num">🏆 WS</div><div class="stat-label">Главный эксперт РК</div></div>
+    </div>
+  </div>
+  <div class="hero-right reveal-right">
+    <div class="spline-wrap">
+      <spline-viewer url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"></spline-viewer>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section-pad">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="reveal-left">
+        <div class="sec-eyebrow">О себе</div>
+        <h2 class="sec-title">Инженер полного цикла</h2>
+        <div class="about-body">
+          <p>Более <strong>9 лет</strong> на стыке железа и программного обеспечения. От преподавания Arduino студентам — до позиции Главного инженера на заводе и собственного ИП.</p>
+          <p><strong>Веду проекты под ключ</strong>: принимаю заказ, составляю ТЗ, проектирую электронику, пишу прошивки, разрабатываю веб-порталы и сдаю клиенту готовый продукт.</p>
+          <p>Эксперт <strong>WorldSkills</strong> — Главный эксперт компетенции <strong>«Мобильная робототехника»</strong> города Астана, заместитель главного эксперта Республики Казахстан. Обожаю работать с роботами — это и хобби, и профессия.</p>
+        </div>
+        <div class="about-tags">
+          <span class="tag">ESP32</span><span class="tag">STM32</span><span class="tag">Arduino</span>
+          <span class="tag">Raspberry Pi</span><span class="tag">OpenCV</span><span class="tag">YOLOv8</span>
+          <span class="tag">C/C++</span><span class="tag">C#</span><span class="tag">Java</span>
+          <span class="tag">Node.js</span><span class="tag">PHP</span><span class="tag">Android</span>
+          <span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span class="tag">Firebase</span>
+          <span class="tag">Docker</span><span class="tag">Fusion 360</span><span class="tag">G-code</span>
+          <span class="tag">MQTT</span><span class="tag">Modbus</span><span class="tag">3D-печать</span>
+        </div>
+      </div>
+      <div class="info-list reveal-right">
+        <div class="info-item reveal reveal-delay-1">
+          <div class="info-icon">📍</div>
+          <div><h4>Местоположение</h4><p>Астана, Казахстан · Готов к командировкам · Работаю удалённо</p></div>
+        </div>
+        <div class="info-item reveal reveal-delay-2">
+          <div class="info-icon">🏢</div>
+          <div><h4>Текущий статус</h4><p>ИП Бекетов — принимаю заказы, веду проекты, управляю командой разработки</p></div>
+        </div>
+        <div class="info-item reveal reveal-delay-3">
+          <div class="info-icon">🎯</div>
+          <div><h4>Специализация</h4><p>Встраиваемые системы, IoT, CNC/ЧПУ, машинное зрение, автоматизация, Web</p></div>
+        </div>
+        <div class="info-item reveal reveal-delay-4">
+          <div class="info-icon">🌐</div>
+          <div><h4>Языки</h4><p>Казахский — родной &nbsp;·&nbsp; Русский — C2 &nbsp;·&nbsp; English — B1</p></div>
+        </div>
+        <div class="info-item reveal reveal-delay-5">
+          <div class="info-icon">📞</div>
+          <div><h4>Контакт</h4><p><a href="tel:+77008001233" style="color:var(--cyan);text-decoration:none">+7 (700) 800-12-33</a> &nbsp;·&nbsp; beketovekb@gmail.com</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="section-pad">
+  <div class="wrap">
+    <div class="exp-header reveal">
+      <div class="sec-eyebrow" style="justify-content:center">Карьера</div>
+      <h2 class="sec-title">9 лет опыта</h2>
+      <p class="sec-sub">От преподавателя до руководителя ИП и главного инженера завода</p>
+    </div>
+    <div class="timeline">
+      <div class="t-item reveal reveal-delay-1"><div class="t-node"></div>
+        <div class="t-card">
+          <div class="t-head"><span class="t-company">ИП Бекетов</span><span class="t-period">Окт 2024 — настоящее время</span></div>
+          <div class="t-role">Руководитель / Фрилансер</div>
+          <div class="t-desc">Работа с клиентами: принятие заказа, составление ТЗ, ведение проекта, управление командой, передача клиенту. Типы проектов: Web-порталы, Smart-устройства, станки, 3D-печать, машинное зрение, голосовые ассистенты, игры.</div>
+        </div>
+      </div>
+      <div class="t-item reveal reveal-delay-2"><div class="t-node"></div>
+        <div class="t-card">
+          <div class="t-head"><span class="t-company">PowerTech — Казахстанский завод энергетических решений</span><span class="t-period">Янв 2024 — Окт 2024</span></div>
+          <div class="t-role">Главный инженер</div>
+          <div class="t-desc">Пусконаладка оборудования, разработка плат, прошивок, ПО и веб-порталов. Автоматизация производственной линии завода.</div>
+        </div>
+      </div>
+      <div class="t-item reveal reveal-delay-3"><div class="t-node"></div>
+        <div class="t-card">
+          <div class="t-head"><span class="t-company">Advanced System Hardware</span><span class="t-period">Май 2023 — Фев 2024</span></div>
+          <div class="t-role">Инженер-программист</div>
+          <div class="t-desc">Пусконаладка оборудования, разработка плат, прошивок и веб-порталов. Автоматизация производственных процессов.</div>
+        </div>
+      </div>
+      <div class="t-item reveal reveal-delay-4"><div class="t-node"></div>
+        <div class="t-card">
+          <div class="t-head"><span class="t-company">Regulus Robotics Machine</span><span class="t-period">Дек 2021 — Июн 2022</span></div>
+          <div class="t-role">Инженер-разработчик</div>
+          <div class="t-desc">Робототехника, разработка программного обеспечения для роботизированных систем.</div>
+        </div>
+      </div>
+      <div class="t-item reveal reveal-delay-5"><div class="t-node"></div>
+        <div class="t-card">
+          <div class="t-head"><span class="t-company">Высший колледж "Astana Polytechnic"</span><span class="t-period">Ноя 2019 — Июн 2022</span></div>
+          <div class="t-role">Руководитель лаборатории робототехники</div>
+          <div class="t-desc">Программирование на C#, C++, JS, Java, Android. Подготовка участников к WorldSkills по компетенции «Мобильная робототехника». Главный эксперт г. Астана, заместитель главного эксперта РК.</div>
+        </div>
+      </div>
+      <div class="t-item reveal reveal-delay-6"><div class="t-node"></div>
+        <div class="t-card">
+          <div class="t-head"><span class="t-company">АЙТИ ШАГ</span><span class="t-period">Ноя 2015 — Май 2018</span></div>
+          <div class="t-role">Преподаватель</div>
+          <div class="t-desc">Преподавание робототехники (Arduino, Lego EV3), программирования (C#, C++). Обслуживание компьютерной техники.</div>
+        </div>
+      </div>
+      <div class="ws-card reveal">
+        <div class="ws-trophy">🏆</div>
+        <div>
+          <h4>WorldSkills — Главный эксперт · Мобильная робототехника</h4>
+          <p>Главный эксперт компетенции <strong style="color:#f59e0b">«Мобильная робототехника»</strong> города Астана · Заместитель главного эксперта Республики Казахстан · Подготовка участников к международным чемпионатам профессионального мастерства · Обожаю работать с роботами 🤖</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="section-pad">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center;margin-bottom:var(--s8)">
+      <div class="sec-eyebrow" style="justify-content:center">Технологии</div>
+      <h2 class="sec-title">Стек и навыки</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card reveal reveal-delay-1">
+        <div class="sk-icon">🔌</div><div class="sk-name">Встраиваемые системы</div>
+        <div class="sk-desc">Разработка устройств на микроконтроллерах, схемотехника, PCB-дизайн, прошивки.</div>
+        <div class="sk-tags"><span class="sk-tag">STM32</span><span class="sk-tag">ESP32/8266</span><span class="sk-tag">Arduino</span><span class="sk-tag">AVR</span><span class="sk-tag">C/C++</span></div>
+      </div>
+      <div class="skill-card reveal reveal-delay-2">
+        <div class="sk-icon">👁️</div><div class="sk-name">Машинное зрение</div>
+        <div class="sk-desc">Обработка изображений, распознавание объектов и дефектов, нейросети на устройствах.</div>
+        <div class="sk-tags"><span class="sk-tag">OpenCV</span><span class="sk-tag">YOLOv8</span><span class="sk-tag">Python</span><span class="sk-tag">Raspberry Pi</span></div>
+      </div>
+      <div class="skill-card reveal reveal-delay-3">
+        <div class="sk-icon">⚙️</div><div class="sk-name">ЧПУ · Станки</div>
+        <div class="sk-desc">Разработка и пусконаладка станков: фрезер, пескоструй, лазер. G-code, кинематика.</div>
+        <div class="sk-tags"><span class="sk-tag">G-code</span><span class="sk-tag">GRBL</span><span class="sk-tag">Modbus</span><span class="sk-tag">Fusion 360</span></div>
+      </div>
+      <div class="skill-card reveal reveal-delay-4">
+        <div class="sk-icon">📡</div><div class="sk-name">IoT системы</div>
+        <div class="sk-desc">Подключённые устройства, облачная интеграция, мониторинг в реальном времени.</div>
+        <div class="sk-tags"><span class="sk-tag">MQTT</span><span class="sk-tag">LoRa</span><span class="sk-tag">Firebase</span><span class="sk-tag">Node-RED</span></div>
+      </div>
+      <div class="skill-card reveal reveal-delay-5">
+        <div class="sk-icon">🌐</div><div class="sk-name">Web-разработка</div>
+        <div class="sk-desc">Порталы управления устройствами, дашборды, мобильные Android-приложения.</div>
+        <div class="sk-tags"><span class="sk-tag">Node.js</span><span class="sk-tag">PHP</span><span class="sk-tag">Android</span><span class="sk-tag">PostgreSQL</span><span class="sk-tag">Docker</span></div>
+      </div>
+      <div class="skill-card reveal reveal-delay-6">
+        <div class="sk-icon">🖨️</div><div class="sk-name">3D-печать и прототипинг</div>
+        <div class="sk-desc">Проектирование корпусов в Fusion 360, FDM-печать, мелкосерийное производство.</div>
+        <div class="sk-tags"><span class="sk-tag">Fusion 360</span><span class="sk-tag">FDM</span><span class="sk-tag">Слайсеры</span><span class="sk-tag">3D-моделирование</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="section-pad">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center;margin-bottom:var(--s8)">
+      <div class="sec-eyebrow" style="justify-content:center">Портфолио</div>
+      <h2 class="sec-title">Избранные проекты</h2>
+    </div>
+    <div class="proj-grid">
+      <div class="proj-card reveal reveal-delay-1">
+        <div class="proj-thumb pt-1"><span class="proj-thumb-emoji">⚙️</span></div>
+        <div class="proj-body">
+          <div class="proj-cat">ЧПУ · Станки</div>
+          <div class="proj-title">Фрезерный станок с ЧПУ</div>
+          <div class="proj-desc">Проектирование и сборка фрезерного станка с нуля: кинематика, электроника, прошивка, веб-интерфейс управления. Пусконаладка на объекте клиента.</div>
+          <div class="proj-stack"><span class="proj-tag">GRBL</span><span class="proj-tag">ESP32</span><span class="proj-tag">Fusion 360</span><span class="proj-tag">Node.js</span></div>
+        </div>
+      </div>
+      <div class="proj-card reveal reveal-delay-2">
+        <div class="proj-thumb pt-2"><span class="proj-thumb-emoji">👁️</span></div>
+        <div class="proj-body">
+          <div class="proj-cat">Machine Vision</div>
+          <div class="proj-title">Контроль качества на производстве</div>
+          <div class="proj-desc">Автоматическое обнаружение дефектов на производственной линии. Обучение нейросети на собственном датасете, интеграция с оборудованием.</div>
+          <div class="proj-stack"><span class="proj-tag">OpenCV</span><span class="proj-tag">YOLOv8</span><span class="proj-tag">Python</span><span class="proj-tag">Raspberry Pi</span></div>
+        </div>
+      </div>
+      <div class="proj-card reveal reveal-delay-3">
+        <div class="proj-thumb pt-3"><span class="proj-thumb-emoji">🏭</span></div>
+        <div class="proj-body">
+          <div class="proj-cat">IoT · Автоматизация завода</div>
+          <div class="proj-title">PowerTech — автоматизация производства</div>
+          <div class="proj-desc">Разработка плат, прошивок и веб-портала для мониторинга и управления производством на Казахстанском заводе энергетических решений.</div>
+          <div class="proj-stack"><span class="proj-tag">STM32</span><span class="proj-tag">MQTT</span><span class="proj-tag">PHP</span><span class="proj-tag">PostgreSQL</span></div>
+        </div>
+      </div>
+      <div class="proj-card reveal reveal-delay-4">
+        <div class="proj-thumb pt-4"><span class="proj-thumb-emoji">🎮</span></div>
+        <div class="proj-body">
+          <div class="proj-cat">Разработка игр</div>
+          <div class="proj-title">Мобильная игра под Android</div>
+          <div class="proj-desc">Разработка мобильной игры: геймплей, физика, графика, публикация в Google Play, интеграция с Firebase.</div>
+          <div class="proj-stack"><span class="proj-tag">Android SDK</span><span class="proj-tag">Java</span><span class="proj-tag">Firebase</span></div>
+        </div>
+      </div>
+      <div class="proj-card reveal reveal-delay-5">
+        <div class="proj-thumb pt-5"><span class="proj-thumb-emoji">🗣️</span></div>
+        <div class="proj-body">
+          <div class="proj-cat">AI · Голосовой ассистент</div>
+          <div class="proj-title">Голосовой ассистент на базе ИИ</div>
+          <div class="proj-desc">Кастомный голосовой ассистент: распознавание речи, NLU, интеграция с умным домом и API. Работа офлайн на встраиваемом устройстве.</div>
+          <div class="proj-stack"><span class="proj-tag">Python</span><span class="proj-tag">STT/TTS</span><span class="proj-tag">Raspberry Pi</span><span class="proj-tag">MQTT</span></div>
+        </div>
+      </div>
+      <div class="proj-card reveal reveal-delay-6">
+        <div class="proj-thumb pt-6"><span class="proj-thumb-emoji">🌐</span></div>
+        <div class="proj-body">
+          <div class="proj-cat">Web · Порталы</div>
+          <div class="proj-title">Веб-порталы управления оборудованием</div>
+          <div class="proj-desc">Корпоративные порталы для удалённого мониторинга и управления оборудованием в реальном времени с WebSocket.</div>
+          <div class="proj-stack"><span class="proj-tag">Node.js</span><span class="proj-tag">PHP</span><span class="proj-tag">Docker</span><span class="proj-tag">MySQL</span><span class="proj-tag">WebSocket</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="section-pad">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center;margin-bottom:var(--s8)">
+      <div class="sec-eyebrow" style="justify-content:center">Услуги</div>
+      <h2 class="sec-title">Чем могу помочь</h2>
+      <p class="sec-sub" style="margin:0 auto">Берусь за проект от идеи до сдачи клиенту — под ключ</p>
+    </div>
+    <div class="services-grid">
+      <div class="srv-card reveal reveal-delay-1">
+        <div class="srv-num">01</div><div class="srv-icon">🔌</div>
+        <div class="srv-name">Разработка устройств под ключ</div>
+        <div class="srv-desc">Проектирование PCB, прошивки, корпус (3D-печать). От ТЗ до готового устройства.</div>
+      </div>
+      <div class="srv-card reveal reveal-delay-2">
+        <div class="srv-num">02</div><div class="srv-icon">⚙️</div>
+        <div class="srv-name">Разработка и пусконаладка станков</div>
+        <div class="srv-desc">Фрезерные, пескоструйные, лазерные станки на базе ЧПУ. Модернизация оборудования.</div>
+      </div>
+      <div class="srv-card reveal reveal-delay-3">
+        <div class="srv-num">03</div><div class="srv-icon">👁️</div>
+        <div class="srv-name">Машинное зрение</div>
+        <div class="srv-desc">Контроль качества, распознавание объектов, считывание кодов, дефектоскопия.</div>
+      </div>
+      <div class="srv-card reveal reveal-delay-4">
+        <div class="srv-num">04</div><div class="srv-icon">📡</div>
+        <div class="srv-name">IoT · Smart-устройства</div>
+        <div class="srv-desc">Умные устройства с облачной интеграцией, мониторинг в реальном времени, мобильное приложение.</div>
+      </div>
+      <div class="srv-card reveal reveal-delay-5">
+        <div class="srv-num">05</div><div class="srv-icon">🌐</div>
+        <div class="srv-name">Web-порталы и автоматизация</div>
+        <div class="srv-desc">Порталы управления оборудованием, автоматизация бизнес-процессов, интеграции с внешними системами.</div>
+      </div>
+      <div class="srv-card reveal reveal-delay-6">
+        <div class="srv-num">06</div><div class="srv-icon">🖨️</div>
+        <div class="srv-name">3D-печать и прототипирование</div>
+        <div class="srv-desc">Проектирование деталей в Fusion 360, печать прототипов, корпусов, мелкосерийное производство.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section-pad">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center;margin-bottom:var(--s6)">
+      <div class="sec-eyebrow" style="justify-content:center">Контакты</div>
+      <h2 class="sec-title">Обсудим проект</h2>
+      <p class="sec-sub" style="margin:.5rem auto 0">Опишите задачу — отвечу в течение нескольких часов</p>
+    </div>
+    <div class="contact-inner">
+      <div class="contact-links reveal">
+        <a href="tel:+77008001233" class="clink"><span class="clink-icon">📞</span>+7 (700) 800-12-33</a>
+        <a href="mailto:beketovekb@gmail.com" class="clink"><span class="clink-icon">✉️</span>beketovekb@gmail.com</a>
+        <a href="https://t.me/beketovekb" class="clink" target="_blank" rel="noopener"><span class="clink-icon">💬</span>Telegram</a>
+        <a href="https://wa.me/77008001233" class="clink" target="_blank" rel="noopener"><span class="clink-icon">📱</span>WhatsApp</a>
+      </div>
+      <div class="contact-form reveal">
+        <form onsubmit="handleForm(event)">
+          <div class="form-row">
+            <div class="fg"><label for="f-name">Ваше имя</label><input id="f-name" type="text" placeholder="Алмас Сейткали" required></div>
+            <div class="fg"><label for="f-phone">Телефон / Telegram</label><input id="f-phone" type="text" placeholder="+7 777 000 00 00"></div>
+          </div>
+          <div class="fg"><label for="f-email">Email</label><input id="f-email" type="email" placeholder="example@mail.kz"></div>
+          <div class="fg"><label for="f-msg">Опишите задачу</label><textarea id="f-msg" placeholder="Расскажите о проекте: что нужно сделать, сроки, бюджет…"></textarea></div>
+          <button type="submit" class="form-submit">Отправить заявку →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 &nbsp;<strong style="color:var(--cyan)">Бекзат Бекетов</strong> &nbsp;—&nbsp; Инженер-программист · IoT · Автоматизация · Астана, Казахстан</p>
+  <p style="margin-top:.4rem"><a href="mailto:beketovekb@gmail.com">beketovekb@gmail.com</a> &nbsp;·&nbsp; <a href="tel:+77008001233">+7 (700) 800-12-33</a></p>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(
+  entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+  { threshold: 0.07, rootMargin: '0px 0px -40px 0px' }
+);
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => obs.observe(el));
+
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 90) cur = s.id; });
+  navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + cur));
+  document.getElementById('navbar').style.background =
+    window.scrollY > 40 ? 'rgba(0,0,0,.92)' : 'rgba(0,0,0,.72)';
+}, { passive: true });
+
+function toggleMenu() { document.getElementById('mobMenu').classList.toggle('open'); }
+
+function handleForm(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = '✅ Отправлено! Скоро свяжусь.';
+  btn.style.background = '#10b981'; btn.style.transform = 'none';
+  setTimeout(() => { btn.textContent = 'Отправить заявку →'; btn.style.background = ''; btn.style.transform = ''; e.target.reset(); }, 3500);
+}
+</script>
+</body>
+</html>
