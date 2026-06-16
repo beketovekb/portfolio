@@ -3,528 +3,387 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Бекзат Бекетов — IoT Engineer</title>
+<title>Бекзат Бекетов — Portfolio</title>
 <meta name="description" content="Бекзат Бекетов — IoT Engineer, Flutter Developer, WorldSkills Kazakhstan Champion">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
 :root{
-  --bg:#080c10;--bg2:#0d1117;--bg3:#161b22;
-  --surface:rgba(255,255,255,.04);--border:rgba(0,212,255,.12);--border2:rgba(255,255,255,.08);
-  --cyan:#00d4ff;--green:#3fb950;--gold:#f59e0b;
-  --txt:#e6edf3;--muted:#8b949e;
-  --mono:'JetBrains Mono',monospace;--sans:'DM Sans',sans-serif;
-  --r:12px;
+  --bg:#06080d;
+  --page:#0c1118;
+  --page2:#0f1520;
+  --ink:#ddd5c6;
+  --ink2:#8a7f72;
+  --gold:#c9a063;
+  --gold2:#f0c97a;
+  --cyan:#4ab8d4;
+  --green:#4ab87a;
+  --b1:rgba(201,160,99,.18);
+  --b2:rgba(255,255,255,.07);
+  --serif:'Playfair Display',Georgia,serif;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'DM Sans',system-ui,sans-serif;
 }
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--txt);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
+body{background:var(--bg);font-family:var(--sans);display:flex;align-items:center;justify-content:center}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.65) 100%)}
 
-/* ── Nav ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 clamp(16px,5vw,48px);height:62px;
-  background:rgba(8,12,16,.85);backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
+/* ── Book ── */
+#book{position:fixed;inset:0;z-index:1}
+
+/* ── Pages ── */
+.page{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  background:linear-gradient(155deg,var(--page) 0%,var(--page2) 100%);
+  overflow:hidden;
 }
-.logo{font-family:var(--mono);font-weight:700;font-size:17px;color:var(--cyan);text-decoration:none}
-.logo span{color:var(--green)}
-.nav-links{display:flex;gap:28px;list-style:none}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s;position:relative}
-.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:1px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .25s}
-.nav-links a:hover,.nav-links a.act{color:var(--txt)}
-.nav-links a:hover::after,.nav-links a.act::after{transform:scaleX(1)}
-.nav-btn{padding:7px 18px;border-radius:8px;border:1px solid var(--cyan);color:var(--cyan);font-size:13px;font-weight:600;text-decoration:none;transition:background .2s,box-shadow .2s}
-.nav-btn:hover{background:rgba(0,212,255,.1);box-shadow:0 0 16px rgba(0,212,255,.2)}
-.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
-.burger span{display:block;width:22px;height:2px;background:var(--txt);border-radius:1px}
-@media(max-width:660px){
-  .burger{display:flex}.nav-links,.nav-btn{display:none}
-  .nav-links.open{
-    display:flex;flex-direction:column;gap:18px;
-    position:absolute;top:62px;left:0;right:0;
-    background:rgba(8,12,16,.97);border-bottom:1px solid var(--border);
-    padding:20px 24px 28px;
-  }
+/* subtle inner glow/shadow */
+.page::after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 80px rgba(0,0,0,.45);z-index:9}
+
+/* Page header */
+.ph{
+  flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
+  padding:14px clamp(24px,5vw,64px);border-bottom:1px solid var(--b1);
+  position:relative;z-index:2;
 }
+.ph-site{font-family:var(--mono);font-size:11px;color:var(--ink2);letter-spacing:1px}
+.ph-ch{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:2.5px;text-transform:uppercase}
 
-/* ── Hero ── */
-#hero{
-  position:relative;min-height:100svh;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;text-align:center;
-  padding:80px clamp(16px,5vw,48px) 60px;overflow:hidden;
+/* Page content */
+.pc{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  padding:clamp(20px,4vh,52px) clamp(24px,5vw,64px);
+  position:relative;z-index:2;
 }
-#hero-canvas{position:absolute;inset:0;z-index:0;pointer-events:none;width:100%;height:100%}
-#hero>*:not(#hero-canvas){position:relative;z-index:1}
+.pc::-webkit-scrollbar{width:3px}
+.pc::-webkit-scrollbar-thumb{background:var(--b1);border-radius:2px}
 
-.badge{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:6px 14px;border-radius:100px;
-  border:1px solid rgba(245,158,11,.3);background:rgba(245,158,11,.08);
-  color:var(--gold);font-size:13px;font-family:var(--mono);margin-bottom:24px;
+/* Page footer */
+.pf{
+  flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
+  padding:12px clamp(24px,5vw,64px);border-top:1px solid var(--b1);
+  position:relative;z-index:2;
 }
-.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.pf-hint{font-family:var(--mono);font-size:11px;color:var(--ink2)}
+.pf-num{font-family:var(--serif);font-size:13px;color:var(--ink2);font-style:italic}
 
-h1.name{
-  font-family:var(--mono);font-size:clamp(36px,8vw,78px);font-weight:700;
-  line-height:1.1;margin-bottom:12px;
-  background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--green) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+/* ── Flip animations ── */
+@keyframes pg-out-fwd{from{transform:perspective(1500px) rotateX(0deg);opacity:1}to{transform:perspective(1500px) rotateX(-92deg);opacity:0}}
+@keyframes pg-in-fwd{from{transform:perspective(1500px) rotateX(90deg);opacity:0}to{transform:perspective(1500px) rotateX(0deg);opacity:1}}
+@keyframes pg-out-bck{from{transform:perspective(1500px) rotateX(0deg);opacity:1}to{transform:perspective(1500px) rotateX(92deg);opacity:0}}
+@keyframes pg-in-bck{from{transform:perspective(1500px) rotateX(-90deg);opacity:0}to{transform:perspective(1500px) rotateX(0deg);opacity:1}}
+.of{transform-origin:top center;animation:pg-out-fwd .38s ease-in both}
+.pf2{transform-origin:bottom center;animation:pg-in-fwd .38s ease-out both;animation-delay:.18s}
+.ob{transform-origin:bottom center;animation:pg-out-bck .38s ease-in both}
+.pb2{transform-origin:top center;animation:pg-in-bck .38s ease-out both;animation-delay:.18s}
+
+/* ── Page nav dots ── */
+#dots{
+  position:fixed;right:18px;top:50%;transform:translateY(-50%);
+  z-index:50;display:flex;flex-direction:column;gap:10px;
 }
-.role{font-size:clamp(16px,3vw,22px);color:var(--muted);margin-bottom:20px;min-height:1.8em}
-.cursor{display:inline-block;width:2px;height:1em;background:var(--cyan);vertical-align:text-bottom;animation:blink .7s step-end infinite;margin-left:2px}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-
-.hero-desc{max-width:500px;color:var(--muted);font-size:16px;margin-bottom:36px;line-height:1.75}
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:56px}
-
-.btn-p{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:13px 28px;border-radius:10px;
-  background:linear-gradient(135deg,var(--cyan),var(--green));
-  color:#000;font-weight:700;font-size:15px;text-decoration:none;
-  box-shadow:0 4px 24px rgba(0,212,255,.3);
-  transition:opacity .2s,transform .2s,box-shadow .2s;
+.dot{
+  width:8px;height:8px;border-radius:50%;
+  border:1px solid rgba(201,160,99,.4);background:transparent;
+  cursor:pointer;transition:background .2s,transform .2s;
+  padding:0;
 }
-.btn-p:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,212,255,.4)}
-.btn-g{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:13px 28px;border-radius:10px;border:1px solid var(--border2);
-  color:var(--txt);font-weight:600;font-size:15px;text-decoration:none;
-  transition:border-color .2s,background .2s,transform .2s;
-}
-.btn-g:hover{border-color:var(--cyan);background:rgba(0,212,255,.06);transform:translateY(-2px)}
+.dot.on{background:var(--gold);transform:scale(1.3)}
 
-.stats{display:flex;gap:clamp(24px,5vw,56px);flex-wrap:wrap;justify-content:center}
-.stat-num{font-family:var(--mono);font-size:clamp(28px,4vw,44px);font-weight:700;color:var(--cyan);line-height:1}
-.stat-label{font-size:13px;color:var(--muted);margin-top:4px}
+/* ── Shared typography ── */
+.ch-title{font-family:var(--serif);font-size:clamp(24px,4vw,40px);font-weight:700;color:var(--ink);margin-bottom:6px;line-height:1.1}
+.ch-line{width:36px;height:2px;background:var(--gold);margin-bottom:22px}
+.ch-text{color:var(--ink2);font-size:15px;line-height:1.8;margin-bottom:12px}
 
-.scroll-hint{
-  position:absolute;bottom:24px;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-  color:var(--muted);font-size:12px;animation:bob 2s ease-in-out infinite;
-}
-@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
-.arrow-down{width:18px;height:18px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-top:-4px}
+/* ── COVER ── */
+#p0 .pc{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+#cv-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.cv-inner{position:relative;z-index:1}
+.cv-over{font-family:var(--mono);font-size:11px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:20px}
+.cv-name{font-family:var(--serif);font-size:clamp(42px,9vw,90px);font-weight:900;line-height:1;color:var(--ink);margin-bottom:6px}
+.cv-name em{font-style:italic;color:var(--gold)}
+.cv-rule{width:56px;height:2px;margin:18px auto;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.cv-sub{color:var(--ink2);font-size:clamp(13px,1.8vw,16px);letter-spacing:1px;margin-bottom:26px;font-family:var(--sans)}
+.cv-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:100px;border:1px solid rgba(201,160,99,.3);background:rgba(201,160,99,.08);color:var(--gold);font-family:var(--mono);font-size:12px}
+.cv-bdot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:bpulse 2s ease-in-out infinite}
+@keyframes bpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
 
-/* ── Shared section styles ── */
-section{padding:84px clamp(16px,5vw,48px)}
-.wrap{max-width:1060px;margin:0 auto}
-.sec-tag{display:inline-block;font-family:var(--mono);font-size:13px;color:var(--cyan);margin-bottom:8px}
-.sec-tag::before{content:'// ';opacity:.45}
-h2.sec-title{font-family:var(--mono);font-size:clamp(24px,4vw,38px);font-weight:700;line-height:1.2;margin-bottom:12px}
-.sec-sub{color:var(--muted);font-size:15px;max-width:520px;line-height:1.75;margin-bottom:48px}
+/* ── ABOUT ── */
+#p1 .pc{display:flex;flex-direction:column;justify-content:center;max-width:740px;margin:0 auto;width:100%}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0}
+@media(max-width:520px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+.st-box{padding:16px 12px;border-radius:10px;border:1px solid var(--b2);background:rgba(255,255,255,.02);text-align:center}
+.st-n{font-family:var(--serif);font-size:clamp(22px,3vw,34px);color:var(--gold);font-weight:700;line-height:1}
+.st-l{font-size:11px;color:var(--ink2);margin-top:5px;font-family:var(--mono)}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.ttag{padding:5px 12px;border-radius:6px;border:1px solid var(--b2);background:rgba(255,255,255,.025);font-family:var(--mono);font-size:12px;color:var(--ink2)}
 
-.reveal{opacity:0;transform:translateY(26px);transition:opacity .6s,transform .6s}
-.reveal.vis{opacity:1;transform:none}
+/* ── SKILLS ── */
+#p2 .pc{display:flex;flex-direction:column;justify-content:center;max-width:860px;margin:0 auto;width:100%}
+.sk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
+@media(max-width:580px){.sk-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:380px){.sk-grid{grid-template-columns:1fr}}
+.sk-card{padding:16px;border-radius:10px;border:1px solid var(--b2);background:rgba(255,255,255,.02);transition:border-color .2s}
+.sk-card:hover{border-color:var(--b1)}
+.sk-cat{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:9px;text-transform:uppercase}
+.sk-ts{display:flex;flex-wrap:wrap;gap:5px}
+.sk-t{font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:4px;background:rgba(255,255,255,.05);color:var(--ink2)}
 
-/* ── About ── */
-#about{background:var(--bg2)}
-.about-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:52px;align-items:center}
-@media(max-width:680px){.about-grid{grid-template-columns:1fr}}
-.avatar-box{
-  border-radius:20px;border:1px solid var(--border);background:var(--surface);
-  padding:40px 28px;display:flex;flex-direction:column;align-items:center;gap:14px;
-  position:relative;overflow:hidden;
-}
-.avatar-box::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,.05),rgba(63,185,80,.05))}
-.av-init{
-  font-family:var(--mono);font-size:64px;font-weight:700;line-height:1;
-  background:linear-gradient(135deg,var(--cyan),var(--green));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.av-status{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--green);font-family:var(--mono)}
-.av-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s ease-in-out infinite}
-.about-text p{color:var(--muted);font-size:15px;line-height:1.8;margin-bottom:14px}
-.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
-.tag{padding:4px 12px;border-radius:100px;border:1px solid var(--border2);background:var(--surface);font-family:var(--mono);font-size:12px;color:var(--muted)}
+/* ── PROJECTS ── */
+#p3 .pc{display:flex;flex-direction:column;justify-content:center;max-width:880px;margin:0 auto;width:100%}
+.pj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+@media(max-width:660px){.pj-grid{grid-template-columns:1fr}}
+.pj-card{padding:20px;border-radius:10px;border:1px solid var(--b2);background:rgba(255,255,255,.02);transition:border-color .2s}
+.pj-card:hover{border-color:var(--b1)}
+.pj-st{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;padding:2px 9px;border-radius:100px;margin-bottom:11px}
+.pj-st.prod{color:var(--green);border:1px solid rgba(74,184,122,.3);background:rgba(74,184,122,.08)}
+.pj-st.wip{color:var(--gold2);border:1px solid rgba(240,201,122,.3);background:rgba(240,201,122,.07)}
+.pj-st.proto{color:var(--cyan);border:1px solid rgba(74,184,212,.3);background:rgba(74,184,212,.07)}
+.pj-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.pj-title{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.pj-desc{font-size:12px;color:var(--ink2);line-height:1.75;margin-bottom:12px}
+.pj-stack{display:flex;flex-wrap:wrap;gap:4px}
+.pj-tech{font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.05);color:var(--ink2)}
 
-/* ── Skills ── */
-#skills{background:var(--bg)}
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
-.sk-card{
-  padding:22px 18px;border-radius:var(--r);border:1px solid var(--border2);
-  background:var(--surface);transition:border-color .25s,transform .25s,box-shadow .25s;
-}
-.sk-card:hover{transform:translateY(-4px)}
-.sk-card.c:hover{border-color:var(--cyan);box-shadow:0 8px 28px rgba(0,212,255,.12)}
-.sk-card.g:hover{border-color:var(--green);box-shadow:0 8px 28px rgba(63,185,80,.12)}
-.sk-card.o:hover{border-color:var(--gold);box-shadow:0 8px 28px rgba(245,158,11,.12)}
-.sk-ico{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
-.c .sk-ico{background:rgba(0,212,255,.1)}.c .sk-ico svg{stroke:var(--cyan)}
-.g .sk-ico{background:rgba(63,185,80,.1)}.g .sk-ico svg{stroke:var(--green)}
-.o .sk-ico{background:rgba(245,158,11,.1)}.o .sk-ico svg{stroke:var(--gold)}
-.sk-ico svg{width:20px;height:20px;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.sk-name{font-family:var(--mono);font-size:13px;font-weight:700;margin-bottom:10px}
-.techs{display:flex;flex-wrap:wrap;gap:5px}
-.tc{font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:4px;background:rgba(255,255,255,.06);color:var(--muted)}
-
-/* ── Projects ── */
-#projects{background:var(--bg2)}
-.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
-.proj-card{
-  border-radius:var(--r);border:1px solid var(--border2);background:var(--surface);
-  overflow:hidden;transition:transform .25s,box-shadow .25s,border-color .25s;
-}
-.proj-card:hover{transform:translateY(-5px);box-shadow:0 14px 42px rgba(0,0,0,.45);border-color:rgba(0,212,255,.3)}
-.proj-head{padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.proj-ico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center}
-.proj-ico svg{width:22px;height:22px;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.st{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:100px}
-.st.prod{color:var(--green);background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.25)}
-.st.wip{color:var(--gold);background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25)}
-.st.proto{color:var(--cyan);background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.25)}
-.st-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
-.proj-body{padding:0 20px 20px}
-.proj-title{font-family:var(--mono);font-size:15px;font-weight:700;margin-bottom:8px}
-.proj-desc{color:var(--muted);font-size:13px;line-height:1.7;margin-bottom:14px}
-.stack{display:flex;flex-wrap:wrap;gap:5px}
-.stk{font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,.05);color:var(--muted);border:1px solid rgba(255,255,255,.06)}
-
-/* ── Contact ── */
-#contact{background:var(--bg)}
-.contact-inner{max-width:580px;margin:0 auto;text-align:center}
-.contact-links{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:36px}
-.clink{
-  display:flex;align-items:center;gap:10px;min-width:190px;justify-content:center;
-  padding:14px 22px;border-radius:12px;border:1px solid var(--border2);background:var(--surface);
-  color:var(--txt);text-decoration:none;font-size:14px;font-weight:500;
-  transition:border-color .2s,background .2s,transform .2s,box-shadow .2s;
-}
-.clink:hover{transform:translateY(-3px)}
-.clink.em:hover{border-color:var(--cyan);box-shadow:0 8px 24px rgba(0,212,255,.15);background:rgba(0,212,255,.06)}
-.clink.tg:hover{border-color:#2aabee;box-shadow:0 8px 24px rgba(42,171,238,.18);background:rgba(42,171,238,.06)}
-.clink.gh:hover{border-color:#e6edf3;box-shadow:0 8px 24px rgba(255,255,255,.1);background:rgba(255,255,255,.04)}
-.clink svg{width:19px;height:19px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-
-footer{padding:26px clamp(16px,5vw,48px);border-top:1px solid var(--border2);text-align:center;color:var(--muted);font-size:13px;font-family:var(--mono)}
-footer span{color:var(--cyan)}
+/* ── CONTACT ── */
+#p4 .pc{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;max-width:520px;margin:0 auto;width:100%}
+.ct-orn{font-size:22px;color:var(--gold);opacity:.6;margin-bottom:18px;font-family:var(--serif)}
+.ct-sub{color:var(--ink2);font-size:14px;line-height:1.75;max-width:380px;margin:8px auto 28px}
+.ct-links{display:flex;flex-direction:column;gap:11px;width:100%;max-width:360px}
+.clink{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:10px;border:1px solid var(--b2);background:rgba(255,255,255,.025);color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;transition:border-color .2s,background .2s,transform .2s}
+.clink:hover{border-color:var(--b1);background:rgba(201,160,99,.07);transform:translateX(4px)}
+.clink svg{width:18px;height:18px;flex-shrink:0;fill:none;stroke:var(--gold);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.ct-fin{margin-top:30px;font-family:var(--serif);font-style:italic;color:var(--ink2);font-size:13px}
 
 @media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
-  #hero-canvas{display:none}.reveal{opacity:1;transform:none}
+  *,*::before,*::after{animation-duration:.01ms!important}
+  #cv-canvas{display:none}
 }
 </style>
 </head>
 <body>
 
-<nav id="nav">
-  <a href="#hero" class="logo">bekzat<span>.io</span></a>
-  <button class="burger" aria-label="Меню" onclick="document.getElementById('nl').classList.toggle('open')">
-    <span></span><span></span><span></span>
-  </button>
-  <ul class="nav-links" id="nl">
-    <li><a href="#about">Обо мне</a></li>
-    <li><a href="#skills">Навыки</a></li>
-    <li><a href="#projects">Проекты</a></li>
-    <li><a href="#contact">Контакты</a></li>
-  </ul>
-  <a href="#contact" class="nav-btn">Написать</a>
+<!-- Page nav dots -->
+<nav id="dots" aria-label="Страницы">
+  <button class="dot on" onclick="go(0)" aria-label="Обложка"></button>
+  <button class="dot"    onclick="go(1)" aria-label="Обо мне"></button>
+  <button class="dot"    onclick="go(2)" aria-label="Навыки"></button>
+  <button class="dot"    onclick="go(3)" aria-label="Проекты"></button>
+  <button class="dot"    onclick="go(4)" aria-label="Контакты"></button>
 </nav>
 
-<!-- HERO -->
-<section id="hero">
-  <canvas id="hero-canvas"></canvas>
+<div id="book">
 
-  <div class="badge">
-    <span class="badge-dot"></span>
-    WorldSkills Kazakhstan Champion 2022 &amp; 2023
+<!-- ① COVER -->
+<div class="page" id="p0">
+  <header class="ph"><span class="ph-site">bekzat.io</span><span class="ph-ch">Portfolio</span></header>
+  <div class="pc">
+    <canvas id="cv-canvas"></canvas>
+    <div class="cv-inner">
+      <div class="cv-over">Engineer · Builder · Champion</div>
+      <h1 class="cv-name">Бекзат<br><em>Бекетов</em></h1>
+      <div class="cv-rule"></div>
+      <p class="cv-sub">IoT Engineer · Flutter Developer · Machine Vision</p>
+      <div class="cv-badge"><span class="cv-bdot"></span>🏆 WorldSkills Kazakhstan 2022 &amp; 2023</div>
+    </div>
   </div>
+  <footer class="pf"><span class="pf-hint">Листайте вниз ↓</span><span class="pf-num">I</span></footer>
+</div>
 
-  <h1 class="name">Бекзат Бекетов</h1>
-
-  <p class="role"><span id="tw"></span><span class="cursor"></span></p>
-
-  <p class="hero-desc">Инженер-программист из Астаны. Создаю умные устройства, мобильные приложения и системы машинного зрения.</p>
-
-  <div class="hero-btns">
-    <a href="#projects" class="btn-p">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-      Посмотреть проекты
-    </a>
-    <a href="#contact" class="btn-g">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      Связаться
-    </a>
+<!-- ② ABOUT -->
+<div class="page" id="p1" style="display:none">
+  <header class="ph"><span class="ph-site">bekzat.io</span><span class="ph-ch">About</span></header>
+  <div class="pc">
+    <h2 class="ch-title">Немного обо мне</h2>
+    <div class="ch-line"></div>
+    <p class="ch-text">Привет! Я Бекзат — инженер-программист из Астаны. Специализируюсь на IoT-системах, встраиваемом ПО и мобильной разработке на Flutter.</p>
+    <p class="ch-text">Победитель WorldSkills Kazakhstan 2022 и 2023 по направлению «Мобильная робототехника». Строю умные устройства и промышленные решения, которые работают в реальных условиях. Люблю паять, программировать микроконтроллеры и учить машины видеть.</p>
+    <div class="stats-row">
+      <div class="st-box"><div class="st-n" data-to="4">0</div><div class="st-l">года опыта</div></div>
+      <div class="st-box"><div class="st-n" data-to="3">0</div><div class="st-l">проекта</div></div>
+      <div class="st-box"><div class="st-n" data-to="2">0</div><div class="st-l">🥇 WorldSkills</div></div>
+      <div class="st-box"><div class="st-n" data-to="30">0</div><div class="st-l">технологий</div></div>
+    </div>
+    <div class="tag-row">
+      <span class="ttag">🇰🇿 Казахский</span>
+      <span class="ttag">🇷🇺 Русский</span>
+      <span class="ttag">🇬🇧 English</span>
+      <span class="ttag">📍 Астана</span>
+    </div>
   </div>
+  <footer class="pf"><span class="pf-hint">↑ ↓ листать</span><span class="pf-num">II</span></footer>
+</div>
 
-  <div class="stats">
-    <div class="stat"><div class="stat-num" data-to="4">0</div><div class="stat-label">года опыта</div></div>
-    <div class="stat"><div class="stat-num" data-to="3">0</div><div class="stat-label">проекта</div></div>
-    <div class="stat"><div class="stat-num" data-to="2">0</div><div class="stat-label">🥇 WorldSkills</div></div>
-    <div class="stat"><div class="stat-num" data-to="30">0</div><div class="stat-label">технологий</div></div>
+<!-- ③ SKILLS -->
+<div class="page" id="p2" style="display:none">
+  <header class="ph"><span class="ph-site">bekzat.io</span><span class="ph-ch">Skills</span></header>
+  <div class="pc">
+    <h2 class="ch-title">Технологии и навыки</h2>
+    <div class="ch-line"></div>
+    <div class="sk-grid">
+      <div class="sk-card"><div class="sk-cat">IoT / Embedded</div><div class="sk-ts"><span class="sk-t">ESP8266</span><span class="sk-t">ESP32</span><span class="sk-t">Arduino</span><span class="sk-t">MQTT</span><span class="sk-t">Modbus</span><span class="sk-t">OTA</span></div></div>
+      <div class="sk-card"><div class="sk-cat">Mobile / Flutter</div><div class="sk-ts"><span class="sk-t">Flutter</span><span class="sk-t">Dart</span><span class="sk-t">Android</span><span class="sk-t">iOS</span><span class="sk-t">BLE</span><span class="sk-t">REST</span></div></div>
+      <div class="sk-card"><div class="sk-cat">Machine Vision</div><div class="sk-ts"><span class="sk-t">OpenCV</span><span class="sk-t">Python</span><span class="sk-t">YOLOv8</span><span class="sk-t">TF Lite</span><span class="sk-t">RPi</span></div></div>
+      <div class="sk-card"><div class="sk-cat">Cloud / DB</div><div class="sk-ts"><span class="sk-t">Firebase</span><span class="sk-t">SQLite</span><span class="sk-t">Docker</span><span class="sk-t">Linux</span><span class="sk-t">Git</span></div></div>
+      <div class="sk-card"><div class="sk-cat">CNC / Hardware</div><div class="sk-ts"><span class="sk-t">G-code</span><span class="sk-t">Mach3</span><span class="sk-t">KiCad</span><span class="sk-t">Fusion360</span><span class="sk-t">3D Print</span></div></div>
+      <div class="sk-card"><div class="sk-cat">Languages</div><div class="sk-ts"><span class="sk-t">C/C++</span><span class="sk-t">Python</span><span class="sk-t">Dart</span><span class="sk-t">Bash</span><span class="sk-t">SQL</span></div></div>
+    </div>
   </div>
+  <footer class="pf"><span class="pf-hint">↑ ↓ листать</span><span class="pf-num">III</span></footer>
+</div>
 
-  <div class="scroll-hint" aria-hidden="true">
-    <span>Листайте вниз</span>
-    <span class="arrow-down"></span>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="wrap">
-    <div class="about-grid">
-      <div class="reveal">
-        <div class="avatar-box">
-          <div class="av-init">BB</div>
-          <div class="av-status"><span class="av-dot"></span>Open to work</div>
-        </div>
+<!-- ④ PROJECTS -->
+<div class="page" id="p3" style="display:none">
+  <header class="ph"><span class="ph-site">bekzat.io</span><span class="ph-ch">Projects</span></header>
+  <div class="pc">
+    <h2 class="ch-title">Проекты</h2>
+    <div class="ch-line"></div>
+    <div class="pj-grid">
+      <div class="pj-card">
+        <div class="pj-st prod"><span class="pj-dot"></span>Production</div>
+        <div class="pj-title">Smart Greenhouse</div>
+        <div class="pj-desc">Умная теплица с IoT-управлением. Мониторинг T° и влажности, автополив, управление шторами. OTA-обновления прошивки. Flutter-приложение с push-уведомлениями.</div>
+        <div class="pj-stack"><span class="pj-tech">ESP8266</span><span class="pj-tech">Firebase</span><span class="pj-tech">Flutter</span><span class="pj-tech">DHT22</span><span class="pj-tech">OTA</span></div>
       </div>
-      <div class="reveal">
-        <span class="sec-tag">about</span>
-        <h2 class="sec-title">Немного обо мне</h2>
-        <p>Привет! Я Бекзат — инженер-программист, специализирующийся на IoT-системах, встраиваемом ПО и мобильной разработке на Flutter.</p>
-        <p>Победитель WorldSkills Kazakhstan 2022 и 2023 по направлению «Мобильная робототехника». Строю умные устройства и промышленные решения, которые работают в реальных условиях.</p>
-        <p>Люблю паять, программировать микроконтроллеры и учить машины видеть.</p>
-        <div class="tags">
-          <span class="tag">📍 Астана, Казахстан</span>
-          <span class="tag">🇰🇿 🇷🇺 🇬🇧</span>
-          <span class="tag">Колледж ТиБ 2021–2025</span>
-        </div>
+      <div class="pj-card">
+        <div class="pj-st wip"><span class="pj-dot"></span>В разработке</div>
+        <div class="pj-title">РЭО Сканер</div>
+        <div class="pj-desc">Android-приложение для сканирования базовых станций GSM/LTE/UMTS. Показывает MCC, MNC, LAC, CellID, RSSI. История замеров, экспорт CSV, карта БС.</div>
+        <div class="pj-stack"><span class="pj-tech">Flutter</span><span class="pj-tech">Android</span><span class="pj-tech">SQLite</span><span class="pj-tech">Maps</span></div>
+      </div>
+      <div class="pj-card">
+        <div class="pj-st proto"><span class="pj-dot"></span>Прототип</div>
+        <div class="pj-title">CNC Machine Vision</div>
+        <div class="pj-desc">Система технического зрения для ЧПУ-станка. Автоматически определяет смещение заготовки, вычисляет коррекцию и передаёт G-code в контроллер Mach3.</div>
+        <div class="pj-stack"><span class="pj-tech">OpenCV</span><span class="pj-tech">Python</span><span class="pj-tech">RPi</span><span class="pj-tech">G-code</span></div>
       </div>
     </div>
   </div>
-</section>
+  <footer class="pf"><span class="pf-hint">↑ ↓ листать</span><span class="pf-num">IV</span></footer>
+</div>
 
-<!-- SKILLS -->
-<section id="skills">
-  <div class="wrap">
-    <div class="reveal">
-      <span class="sec-tag">skills</span>
-      <h2 class="sec-title">Технологии и навыки</h2>
-      <p class="sec-sub">Инструменты для IoT-решений, мобильных приложений и систем автоматизации.</p>
+<!-- ⑤ CONTACT -->
+<div class="page" id="p4" style="display:none">
+  <header class="ph"><span class="ph-site">bekzat.io</span><span class="ph-ch">Contact</span></header>
+  <div class="pc">
+    <div class="ct-orn">✦</div>
+    <h2 class="ch-title">Свяжитесь со мной</h2>
+    <div class="ch-line" style="margin:8px auto 0"></div>
+    <p class="ct-sub">Открыт для предложений о работе и интересных проектов. Пишите — отвечу быстро!</p>
+    <div class="ct-links">
+      <a href="mailto:beketovekb@gmail.com" class="clink">
+        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        beketovekb@gmail.com
+      </a>
+      <a href="https://t.me/beketov_b" target="_blank" rel="noopener" class="clink">
+        <svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        Telegram — @beketov_b
+      </a>
+      <a href="https://github.com/beketovekb" target="_blank" rel="noopener" class="clink">
+        <svg viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+        GitHub — beketovekb
+      </a>
     </div>
-    <div class="skills-grid">
-      <div class="sk-card c reveal">
-        <div class="sk-ico"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M4 9h1m0 6H4m16-6h-1m0 6h1M9 4v1m6 0V4M9 20v-1m6 0v1"/></svg></div>
-        <div class="sk-name">IoT / Embedded</div>
-        <div class="techs"><span class="tc">ESP8266</span><span class="tc">ESP32</span><span class="tc">Arduino</span><span class="tc">MQTT</span><span class="tc">Modbus</span><span class="tc">OTA</span></div>
-      </div>
-      <div class="sk-card g reveal">
-        <div class="sk-ico"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div>
-        <div class="sk-name">Mobile / Flutter</div>
-        <div class="techs"><span class="tc">Flutter</span><span class="tc">Dart</span><span class="tc">Android</span><span class="tc">iOS</span><span class="tc">BLE</span><span class="tc">REST</span></div>
-      </div>
-      <div class="sk-card o reveal">
-        <div class="sk-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M3 7V5a2 2 0 0 1 2-2h2m10 0h2a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/></svg></div>
-        <div class="sk-name">Machine Vision</div>
-        <div class="techs"><span class="tc">OpenCV</span><span class="tc">Python</span><span class="tc">YOLOv8</span><span class="tc">TF Lite</span><span class="tc">RPi</span></div>
-      </div>
-      <div class="sk-card c reveal">
-        <div class="sk-ico"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg></div>
-        <div class="sk-name">Cloud / Database</div>
-        <div class="techs"><span class="tc">Firebase</span><span class="tc">SQLite</span><span class="tc">Docker</span><span class="tc">Linux</span><span class="tc">Git</span></div>
-      </div>
-      <div class="sk-card g reveal">
-        <div class="sk-ico"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
-        <div class="sk-name">CNC / Hardware</div>
-        <div class="techs"><span class="tc">G-code</span><span class="tc">Mach3</span><span class="tc">KiCad</span><span class="tc">Fusion360</span><span class="tc">3D Print</span></div>
-      </div>
-      <div class="sk-card o reveal">
-        <div class="sk-ico"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
-        <div class="sk-name">Языки</div>
-        <div class="techs"><span class="tc">C/C++</span><span class="tc">Python</span><span class="tc">Dart</span><span class="tc">Bash</span><span class="tc">SQL</span></div>
-      </div>
-    </div>
+    <p class="ct-fin">— Astana, Kazakhstan · 2025 —</p>
   </div>
-</section>
+  <footer class="pf"><span class="pf-hint">↑ назад</span><span class="pf-num">V</span></footer>
+</div>
 
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="wrap">
-    <div class="reveal">
-      <span class="sec-tag">projects</span>
-      <h2 class="sec-title">Проекты</h2>
-      <p class="sec-sub">Реальные решения, которые я спроектировал и запустил в работу.</p>
-    </div>
-    <div class="proj-grid">
-
-      <div class="proj-card reveal">
-        <div class="proj-head">
-          <div class="proj-ico" style="background:rgba(63,185,80,.12)">
-            <svg viewBox="0 0 24 24" stroke="#3fb950"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          </div>
-          <span class="st prod"><span class="st-dot"></span>Production</span>
-        </div>
-        <div class="proj-body">
-          <div class="proj-title">Smart Greenhouse</div>
-          <div class="proj-desc">Умная теплица с IoT-управлением. Мониторинг T° и влажности, автополив, управление шторами. OTA-обновления прошивки. Flutter-приложение с push-уведомлениями.</div>
-          <div class="stack"><span class="stk">ESP8266</span><span class="stk">Firebase</span><span class="stk">Flutter</span><span class="stk">DHT22</span><span class="stk">OTA</span></div>
-        </div>
-      </div>
-
-      <div class="proj-card reveal">
-        <div class="proj-head">
-          <div class="proj-ico" style="background:rgba(0,212,255,.12)">
-            <svg viewBox="0 0 24 24" stroke="#00d4ff"><path d="M1.5 8.5 12 2l10.5 6.5v7L12 22 1.5 15.5z"/><path d="M12 2v20M1.5 8.5l10.5 6.5 10.5-6.5"/></svg>
-          </div>
-          <span class="st wip"><span class="st-dot"></span>В разработке</span>
-        </div>
-        <div class="proj-body">
-          <div class="proj-title">РЭО Сканер</div>
-          <div class="proj-desc">Android-приложение для сканирования базовых станций GSM/LTE/UMTS. Отображает MCC, MNC, LAC, CellID, RSSI. История замеров, экспорт CSV, карта станций.</div>
-          <div class="stack"><span class="stk">Flutter</span><span class="stk">Android</span><span class="stk">SQLite</span><span class="stk">Maps</span></div>
-        </div>
-      </div>
-
-      <div class="proj-card reveal">
-        <div class="proj-head">
-          <div class="proj-ico" style="background:rgba(245,158,11,.12)">
-            <svg viewBox="0 0 24 24" stroke="#f59e0b"><circle cx="12" cy="12" r="3"/><path d="M3 7V5a2 2 0 0 1 2-2h2m10 0h2a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
-          </div>
-          <span class="st proto"><span class="st-dot"></span>Прототип</span>
-        </div>
-        <div class="proj-body">
-          <div class="proj-title">CNC Machine Vision</div>
-          <div class="proj-desc">Система технического зрения для ЧПУ-станка. Автоматически определяет смещение заготовки, вычисляет коррекцию и передаёт G-code в контроллер Mach3.</div>
-          <div class="stack"><span class="stk">OpenCV</span><span class="stk">Python</span><span class="stk">RPi</span><span class="stk">G-code</span></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="wrap">
-    <div class="contact-inner reveal">
-      <span class="sec-tag">contact</span>
-      <h2 class="sec-title">Свяжитесь со мной</h2>
-      <p class="sec-sub" style="margin:0 auto">Открыт для предложений о работе и интересных проектов. Пишите — отвечу быстро!</p>
-      <div class="contact-links">
-        <a href="mailto:beketovekb@gmail.com" class="clink em">
-          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-          beketovekb@gmail.com
-        </a>
-        <a href="https://t.me/beketov_b" target="_blank" rel="noopener" class="clink tg">
-          <svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
-          Telegram
-        </a>
-        <a href="https://github.com/beketovekb" target="_blank" rel="noopener" class="clink gh">
-          <svg viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-          GitHub
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <span>bekzat</span>.io — 2025 · Built with care in Astana 🇰🇿
-</footer>
+</div><!-- /#book -->
 
 <script>
 'use strict';
 
-// ── Canvas particle network ─────────────────────────────────────────────────
+// ── Cover canvas ─────────────────────────────────────────────────────────────
 (function(){
-  const cv=document.getElementById('hero-canvas');
+  const cv=document.getElementById('cv-canvas');
   if(!cv)return;
   const ctx=cv.getContext('2d');
-  const LABELS=['ESP32','MQTT','Flutter','OpenCV','Firebase','Python','G-code','Arduino','Dart','BLE'];
-  const N=44;
-  let W,H,pts=[],mx=-999,my=-999;
-  function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight}
-  class P{
-    constructor(i){
-      this.x=Math.random()*W;this.y=Math.random()*H;
-      this.vx=(Math.random()-.5)*.45;this.vy=(Math.random()-.5)*.45;
-      this.lbl=i<LABELS.length?LABELS[i]:null;this.r=this.lbl?2.5:1.8;
-    }
-    tick(){
-      this.x+=this.vx;this.y+=this.vy;
-      if(this.x<0||this.x>W)this.vx*=-1;
-      if(this.y<0||this.y>H)this.vy*=-1;
-      const dx=this.x-mx,dy=this.y-my,d2=dx*dx+dy*dy;
-      if(d2<7225){const f=(85-Math.sqrt(d2))/85;this.x+=dx*f*.06;this.y+=dy*f*.06}
-    }
+  const LBL=['ESP32','MQTT','Flutter','OpenCV','Firebase','Python','G-code','Arduino'];
+  const N=36;let W,H,pts=[],mx=-999,my=-999;
+  function resize(){const p=document.getElementById('p0');W=cv.width=p.clientWidth;H=cv.height=p.clientHeight}
+  class Pt{constructor(i){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.38;this.vy=(Math.random()-.5)*.38;this.l=i<LBL.length?LBL[i]:null}
+    tick(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W)this.vx*=-1;if(this.y<0||this.y>H)this.vy*=-1;const dx=this.x-mx,dy=this.y-my,d2=dx*dx+dy*dy;if(d2<8100){const f=(90-Math.sqrt(d2))/90;this.x+=dx*f*.05;this.y+=dy*f*.05}}
   }
-  function init(){resize();pts=Array.from({length:N},(_,i)=>new P(i))}
+  function init(){resize();pts=Array.from({length:N},(_,i)=>new Pt(i))}
   let last=0;
-  function draw(ts){
-    requestAnimationFrame(draw);
-    if(document.hidden||ts-last<34)return;last=ts;
-    ctx.clearRect(0,0,W,H);
-    for(let i=0;i<N;i++){
-      pts[i].tick();
-      for(let j=i+1;j<N;j++){
-        const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d2=dx*dx+dy*dy;
-        if(d2>16900)continue;
-        const a=(130-Math.sqrt(d2))/130;
-        ctx.strokeStyle=`rgba(0,212,255,${a*.3})`;ctx.lineWidth=1;
-        ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke();
-      }
-    }
-    for(const p of pts){
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=p.lbl?'#00d4ff':'rgba(0,212,255,.45)';ctx.fill();
-      if(p.lbl){ctx.fillStyle='rgba(200,220,240,.5)';ctx.font='10px JetBrains Mono,monospace';ctx.fillText(p.lbl,p.x+5,p.y+4)}
-    }
+  function draw(ts){requestAnimationFrame(draw);if(document.hidden||ts-last<34)return;last=ts;ctx.clearRect(0,0,W,H);
+    for(let i=0;i<N;i++){pts[i].tick();for(let j=i+1;j<N;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d2=dx*dx+dy*dy;if(d2>14400)continue;const a=(120-Math.sqrt(d2))/120;ctx.strokeStyle=`rgba(201,160,99,${a*.22})`;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke()}}
+    for(const p of pts){ctx.beginPath();ctx.arc(p.x,p.y,p.l?2.2:1.4,0,Math.PI*2);ctx.fillStyle=p.l?'rgba(201,160,99,.75)':'rgba(201,160,99,.3)';ctx.fill();if(p.l){ctx.fillStyle='rgba(221,213,198,.3)';ctx.font='10px JetBrains Mono,monospace';ctx.fillText(p.l,p.x+5,p.y+4)}}
   }
-  init();requestAnimationFrame(draw);
-  addEventListener('resize',init);
-  const hero=document.getElementById('hero');
-  hero.addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});
-  hero.addEventListener('mouseleave',()=>{mx=-999;my=-999});
+  init();requestAnimationFrame(draw);addEventListener('resize',init);
+  document.getElementById('p0').addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});
 })();
 
-// ── Typewriter ──────────────────────────────────────────────────────────────
-(function(){
-  const el=document.getElementById('tw');if(!el)return;
-  const roles=['IoT Engineer','Flutter Developer','Machine Vision','CNC Engineer','WorldSkills Champion'];
-  let ri=0,ci=0,del=false,pause=0;
-  function tick(){
-    if(pause-->0){setTimeout(tick,50);return}
-    const r=roles[ri];
-    if(!del){el.textContent=r.slice(0,++ci);if(ci===r.length){del=true;pause=40}setTimeout(tick,80+Math.random()*35)}
-    else{el.textContent=r.slice(0,--ci);if(ci===0){del=false;ri=(ri+1)%roles.length;pause=12}setTimeout(tick,38)}
-  }
-  tick();
-})();
+// ── Page flip engine ─────────────────────────────────────────────────────────
+const pages=Array.from(document.querySelectorAll('.page'));
+const dots=Array.from(document.querySelectorAll('.dot'));
+let cur=0,busy=false;
 
-// ── Counters ────────────────────────────────────────────────────────────────
-(function(){
-  const io=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(!e.isIntersecting)return;
-      const el=e.target,target=+el.dataset.to,dur=1100,step=16;
-      const inc=target/(dur/step);let cur=0;
-      const t=setInterval(()=>{cur=Math.min(cur+inc,target);el.textContent=Math.round(cur);if(cur>=target)clearInterval(t)},step);
-      io.unobserve(el);
-    });
-  },{threshold:.5});
-  document.querySelectorAll('[data-to]').forEach(el=>io.observe(el));
-})();
+function updDots(n){dots.forEach((d,i)=>d.classList.toggle('on',i===n))}
 
-// ── Scroll reveal ───────────────────────────────────────────────────────────
-(function(){
-  const io=new IntersectionObserver(entries=>{
-    entries.forEach((e,i)=>{
-      if(!e.isIntersecting)return;
-      e.target.style.transitionDelay=`${i*0.06}s`;
-      e.target.classList.add('vis');
-      io.unobserve(e.target);
-    });
-  },{threshold:.1,rootMargin:'0px 0px -32px 0px'});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-})();
+function go(next){
+  if(busy||next===cur||next<0||next>=pages.length)return;
+  busy=true;
+  const prev=cur,fwd=next>prev;
+  const pEl=pages[prev],nEl=pages[next];
 
-// ── Nav active on scroll ────────────────────────────────────────────────────
-(function(){
-  const links=document.querySelectorAll('.nav-links a');
-  const io=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting)links.forEach(l=>l.classList.toggle('act',l.getAttribute('href')==='#'+e.target.id));
-    });
-  },{threshold:.4});
-  ['hero','about','skills','projects','contact'].forEach(id=>{const s=document.getElementById(id);if(s)io.observe(s)});
-  // close mobile nav on link click
-  links.forEach(a=>a.addEventListener('click',()=>document.getElementById('nl').classList.remove('open')));
-})();
+  // Prepare next page (hidden behind)
+  nEl.style.display='flex';
+  nEl.style.zIndex='9';
+  pEl.style.zIndex='20';
+  nEl.offsetHeight; // force reflow
+
+  // Add animations
+  pEl.classList.add(fwd?'of':'ob');
+  setTimeout(()=>nEl.classList.add(fwd?'pf2':'pb2'),180);
+
+  setTimeout(()=>{
+    pEl.classList.remove('of','ob');nEl.classList.remove('pf2','pb2');
+    pEl.style.display='none';pEl.style.zIndex='';
+    nEl.style.zIndex='20';
+    cur=next;updDots(cur);busy=false;
+    if(next===1)animCounters();
+  },720);
+}
+window.go=go;
+
+// ── Wheel ────────────────────────────────────────────────────────────────────
+let wacc=0,wtimer=null;
+document.addEventListener('wheel',e=>{
+  e.preventDefault();if(busy)return;
+  wacc+=e.deltaY;clearTimeout(wtimer);
+  wtimer=setTimeout(()=>{wacc=0},250);
+  if(Math.abs(wacc)>55){go(wacc>0?cur+1:cur-1);wacc=0}
+},{passive:false});
+
+// ── Keyboard ─────────────────────────────────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  if(['ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}
+  if(['ArrowUp','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}
+});
+
+// ── Touch ────────────────────────────────────────────────────────────────────
+let ty0=null;
+document.addEventListener('touchstart',e=>{ty0=e.touches[0].clientY},{passive:true});
+document.addEventListener('touchend',e=>{
+  if(ty0===null)return;
+  const dy=ty0-e.changedTouches[0].clientY;
+  if(Math.abs(dy)>45)go(dy>0?cur+1:cur-1);
+  ty0=null;
+});
+
+// ── Counters ─────────────────────────────────────────────────────────────────
+let cRan=false;
+function animCounters(){
+  if(cRan)return;cRan=true;
+  document.querySelectorAll('[data-to]').forEach(el=>{
+    const target=+el.dataset.to;let v=0;
+    const t=setInterval(()=>{v=Math.min(v+target/55,target);el.textContent=Math.round(v);if(v>=target)clearInterval(t)},16);
+  });
+}
 </script>
 </body>
 </html>
