@@ -3,710 +3,528 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>bekzat@portfolio:~</title>
-<meta name="description" content="Бекзат Бекетов — IoT Engineer, Flutter Developer, WorldSkills Champion">
+<title>Бекзат Бекетов — IoT Engineer</title>
+<meta name="description" content="Бекзат Бекетов — IoT Engineer, Flutter Developer, WorldSkills Kazakhstan Champion">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#000;
-  --cyan:#00d4ff;
-  --green:#3fb950;
-  --gold:#f59e0b;
-  --red:#ff5f57;
-  --yellow:#febc2e;
-  --dim:#1e4620;
-  --muted:#4a9e5c;
-  --txt:#c9d1d9;
+  --bg:#080c10;--bg2:#0d1117;--bg3:#161b22;
+  --surface:rgba(255,255,255,.04);--border:rgba(0,212,255,.12);--border2:rgba(255,255,255,.08);
+  --cyan:#00d4ff;--green:#3fb950;--gold:#f59e0b;
+  --txt:#e6edf3;--muted:#8b949e;
+  --mono:'JetBrains Mono',monospace;--sans:'DM Sans',sans-serif;
+  --r:12px;
 }
-html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:14px}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
 
-/* CRT scanlines */
-body::before{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:999;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.18) 2px,rgba(0,0,0,.18) 4px);
+/* ── Nav ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(16px,5vw,48px);height:62px;
+  background:rgba(8,12,16,.85);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
 }
-/* Vignette */
-body::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:998;
-  background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.7) 100%);
-}
-
-#bg-canvas{position:fixed;inset:0;z-index:0;opacity:.18}
-
-/* Matrix overlay */
-#matrix-overlay{display:none;position:fixed;inset:0;z-index:100;background:#000}
-#matrix-overlay.active{display:block}
-#matrix-canvas{width:100%;height:100%}
-#matrix-hint{
-  position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
-  color:var(--green);font-size:12px;animation:blink 1s step-end infinite;
-}
-
-/* Terminal */
-#terminal{
-  position:relative;z-index:10;
-  display:flex;flex-direction:column;
-  height:100vh;max-width:900px;margin:0 auto;
+.logo{font-family:var(--mono);font-weight:700;font-size:17px;color:var(--cyan);text-decoration:none}
+.logo span{color:var(--green)}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:1px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.nav-links a:hover,.nav-links a.act{color:var(--txt)}
+.nav-links a:hover::after,.nav-links a.act::after{transform:scaleX(1)}
+.nav-btn{padding:7px 18px;border-radius:8px;border:1px solid var(--cyan);color:var(--cyan);font-size:13px;font-weight:600;text-decoration:none;transition:background .2s,box-shadow .2s}
+.nav-btn:hover{background:rgba(0,212,255,.1);box-shadow:0 0 16px rgba(0,212,255,.2)}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.burger span{display:block;width:22px;height:2px;background:var(--txt);border-radius:1px}
+@media(max-width:660px){
+  .burger{display:flex}.nav-links,.nav-btn{display:none}
+  .nav-links.open{
+    display:flex;flex-direction:column;gap:18px;
+    position:absolute;top:62px;left:0;right:0;
+    background:rgba(8,12,16,.97);border-bottom:1px solid var(--border);
+    padding:20px 24px 28px;
+  }
 }
 
-/* Title bar */
-#term-bar{
-  flex-shrink:0;display:flex;align-items:center;gap:8px;
-  padding:8px 14px;
-  background:rgba(30,30,30,.95);
-  border-bottom:1px solid rgba(0,212,255,.2);
-  user-select:none;
+/* ── Hero ── */
+#hero{
+  position:relative;min-height:100svh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:80px clamp(16px,5vw,48px) 60px;overflow:hidden;
 }
-.dot{width:12px;height:12px;border-radius:50%}
-.dot.r{background:var(--red)}
-.dot.y{background:var(--yellow)}
-.dot.g{background:var(--green)}
-#term-title{margin:0 auto;color:rgba(255,255,255,.5);font-size:12px;letter-spacing:.5px}
+#hero-canvas{position:absolute;inset:0;z-index:0;pointer-events:none;width:100%;height:100%}
+#hero>*:not(#hero-canvas){position:relative;z-index:1}
 
-/* Output */
-#output{
-  flex:1;overflow-y:auto;overflow-x:hidden;
-  padding:14px 16px 6px;
-  scroll-behavior:smooth;
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 14px;border-radius:100px;
+  border:1px solid rgba(245,158,11,.3);background:rgba(245,158,11,.08);
+  color:var(--gold);font-size:13px;font-family:var(--mono);margin-bottom:24px;
 }
-#output::-webkit-scrollbar{width:4px}
-#output::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
 
-/* Input row */
-#input-row{
-  flex-shrink:0;display:flex;align-items:center;
-  padding:8px 16px 10px;
-  border-top:1px solid rgba(0,212,255,.1);
-  background:rgba(0,0,0,.6);
+h1.name{
+  font-family:var(--mono);font-size:clamp(36px,8vw,78px);font-weight:700;
+  line-height:1.1;margin-bottom:12px;
+  background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--green) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
-.p-user{color:var(--cyan)}
-.p-host{color:var(--green)}
-.p-sym{color:var(--cyan);margin-right:6px}
-.p-sep{color:#4a9e5c}
-#cmd-input{
-  flex:1;background:transparent;border:none;outline:none;
-  color:var(--txt);font-family:inherit;font-size:14px;caret-color:var(--green);
-}
-
-/* Quick bar */
-#quick-bar{
-  display:none;flex-shrink:0;flex-wrap:wrap;gap:6px;
-  padding:8px 10px;
-  background:rgba(10,10,10,.95);
-  border-top:1px solid rgba(0,212,255,.15);
-}
-@media(max-width:640px){
-  #quick-bar{display:flex}
-  html,body{font-size:13px}
-}
-.qbtn{
-  padding:5px 10px;border-radius:4px;
-  border:1px solid rgba(0,212,255,.3);
-  background:rgba(0,212,255,.06);color:var(--cyan);
-  font-family:inherit;font-size:12px;cursor:pointer;
-  transition:background .15s,border-color .15s;
-}
-.qbtn:hover,.qbtn:active{background:rgba(0,212,255,.18);border-color:var(--cyan)}
-
-/* Line types */
-.line{display:block;white-space:pre-wrap;word-break:break-word;line-height:1.65;min-height:1.1em}
-.line.empty{min-height:.85em}
-.line.dim{color:var(--muted)}
-.line.success{color:var(--green)}
-.line.error{color:#f85149}
-.line.warn{color:var(--gold)}
-.line.cmd-echo{color:rgba(0,212,255,.45)}
-
-/* Inline helpers */
-.c-cyan{color:var(--cyan)}
-.c-green{color:var(--green)}
-.c-gold{color:var(--gold)}
-.c-red{color:#f85149}
-.c-dim{color:var(--muted)}
-.c-white{color:#e6edf3}
-
+.role{font-size:clamp(16px,3vw,22px);color:var(--muted);margin-bottom:20px;min-height:1.8em}
+.cursor{display:inline-block;width:2px;height:1em;background:var(--cyan);vertical-align:text-bottom;animation:blink .7s step-end infinite;margin-left:2px}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-/* Progress bars */
-.bar-wrap{display:inline-block;width:160px;height:10px;background:#111;border:1px solid #333;border-radius:2px;vertical-align:middle}
-.bar-fill{height:100%;border-radius:2px}
-.bar-hp{background:linear-gradient(90deg,#3fb950,#56d364)}
-.bar-exp{background:linear-gradient(90deg,#00d4ff,#79c0ff)}
-.bar-gold{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
-@keyframes prog-fill{from{width:0}to{width:var(--pw)}}
-.bar-anim{animation:prog-fill .8s ease forwards}
+.hero-desc{max-width:500px;color:var(--muted);font-size:16px;margin-bottom:36px;line-height:1.75}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:56px}
 
-.ascii{color:var(--green);white-space:pre;font-size:11px;line-height:1.3;display:block}
+.btn-p{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 28px;border-radius:10px;
+  background:linear-gradient(135deg,var(--cyan),var(--green));
+  color:#000;font-weight:700;font-size:15px;text-decoration:none;
+  box-shadow:0 4px 24px rgba(0,212,255,.3);
+  transition:opacity .2s,transform .2s,box-shadow .2s;
+}
+.btn-p:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,212,255,.4)}
+.btn-g{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 28px;border-radius:10px;border:1px solid var(--border2);
+  color:var(--txt);font-weight:600;font-size:15px;text-decoration:none;
+  transition:border-color .2s,background .2s,transform .2s;
+}
+.btn-g:hover{border-color:var(--cyan);background:rgba(0,212,255,.06);transform:translateY(-2px)}
+
+.stats{display:flex;gap:clamp(24px,5vw,56px);flex-wrap:wrap;justify-content:center}
+.stat-num{font-family:var(--mono);font-size:clamp(28px,4vw,44px);font-weight:700;color:var(--cyan);line-height:1}
+.stat-label{font-size:13px;color:var(--muted);margin-top:4px}
+
+.scroll-hint{
+  position:absolute;bottom:24px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  color:var(--muted);font-size:12px;animation:bob 2s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+.arrow-down{width:18px;height:18px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-top:-4px}
+
+/* ── Shared section styles ── */
+section{padding:84px clamp(16px,5vw,48px)}
+.wrap{max-width:1060px;margin:0 auto}
+.sec-tag{display:inline-block;font-family:var(--mono);font-size:13px;color:var(--cyan);margin-bottom:8px}
+.sec-tag::before{content:'// ';opacity:.45}
+h2.sec-title{font-family:var(--mono);font-size:clamp(24px,4vw,38px);font-weight:700;line-height:1.2;margin-bottom:12px}
+.sec-sub{color:var(--muted);font-size:15px;max-width:520px;line-height:1.75;margin-bottom:48px}
+
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .6s,transform .6s}
+.reveal.vis{opacity:1;transform:none}
+
+/* ── About ── */
+#about{background:var(--bg2)}
+.about-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:52px;align-items:center}
+@media(max-width:680px){.about-grid{grid-template-columns:1fr}}
+.avatar-box{
+  border-radius:20px;border:1px solid var(--border);background:var(--surface);
+  padding:40px 28px;display:flex;flex-direction:column;align-items:center;gap:14px;
+  position:relative;overflow:hidden;
+}
+.avatar-box::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,.05),rgba(63,185,80,.05))}
+.av-init{
+  font-family:var(--mono);font-size:64px;font-weight:700;line-height:1;
+  background:linear-gradient(135deg,var(--cyan),var(--green));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.av-status{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--green);font-family:var(--mono)}
+.av-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s ease-in-out infinite}
+.about-text p{color:var(--muted);font-size:15px;line-height:1.8;margin-bottom:14px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.tag{padding:4px 12px;border-radius:100px;border:1px solid var(--border2);background:var(--surface);font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* ── Skills ── */
+#skills{background:var(--bg)}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.sk-card{
+  padding:22px 18px;border-radius:var(--r);border:1px solid var(--border2);
+  background:var(--surface);transition:border-color .25s,transform .25s,box-shadow .25s;
+}
+.sk-card:hover{transform:translateY(-4px)}
+.sk-card.c:hover{border-color:var(--cyan);box-shadow:0 8px 28px rgba(0,212,255,.12)}
+.sk-card.g:hover{border-color:var(--green);box-shadow:0 8px 28px rgba(63,185,80,.12)}
+.sk-card.o:hover{border-color:var(--gold);box-shadow:0 8px 28px rgba(245,158,11,.12)}
+.sk-ico{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.c .sk-ico{background:rgba(0,212,255,.1)}.c .sk-ico svg{stroke:var(--cyan)}
+.g .sk-ico{background:rgba(63,185,80,.1)}.g .sk-ico svg{stroke:var(--green)}
+.o .sk-ico{background:rgba(245,158,11,.1)}.o .sk-ico svg{stroke:var(--gold)}
+.sk-ico svg{width:20px;height:20px;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.sk-name{font-family:var(--mono);font-size:13px;font-weight:700;margin-bottom:10px}
+.techs{display:flex;flex-wrap:wrap;gap:5px}
+.tc{font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:4px;background:rgba(255,255,255,.06);color:var(--muted)}
+
+/* ── Projects ── */
+#projects{background:var(--bg2)}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
+.proj-card{
+  border-radius:var(--r);border:1px solid var(--border2);background:var(--surface);
+  overflow:hidden;transition:transform .25s,box-shadow .25s,border-color .25s;
+}
+.proj-card:hover{transform:translateY(-5px);box-shadow:0 14px 42px rgba(0,0,0,.45);border-color:rgba(0,212,255,.3)}
+.proj-head{padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.proj-ico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.proj-ico svg{width:22px;height:22px;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.st{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:100px}
+.st.prod{color:var(--green);background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.25)}
+.st.wip{color:var(--gold);background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25)}
+.st.proto{color:var(--cyan);background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.25)}
+.st-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.proj-body{padding:0 20px 20px}
+.proj-title{font-family:var(--mono);font-size:15px;font-weight:700;margin-bottom:8px}
+.proj-desc{color:var(--muted);font-size:13px;line-height:1.7;margin-bottom:14px}
+.stack{display:flex;flex-wrap:wrap;gap:5px}
+.stk{font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,.05);color:var(--muted);border:1px solid rgba(255,255,255,.06)}
+
+/* ── Contact ── */
+#contact{background:var(--bg)}
+.contact-inner{max-width:580px;margin:0 auto;text-align:center}
+.contact-links{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:36px}
+.clink{
+  display:flex;align-items:center;gap:10px;min-width:190px;justify-content:center;
+  padding:14px 22px;border-radius:12px;border:1px solid var(--border2);background:var(--surface);
+  color:var(--txt);text-decoration:none;font-size:14px;font-weight:500;
+  transition:border-color .2s,background .2s,transform .2s,box-shadow .2s;
+}
+.clink:hover{transform:translateY(-3px)}
+.clink.em:hover{border-color:var(--cyan);box-shadow:0 8px 24px rgba(0,212,255,.15);background:rgba(0,212,255,.06)}
+.clink.tg:hover{border-color:#2aabee;box-shadow:0 8px 24px rgba(42,171,238,.18);background:rgba(42,171,238,.06)}
+.clink.gh:hover{border-color:#e6edf3;box-shadow:0 8px 24px rgba(255,255,255,.1);background:rgba(255,255,255,.04)}
+.clink svg{width:19px;height:19px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+footer{padding:26px clamp(16px,5vw,48px);border-top:1px solid var(--border2);text-align:center;color:var(--muted);font-size:13px;font-family:var(--mono)}
+footer span{color:var(--cyan)}
 
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
-  #bg-canvas,#matrix-canvas{display:none}
+  #hero-canvas{display:none}.reveal{opacity:1;transform:none}
 }
 </style>
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
+<nav id="nav">
+  <a href="#hero" class="logo">bekzat<span>.io</span></a>
+  <button class="burger" aria-label="Меню" onclick="document.getElementById('nl').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nl">
+    <li><a href="#about">Обо мне</a></li>
+    <li><a href="#skills">Навыки</a></li>
+    <li><a href="#projects">Проекты</a></li>
+    <li><a href="#contact">Контакты</a></li>
+  </ul>
+  <a href="#contact" class="nav-btn">Написать</a>
+</nav>
 
-<div id="matrix-overlay">
-  <canvas id="matrix-canvas"></canvas>
-  <div id="matrix-hint">[ Ctrl+C или подождите 10 секунд для выхода ]</div>
-</div>
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
 
-<div id="terminal">
-  <div id="term-bar">
-    <span class="dot r"></span>
-    <span class="dot y"></span>
-    <span class="dot g"></span>
-    <span id="term-title">bekzat@portfolio: ~</span>
+  <div class="badge">
+    <span class="badge-dot"></span>
+    WorldSkills Kazakhstan Champion 2022 &amp; 2023
   </div>
 
-  <div id="output" role="log" aria-live="polite" aria-label="Terminal output"></div>
+  <h1 class="name">Бекзат Бекетов</h1>
 
-  <div id="input-row">
-    <span class="p-user">bekzat</span><span class="p-sep">@</span><span class="p-host">portfolio</span><span class="p-sep">:</span><span class="p-sym">~$&nbsp;</span>
-    <input id="cmd-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input">
+  <p class="role"><span id="tw"></span><span class="cursor"></span></p>
+
+  <p class="hero-desc">Инженер-программист из Астаны. Создаю умные устройства, мобильные приложения и системы машинного зрения.</p>
+
+  <div class="hero-btns">
+    <a href="#projects" class="btn-p">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Посмотреть проекты
+    </a>
+    <a href="#contact" class="btn-g">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Связаться
+    </a>
   </div>
 
-  <div id="quick-bar">
-    <button class="qbtn" data-cmd="help">help</button>
-    <button class="qbtn" data-cmd="whoami">whoami</button>
-    <button class="qbtn" data-cmd="ls skills">ls skills</button>
-    <button class="qbtn" data-cmd="ls projects">ls projects</button>
-    <button class="qbtn" data-cmd="cat about.txt">about</button>
-    <button class="qbtn" data-cmd="./experience">experience</button>
-    <button class="qbtn" data-cmd="contact">contact</button>
-    <button class="qbtn" data-cmd="matrix">matrix</button>
+  <div class="stats">
+    <div class="stat"><div class="stat-num" data-to="4">0</div><div class="stat-label">года опыта</div></div>
+    <div class="stat"><div class="stat-num" data-to="3">0</div><div class="stat-label">проекта</div></div>
+    <div class="stat"><div class="stat-num" data-to="2">0</div><div class="stat-label">🥇 WorldSkills</div></div>
+    <div class="stat"><div class="stat-num" data-to="30">0</div><div class="stat-label">технологий</div></div>
   </div>
-</div>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <span>Листайте вниз</span>
+    <span class="arrow-down"></span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="reveal">
+        <div class="avatar-box">
+          <div class="av-init">BB</div>
+          <div class="av-status"><span class="av-dot"></span>Open to work</div>
+        </div>
+      </div>
+      <div class="reveal">
+        <span class="sec-tag">about</span>
+        <h2 class="sec-title">Немного обо мне</h2>
+        <p>Привет! Я Бекзат — инженер-программист, специализирующийся на IoT-системах, встраиваемом ПО и мобильной разработке на Flutter.</p>
+        <p>Победитель WorldSkills Kazakhstan 2022 и 2023 по направлению «Электроника». Строю умные устройства и промышленные решения, которые работают в реальных условиях.</p>
+        <p>Люблю паять, программировать микроконтроллеры и учить машины видеть.</p>
+        <div class="tags">
+          <span class="tag">📍 Астана, Казахстан</span>
+          <span class="tag">🇰🇿 🇷🇺 🇬🇧</span>
+          <span class="tag">Колледж ТиБ 2021–2025</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="sec-tag">skills</span>
+      <h2 class="sec-title">Технологии и навыки</h2>
+      <p class="sec-sub">Инструменты для IoT-решений, мобильных приложений и систем автоматизации.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="sk-card c reveal">
+        <div class="sk-ico"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M4 9h1m0 6H4m16-6h-1m0 6h1M9 4v1m6 0V4M9 20v-1m6 0v1"/></svg></div>
+        <div class="sk-name">IoT / Embedded</div>
+        <div class="techs"><span class="tc">ESP8266</span><span class="tc">ESP32</span><span class="tc">Arduino</span><span class="tc">MQTT</span><span class="tc">Modbus</span><span class="tc">OTA</span></div>
+      </div>
+      <div class="sk-card g reveal">
+        <div class="sk-ico"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div>
+        <div class="sk-name">Mobile / Flutter</div>
+        <div class="techs"><span class="tc">Flutter</span><span class="tc">Dart</span><span class="tc">Android</span><span class="tc">iOS</span><span class="tc">BLE</span><span class="tc">REST</span></div>
+      </div>
+      <div class="sk-card o reveal">
+        <div class="sk-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M3 7V5a2 2 0 0 1 2-2h2m10 0h2a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/></svg></div>
+        <div class="sk-name">Machine Vision</div>
+        <div class="techs"><span class="tc">OpenCV</span><span class="tc">Python</span><span class="tc">YOLOv8</span><span class="tc">TF Lite</span><span class="tc">RPi</span></div>
+      </div>
+      <div class="sk-card c reveal">
+        <div class="sk-ico"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg></div>
+        <div class="sk-name">Cloud / Database</div>
+        <div class="techs"><span class="tc">Firebase</span><span class="tc">SQLite</span><span class="tc">Docker</span><span class="tc">Linux</span><span class="tc">Git</span></div>
+      </div>
+      <div class="sk-card g reveal">
+        <div class="sk-ico"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
+        <div class="sk-name">CNC / Hardware</div>
+        <div class="techs"><span class="tc">G-code</span><span class="tc">Mach3</span><span class="tc">KiCad</span><span class="tc">Fusion360</span><span class="tc">3D Print</span></div>
+      </div>
+      <div class="sk-card o reveal">
+        <div class="sk-ico"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <div class="sk-name">Языки</div>
+        <div class="techs"><span class="tc">C/C++</span><span class="tc">Python</span><span class="tc">Dart</span><span class="tc">Bash</span><span class="tc">SQL</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="sec-tag">projects</span>
+      <h2 class="sec-title">Проекты</h2>
+      <p class="sec-sub">Реальные решения, которые я спроектировал и запустил в работу.</p>
+    </div>
+    <div class="proj-grid">
+
+      <div class="proj-card reveal">
+        <div class="proj-head">
+          <div class="proj-ico" style="background:rgba(63,185,80,.12)">
+            <svg viewBox="0 0 24 24" stroke="#3fb950"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <span class="st prod"><span class="st-dot"></span>Production</span>
+        </div>
+        <div class="proj-body">
+          <div class="proj-title">Smart Greenhouse</div>
+          <div class="proj-desc">Умная теплица с IoT-управлением. Мониторинг T° и влажности, автополив, управление шторами. OTA-обновления прошивки. Flutter-приложение с push-уведомлениями.</div>
+          <div class="stack"><span class="stk">ESP8266</span><span class="stk">Firebase</span><span class="stk">Flutter</span><span class="stk">DHT22</span><span class="stk">OTA</span></div>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-head">
+          <div class="proj-ico" style="background:rgba(0,212,255,.12)">
+            <svg viewBox="0 0 24 24" stroke="#00d4ff"><path d="M1.5 8.5 12 2l10.5 6.5v7L12 22 1.5 15.5z"/><path d="M12 2v20M1.5 8.5l10.5 6.5 10.5-6.5"/></svg>
+          </div>
+          <span class="st wip"><span class="st-dot"></span>В разработке</span>
+        </div>
+        <div class="proj-body">
+          <div class="proj-title">РЭО Сканер</div>
+          <div class="proj-desc">Android-приложение для сканирования базовых станций GSM/LTE/UMTS. Отображает MCC, MNC, LAC, CellID, RSSI. История замеров, экспорт CSV, карта станций.</div>
+          <div class="stack"><span class="stk">Flutter</span><span class="stk">Android</span><span class="stk">SQLite</span><span class="stk">Maps</span></div>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-head">
+          <div class="proj-ico" style="background:rgba(245,158,11,.12)">
+            <svg viewBox="0 0 24 24" stroke="#f59e0b"><circle cx="12" cy="12" r="3"/><path d="M3 7V5a2 2 0 0 1 2-2h2m10 0h2a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+          </div>
+          <span class="st proto"><span class="st-dot"></span>Прототип</span>
+        </div>
+        <div class="proj-body">
+          <div class="proj-title">CNC Machine Vision</div>
+          <div class="proj-desc">Система технического зрения для ЧПУ-станка. Автоматически определяет смещение заготовки, вычисляет коррекцию и передаёт G-code в контроллер Mach3.</div>
+          <div class="stack"><span class="stk">OpenCV</span><span class="stk">Python</span><span class="stk">RPi</span><span class="stk">G-code</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-inner reveal">
+      <span class="sec-tag">contact</span>
+      <h2 class="sec-title">Свяжитесь со мной</h2>
+      <p class="sec-sub" style="margin:0 auto">Открыт для предложений о работе и интересных проектов. Пишите — отвечу быстро!</p>
+      <div class="contact-links">
+        <a href="mailto:beketovekb@gmail.com" class="clink em">
+          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          beketovekb@gmail.com
+        </a>
+        <a href="https://t.me/beketov_b" target="_blank" rel="noopener" class="clink tg">
+          <svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          Telegram
+        </a>
+        <a href="https://github.com/beketovekb" target="_blank" rel="noopener" class="clink gh">
+          <svg viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>bekzat</span>.io — 2025 · Built with care in Astana 🇰🇿
+</footer>
 
 <script>
 'use strict';
 
-// ── Background rain ──────────────────────────────────────────────────────────
+// ── Canvas particle network ─────────────────────────────────────────────────
 (function(){
-  const cv=document.getElementById('bg-canvas');
+  const cv=document.getElementById('hero-canvas');
+  if(!cv)return;
   const ctx=cv.getContext('2d');
-  const chars='01アイウエオカキクケコABCDEF0123456789';
-  let cols,drops;
-  function resize(){
-    cv.width=innerWidth;cv.height=innerHeight;
-    cols=Math.floor(innerWidth/16);
-    drops=Array.from({length:cols},()=>Math.random()*-100|0);
+  const LABELS=['ESP32','MQTT','Flutter','OpenCV','Firebase','Python','G-code','Arduino','Dart','BLE'];
+  const N=44;
+  let W,H,pts=[],mx=-999,my=-999;
+  function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight}
+  class P{
+    constructor(i){
+      this.x=Math.random()*W;this.y=Math.random()*H;
+      this.vx=(Math.random()-.5)*.45;this.vy=(Math.random()-.5)*.45;
+      this.lbl=i<LABELS.length?LABELS[i]:null;this.r=this.lbl?2.5:1.8;
+    }
+    tick(){
+      this.x+=this.vx;this.y+=this.vy;
+      if(this.x<0||this.x>W)this.vx*=-1;
+      if(this.y<0||this.y>H)this.vy*=-1;
+      const dx=this.x-mx,dy=this.y-my,d2=dx*dx+dy*dy;
+      if(d2<7225){const f=(85-Math.sqrt(d2))/85;this.x+=dx*f*.06;this.y+=dy*f*.06}
+    }
   }
-  resize();addEventListener('resize',resize);
+  function init(){resize();pts=Array.from({length:N},(_,i)=>new P(i))}
   let last=0;
   function draw(ts){
-    if(document.hidden){requestAnimationFrame(draw);return}
-    if(ts-last<80){requestAnimationFrame(draw);return}
-    last=ts;
-    ctx.fillStyle='rgba(0,0,0,0.08)';ctx.fillRect(0,0,cv.width,cv.height);
-    ctx.fillStyle='#3fb950';ctx.font='13px JetBrains Mono,monospace';
-    for(let i=0;i<cols;i++){
-      ctx.fillText(chars[Math.random()*chars.length|0],i*16,drops[i]*16);
-      if(drops[i]*16>cv.height&&Math.random()>.975)drops[i]=0;
-      drops[i]++;
-    }
     requestAnimationFrame(draw);
+    if(document.hidden||ts-last<34)return;last=ts;
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<N;i++){
+      pts[i].tick();
+      for(let j=i+1;j<N;j++){
+        const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d2=dx*dx+dy*dy;
+        if(d2>16900)continue;
+        const a=(130-Math.sqrt(d2))/130;
+        ctx.strokeStyle=`rgba(0,212,255,${a*.3})`;ctx.lineWidth=1;
+        ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke();
+      }
+    }
+    for(const p of pts){
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.lbl?'#00d4ff':'rgba(0,212,255,.45)';ctx.fill();
+      if(p.lbl){ctx.fillStyle='rgba(200,220,240,.5)';ctx.font='10px JetBrains Mono,monospace';ctx.fillText(p.lbl,p.x+5,p.y+4)}
+    }
   }
-  requestAnimationFrame(draw);
+  init();requestAnimationFrame(draw);
+  addEventListener('resize',init);
+  const hero=document.getElementById('hero');
+  hero.addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});
+  hero.addEventListener('mouseleave',()=>{mx=-999;my=-999});
 })();
 
-// ── Matrix fullscreen ────────────────────────────────────────────────────────
-let matrixActive=false,matrixTimer=null;
+// ── Typewriter ──────────────────────────────────────────────────────────────
 (function(){
-  const overlay=document.getElementById('matrix-overlay');
-  const cv=document.getElementById('matrix-canvas');
-  const ctx=cv.getContext('2d');
-  const chars='アイウエオカキクケコサシスセソ0123456789ABCDEF';
-  let cols,drops,raf;
-  function resize(){cv.width=innerWidth;cv.height=innerHeight;cols=Math.floor(innerWidth/14);drops=Array(cols).fill(1)}
-  function step(){
-    ctx.fillStyle='rgba(0,0,0,0.05)';ctx.fillRect(0,0,cv.width,cv.height);
-    ctx.font='13px JetBrains Mono,monospace';
-    for(let i=0;i<cols;i++){
-      ctx.fillStyle=Math.random()>.98?'#fff':'#3fb950';
-      ctx.fillText(chars[Math.random()*chars.length|0],i*14,drops[i]*14);
-      if(drops[i]*14>cv.height&&Math.random()>.975)drops[i]=0;
-      drops[i]++;
-    }
-    raf=requestAnimationFrame(step);
+  const el=document.getElementById('tw');if(!el)return;
+  const roles=['IoT Engineer','Flutter Developer','Machine Vision','CNC Engineer','WorldSkills Champion'];
+  let ri=0,ci=0,del=false,pause=0;
+  function tick(){
+    if(pause-->0){setTimeout(tick,50);return}
+    const r=roles[ri];
+    if(!del){el.textContent=r.slice(0,++ci);if(ci===r.length){del=true;pause=40}setTimeout(tick,80+Math.random()*35)}
+    else{el.textContent=r.slice(0,--ci);if(ci===0){del=false;ri=(ri+1)%roles.length;pause=12}setTimeout(tick,38)}
   }
-  window.startMatrix=function(dur){
-    if(matrixActive)return;
-    matrixActive=true;resize();
-    ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
-    overlay.classList.add('active');step();
-    if(dur)matrixTimer=setTimeout(stopMatrix,dur);
-  };
-  window.stopMatrix=function(){
-    if(!matrixActive)return;
-    matrixActive=false;cancelAnimationFrame(raf);
-    overlay.classList.remove('active');
-    if(matrixTimer){clearTimeout(matrixTimer);matrixTimer=null}
-  };
-  document.addEventListener('keydown',e=>{
-    if(matrixActive&&e.key==='c'&&e.ctrlKey){e.preventDefault();stopMatrix()}
-  });
-  addEventListener('resize',()=>{if(matrixActive)resize()});
+  tick();
 })();
 
-// ── Terminal ─────────────────────────────────────────────────────────────────
-const out=document.getElementById('output');
-const inp=document.getElementById('cmd-input');
-let hist=[],hIdx=-1;
+// ── Counters ────────────────────────────────────────────────────────────────
+(function(){
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting)return;
+      const el=e.target,target=+el.dataset.to,dur=1100,step=16;
+      const inc=target/(dur/step);let cur=0;
+      const t=setInterval(()=>{cur=Math.min(cur+inc,target);el.textContent=Math.round(cur);if(cur>=target)clearInterval(t)},step);
+      io.unobserve(el);
+    });
+  },{threshold:.5});
+  document.querySelectorAll('[data-to]').forEach(el=>io.observe(el));
+})();
 
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+// ── Scroll reveal ───────────────────────────────────────────────────────────
+(function(){
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach((e,i)=>{
+      if(!e.isIntersecting)return;
+      e.target.style.transitionDelay=`${i*0.06}s`;
+      e.target.classList.add('vis');
+      io.unobserve(e.target);
+    });
+  },{threshold:.1,rootMargin:'0px 0px -32px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+})();
 
-function print(html,cls,delay){
-  return new Promise(res=>{
-    setTimeout(()=>{
-      const s=document.createElement('span');
-      s.className='line '+(cls||'');
-      s.innerHTML=html;
-      out.appendChild(s);
-      out.scrollTop=out.scrollHeight;
-      res();
-    },delay||0);
-  });
-}
-const nl=(d)=>print('','empty',d);
-
-async function lines(arr,base,step){
-  base=base||0;step=step||0;
-  for(let i=0;i<arr.length;i++){
-    const l=arr[i];
-    if(typeof l==='string')await print(l,'',base+i*step);
-    else await print(l.t||'',l.c||'',base+(l.d!=null?l.d:i*step));
-  }
-}
-
-// ── Commands ─────────────────────────────────────────────────────────────────
-async function cmdHelp(){
-  await lines([
-    {t:'',c:'empty'},
-    {t:'<span class="c-cyan">╔══════════════════════════════════════════════════╗</span>'},
-    {t:'<span class="c-cyan">║</span>  <span class="c-white">BEKZAT PORTFOLIO OS v2.6</span>  —  Available commands  <span class="c-cyan">║</span>'},
-    {t:'<span class="c-cyan">╚══════════════════════════════════════════════════╝</span>'},
-    {t:'',c:'empty'},
-    {t:'  <span class="c-cyan">whoami</span>          — Профиль и статистика'},
-    {t:'  <span class="c-cyan">ls skills</span>       — Навыки и технологии'},
-    {t:'  <span class="c-cyan">ls projects</span>     — Список проектов'},
-    {t:'  <span class="c-cyan">cat about.txt</span>   — О себе'},
-    {t:'  <span class="c-cyan">cat cv.txt</span>      — Резюме краткое'},
-    {t:'  <span class="c-cyan">cat [project].txt</span>— Детали проекта'},
-    {t:'  <span class="c-cyan">./experience</span>    — Опыт работы / Timeline'},
-    {t:'  <span class="c-cyan">contact</span>         — Контакты'},
-    {t:'  <span class="c-cyan">clear</span>           — Очистить терминал'},
-    {t:'',c:'empty'},
-    {t:'  <span class="c-gold">★ Easter eggs:</span>  sudo hire me · matrix · ping bekzat · nmap skills'},
-    {t:'',c:'empty'},
-  ]);
-}
-
-async function cmdWhoami(){
-  await lines([
-    {t:'',c:'empty'},
-    {t:'<span class="c-green">┌─────────────────────────────────────────────┐</span>'},
-    {t:'<span class="c-green">│</span>  <span class="c-cyan">BEKZAT BEKETOV</span>  <span class="c-dim">// IoT &amp; Flutter Engineer</span>     <span class="c-green">│</span>'},
-    {t:'<span class="c-green">│</span>  📍 Astana, Kazakhstan                      <span class="c-green">│</span>'},
-    {t:'<span class="c-green">│</span>  🏆 WorldSkills Kazakhstan Champion 2022/23  <span class="c-green">│</span>'},
-    {t:'<span class="c-green">└─────────────────────────────────────────────┘</span>'},
-    {t:'',c:'empty'},
-    {t:'  HP    <span id="bar-hp"></span>  <span class="c-green">100/100</span>  <span class="c-dim">(motivated)</span>'},
-    {t:'  EXP   <span id="bar-exp"></span>  <span class="c-cyan">4 years</span>'},
-    {t:'  GOLD  <span id="bar-gld"></span>  <span class="c-gold">WorldSkills x2</span>'},
-    {t:'',c:'empty'},
-    {t:'  Role:    <span class="c-white">Инженер-программист · IoT · Flutter · Machine Vision</span>'},
-    {t:'  Lang:    <span class="c-white">Казахский 🇰🇿  Русский 🇷🇺  English 🇬🇧</span>'},
-    {t:'  Status:  <span class="c-green">● OPEN TO WORK</span>'},
-    {t:'',c:'empty'},
-    {t:'<span class="c-dim">  Введите <span class="c-cyan">help</span> для списка команд.</span>'},
-    {t:'',c:'empty'},
-  ]);
-  setTimeout(()=>{
-    function bar(id,pct,cls){
-      const el=document.getElementById(id);
-      if(el)el.innerHTML=`<span class="bar-wrap"><span class="bar-fill ${cls} bar-anim" style="--pw:${pct}%;width:0"></span></span>`;
-    }
-    bar('bar-hp',100,'bar-hp');
-    bar('bar-exp',78,'bar-exp');
-    bar('bar-gld',100,'bar-gold');
-  },60);
-}
-
-async function cmdLs(args){
-  const sub=(args||'').trim().toLowerCase();
-  if(sub==='skills'){
-    await lines([
-      {t:'',c:'empty'},
-      {t:'<span class="c-cyan">~/skills/</span>'},
-      {t:'',c:'empty'},
-      {t:'  <span class="c-green">iot/</span>          ESP8266  ESP32  MQTT  Firebase  Arduino  Modbus'},
-      {t:'  <span class="c-green">mobile/</span>       Flutter  Dart  Android  iOS  BLE  REST API'},
-      {t:'  <span class="c-green">vision/</span>       OpenCV  Python  YOLOv8  TensorFlow Lite'},
-      {t:'  <span class="c-green">cnc/</span>          G-code  Mach3  LinuxCNC  Fusion 360'},
-      {t:'  <span class="c-green">infra/</span>        Linux  Git  Docker  CI/CD  OTA Updates'},
-      {t:'  <span class="c-green">hardware/</span>     PCB Design  KiCad  3D Printing  Soldering'},
-      {t:'',c:'empty'},
-      {t:'<span class="c-dim">  6 directories, 30 skills</span>'},
-      {t:'',c:'empty'},
-    ]);
-    return;
-  }
-  if(sub==='projects'){
-    await lines([
-      {t:'',c:'empty'},
-      {t:'<span class="c-cyan">~/projects/</span>'},
-      {t:'',c:'empty'},
-      {t:'  <span class="c-green">greenhouse.txt</span>      ESP8266 Smart Greenhouse + Firebase + Flutter'},
-      {t:'  <span class="c-green">reo-scanner.txt</span>     GSM/LTE/UMTS Base Station Scanner (Flutter)'},
-      {t:'  <span class="c-green">cnc.txt</span>             CNC Machine Vision Alignment (OpenCV)'},
-      {t:'',c:'empty'},
-      {t:'<span class="c-dim">  Используйте  cat [filename].txt  для деталей</span>'},
-      {t:'',c:'empty'},
-    ]);
-    return;
-  }
-  await lines([
-    {t:'',c:'empty'},
-    {t:'<span class="c-green">about.txt</span>   <span class="c-green">cv.txt</span>   <span class="c-cyan">skills/</span>   <span class="c-cyan">projects/</span>   <span class="c-cyan">experience/</span>'},
-    {t:'',c:'empty'},
-    {t:'<span class="c-dim">  ls skills · ls projects  для деталей</span>'},
-    {t:'',c:'empty'},
-  ]);
-}
-
-async function cmdCat(args){
-  const f=(args||'').trim().toLowerCase();
-  if(f==='about.txt'){
-    await lines([
-      {t:'',c:'empty'},
-      {t:'<span class="c-cyan">## about.txt</span>'},
-      {t:'',c:'empty'},
-      {t:'  Привет! Я <span class="c-white">Бекзат Бекетов</span> — инженер-программист из Астаны.'},
-      {t:'  Специализируюсь на IoT-системах, встраиваемом ПО,'},
-      {t:'  компьютерном зрении и мобильной разработке на Flutter.'},
-      {t:'',c:'empty'},
-      {t:'  Победитель WorldSkills Kazakhstan 2022 и 2023 по направлению'},
-      {t:'  «Электроника» — строю умные устройства и промышленные решения.'},
-      {t:'',c:'empty'},
-      {t:'  Люблю паять, программировать МК в 3 ночи и учить машины видеть.'},
-      {t:'',c:'empty'},
-    ]);
-    return;
-  }
-  if(f==='cv.txt'){
-    await lines([
-      {t:'',c:'empty'},
-      {t:'<span class="c-cyan">## cv.txt — Бекзат Бекетов</span>'},
-      {t:'',c:'empty'},
-      {t:'  <span class="c-gold">ОБРАЗОВАНИЕ</span>'},
-      {t:'  Колледж «Технологии и бизнес»  —  Инфокоммуникации  (2021–2025)'},
-      {t:'',c:'empty'},
-      {t:'  <span class="c-gold">ДОСТИЖЕНИЯ</span>'},
-      {t:'  🥇 WorldSkills Kazakhstan 2023  —  Электроника (1 место)'},
-      {t:'  🥇 WorldSkills Kazakhstan 2022  —  Электроника (1 место)'},
-      {t:'  🏅 WorldSkills Kazakhstan 2024  —  Электроника (3 место)'},
-      {t:'',c:'empty'},
-      {t:'  <span class="c-gold">КЛЮЧЕВЫЕ НАВЫКИ</span>'},
-      {t:'  ESP8266/ESP32 · MQTT · Firebase · Flutter · OpenCV · G-code'},
-      {t:'',c:'empty'},
-      {t:'  <span class="c-dim">Полное резюме — напишите в Telegram: @beketov_b</span>'},
-      {t:'',c:'empty'},
-    ]);
-    return;
-  }
-  if(f==='greenhouse.txt'){
-    await lines([
-      {t:'',c:'empty'},
-      {t:'<span class="c-cyan">## greenhouse.txt — Smart Greenhouse</span>'},
-      {t:'',c:'empty'},
-      {t:'  Стек:  <span class="c-white">ESP8266 · Firebase RTDB · Flutter · DHT22 · Servo · Relay</span>'},
-      {t:'',c:'empty'},
-      {t:'  OTA-обновления прошивки по Wi-Fi без USB.'},
-      {t:'  Flutter-приложение: мониторинг T°/влажности, управление шторами,'},
-      {t:'  автополив, push-уведомления при критических значениях.'},
-      {t:'  Firebase Security Rules: только авторизованный пользователь.'},
-      {t:'',c:'empty'},
-      {t:'  Статус: <span class="c-green">● Production</span>'},
-      {t:'',c:'empty'},
-    ]);
-    return;
-  }
-  if(f==='reo-scanner.txt'){
-    await lines([
-      {t:'',c:'empty'},
-      {t:'<span class="c-cyan">## reo-scanner.txt — РЭО Сканер</span>'},
-      {t:'',c:'empty'},
-      {t:'  Стек:  <span class="c-white">Flutter · Android · GSM AT-команды · SQLite · Maps</span>'},
-      {t:'',c:'empty'},
-      {t:'  Сканирует соседние БС операторов (Kcell, Beeline, Tele2, МТС).'},
-      {t:'  Отображает: MCC, MNC, LAC, CellID, RSSI, уровень сигнала.'},
-      {t:'  Экспорт в CSV, история замеров, карта базовых станций.'},
-      {t:'',c:'empty'},
-      {t:'  Статус: <span class="c-gold">● В разработке</span>'},
-      {t:'',c:'empty'},
-    ]);
-    return;
-  }
-  if(f==='cnc.txt'){
-    await lines([
-      {t:'',c:'empty'},
-      {t:'<span class="c-cyan">## cnc.txt — CNC Machine Vision</span>'},
-      {t:'',c:'empty'},
-      {t:'  Стек:  <span class="c-white">OpenCV · Python · Raspberry Pi · G-code · Mach3</span>'},
-      {t:'',c:'empty'},
-      {t:'  Система технического зрения для автоматического выравнивания'},
-      {t:'  заготовки на ЧПУ-станке. Определяет смещение/поворот,'},
-      {t:'  вычисляет коррекцию и передаёт G-code в контроллер.'},
-      {t:'',c:'empty'},
-      {t:'  Статус: <span class="c-gold">● Прототип</span>'},
-      {t:'',c:'empty'},
-    ]);
-    return;
-  }
-  await print(`<span class="c-red">cat: ${esc(f)}: No such file or directory</span>`,'error');
-}
-
-async function cmdExperience(){
-  await lines([
-    {t:'',c:'empty'},
-    {t:'<span class="c-cyan">## ./experience — Timeline</span>'},
-    {t:'',c:'empty'},
-  ]);
-  const rows=[
-    ['2021','Поступил в колледж «Технологии и бизнес»','Инфокоммуникации'],
-    ['2022','🥇 WorldSkills KZ 2022','1 место — Электроника'],
-    ['2022','Первый IoT проект','Автоматизация полива ESP8266'],
-    ['2023','🥇 WorldSkills KZ 2023','1 место — Электроника'],
-    ['2023','Smart Greenhouse','ESP8266 + Firebase + Flutter'],
-    ['2024','РЭО Сканер','Flutter Android App'],
-    ['2024','🏅 WorldSkills KZ 2024','3 место — Электроника'],
-    ['2025','CNC Machine Vision','OpenCV + Raspberry Pi'],
-    ['2025','Выпуск из колледжа','Специалист по инфокоммуникациям'],
-  ];
-  for(let i=0;i<rows.length;i++){
-    const [yr,title,desc]=rows[i];
-    await print(`  <span class="c-gold">${yr}</span>  <span class="c-white">${esc(title)}</span>  <span class="c-dim">— ${esc(desc)}</span>`,'',i*45);
-  }
-  await nl(rows.length*45+30);
-}
-
-async function cmdContact(){
-  await lines([
-    {t:'',c:'empty'},
-    {t:'<span class="c-cyan">## contact</span>'},
-    {t:'',c:'empty'},
-    {t:'  <span class="c-green">📞</span>  <a href="tel:+77001234567" style="color:#79c0ff;text-decoration:none">+7 700 123 45 67</a>'},
-    {t:'  <span class="c-cyan">✉</span>   <a href="mailto:beketovekb@gmail.com" style="color:#79c0ff;text-decoration:none">beketovekb@gmail.com</a>'},
-    {t:'  <span class="c-gold">✈</span>   <a href="https://t.me/beketov_b" target="_blank" rel="noopener" style="color:#79c0ff;text-decoration:none">t.me/beketov_b</a>'},
-    {t:'  <span class="c-dim">🔗</span>  <a href="https://github.com/beketovekb" target="_blank" rel="noopener" style="color:#79c0ff;text-decoration:none">github.com/beketovekb</a>'},
-    {t:'',c:'empty'},
-    {t:'<span class="c-dim">  Для предложений о работе — пишите в Telegram!</span>'},
-    {t:'',c:'empty'},
-  ]);
-}
-
-function cmdClear(){out.innerHTML='';return Promise.resolve()}
-
-async function cmdMatrix(){
-  await print('<span class="c-green">Initiating matrix protocol...</span>','success');
-  setTimeout(()=>startMatrix(10000),400);
-}
-
-async function cmdHire(){
-  const art=
-`  ██╗  ██╗██╗██████╗ ███████╗    ██╗
-  ██║  ██║██║██╔══██╗██╔════╝    ██║
-  ███████║██║██████╔╝█████╗      ██║
-  ██╔══██║██║██╔══██╗██╔══╝      ╚═╝
-  ██║  ██║██║██║  ██║███████╗    ██╗
-  ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚══════╝    ╚═╝`;
-
-  await print('','empty');
-  await print('[sudo] Analyzing candidate profile...','dim');
-  const skills=['IoT Experience','Flutter Skills','WorldSkills Gold','Problem Solving','Coffee Tolerance'];
-  const pcts=[98,92,100,95,87];
-  for(let i=0;i<skills.length;i++){
-    await new Promise(r=>setTimeout(r,160));
-    const id='hb'+i;
-    await print(`  Scanning: <span class="c-cyan">${skills[i]}</span> <span id="${id}"></span>`);
-    setTimeout(()=>{
-      const el=document.getElementById(id);
-      if(el)el.innerHTML=`<span class="bar-wrap"><span class="bar-fill bar-exp bar-anim" style="--pw:${pcts[i]}%;width:0"></span></span> <span class="c-green">${pcts[i]}%</span>`;
-    },80);
-  }
-  await new Promise(r=>setTimeout(r,700));
-  await nl();
-  await print('<span class="c-gold">sudo: ACCESS GRANTED — DECISION OVERRIDE ACTIVE</span>','warn');
-  await nl();
-  const s=document.createElement('span');s.className='ascii';s.textContent=art;
-  out.appendChild(s);out.scrollTop=out.scrollHeight;
-  await nl(50);
-  await print('<span class="c-green">  Result: HIRE IMMEDIATELY ✓✓✓</span>','success');
-  await print('<span class="c-dim">  (Это сообщение самоуничтожится через 30 сек)</span>','dim');
-  await nl();
-}
-
-async function cmdPing(){
-  await nl();
-  await print('PING bekzat.io (0.0.0.42): 56 data bytes','dim');
-  const ms=[12,14,11,13];
-  for(let i=0;i<ms.length;i++){
-    await new Promise(r=>setTimeout(r,200));
-    await print(`64 bytes from bekzat: icmp_seq=${i} ttl=64 time=<span class="c-green">${ms[i]} ms</span>`);
-  }
-  await nl(80);
-  await print('--- bekzat.io ping statistics ---','dim');
-  await print('<span class="c-green">4 packets transmitted, 4 received, 0% packet loss, time 3.2s</span>','success');
-  await nl();
-}
-
-async function cmdNmap(){
-  await nl();
-  await print('Starting Nmap 7.94 ( https://nmap.org )','dim');
-  await print('Scanning bekzat-skills.io...','dim');
-  await nl();
-  const ports=[
-    ['8266','open','ESP8266/Wi-Fi driver'],
-    ['8883','open','MQTT/TLS broker'],
-    ['443', 'open','Firebase HTTPS'],
-    ['5556','open','Flutter DevTools'],
-    ['9000','open','OpenCV Stream'],
-    ['3001','open','G-code Server'],
-    ['22',  'open','SSH (Linux)'],
-  ];
-  for(let i=0;i<ports.length;i++){
-    await new Promise(r=>setTimeout(r,130));
-    const [p,s,d]=ports[i];
-    await print(`  <span class="c-gold">${p.padEnd(6)}</span> <span class="c-green">${s}</span>   ${d}`);
-  }
-  await nl(80);
-  await print('<span class="c-green">Nmap done: 7 open ports — full skill stack operational</span>','success');
-  await nl();
-}
-
-async function cmdDate(){await print(new Date().toString())}
-async function cmdUname(){await print('BekzatOS 2.6.0-iot #1 SMP 2025 x86_64 GNU/Linux')}
-async function cmdEcho(a){await print(esc(a||''))}
-async function cmdHistory(){
-  if(!hist.length){await print('<span class="c-dim">(no history)</span>','dim');return}
-  for(let i=0;i<Math.min(hist.length,20);i++)await print(`  ${String(i+1).padStart(3,'0')}  ${esc(hist[i])}`,'dim');
-}
-async function cmdExit(){
-  await nl();await print('<span class="c-dim">logout — reload page to restart session.</span>','dim');
-  inp.disabled=true;
-}
-
-// ── Tab completion ────────────────────────────────────────────────────────────
-const ALL=['help','whoami','ls','ls skills','ls projects','cat about.txt','cat cv.txt',
-  'cat greenhouse.txt','cat reo-scanner.txt','cat cnc.txt','./experience','contact',
-  'clear','matrix','sudo hire me','ping bekzat','nmap skills','date','uname','history','exit'];
-
-function tabComplete(v){
-  const m=ALL.filter(c=>c.startsWith(v));
-  if(m.length===1)return m[0];
-  if(m.length>1){
-    print(m.join('  '),'dim');
-    let pfx=m[0];for(const c of m)while(!c.startsWith(pfx))pfx=pfx.slice(0,-1);
-    return pfx;
-  }
-  return v;
-}
-
-// ── Run command ───────────────────────────────────────────────────────────────
-async function run(raw){
-  const cmd=raw.trim();if(!cmd)return;
-  hist.push(cmd);hIdx=-1;
-  // echo
-  const e=document.createElement('span');
-  e.className='line cmd-echo';
-  e.innerHTML='<span style="color:var(--cyan)">$</span> '+esc(cmd);
-  out.appendChild(e);out.scrollTop=out.scrollHeight;
-
-  const lo=cmd.toLowerCase();
-  if(lo==='sudo hire me'||lo==='sudo hire'){await cmdHire();return}
-  if(lo==='ping bekzat'||lo==='ping'){await cmdPing();return}
-  if(lo==='nmap skills'||lo==='nmap'){await cmdNmap();return}
-
-  const [v,...rest]=cmd.split(' ');const a=rest.join(' ');const vl=v.toLowerCase();
-  if(vl==='help')await cmdHelp();
-  else if(vl==='whoami')await cmdWhoami();
-  else if(vl==='ls')await cmdLs(a);
-  else if(vl==='cat')await cmdCat(a);
-  else if(vl==='./experience'||vl==='experience')await cmdExperience();
-  else if(vl==='contact')await cmdContact();
-  else if(vl==='clear')await cmdClear();
-  else if(vl==='matrix')await cmdMatrix();
-  else if(vl==='exit'||vl==='quit')await cmdExit();
-  else if(vl==='date')await cmdDate();
-  else if(vl==='uname')await cmdUname();
-  else if(vl==='echo')await cmdEcho(a);
-  else if(vl==='history')await cmdHistory();
-  else await print(`<span class="c-red">bash: ${esc(v)}: command not found</span> <span class="c-dim">— type <span class="c-cyan">help</span></span>`,'error');
-}
-
-// ── Input events ──────────────────────────────────────────────────────────────
-inp.addEventListener('keydown',e=>{
-  if(e.key==='Enter'){
-    e.preventDefault();const v=inp.value;inp.value='';run(v);
-  }else if(e.key==='ArrowUp'){
-    e.preventDefault();
-    if(!hist.length)return;
-    if(hIdx===-1)hIdx=hist.length-1;else if(hIdx>0)hIdx--;
-    inp.value=hist[hIdx];
-  }else if(e.key==='ArrowDown'){
-    e.preventDefault();
-    if(hIdx===-1)return;
-    if(hIdx<hist.length-1){hIdx++;inp.value=hist[hIdx]}else{hIdx=-1;inp.value=''}
-  }else if(e.key==='Tab'){
-    e.preventDefault();inp.value=tabComplete(inp.value);
-  }else if(e.key==='c'&&e.ctrlKey){
-    e.preventDefault();print('^C','dim');inp.value='';hIdx=-1;
-  }else if(e.key==='l'&&e.ctrlKey){
-    e.preventDefault();cmdClear();
-  }
-});
-
-document.addEventListener('click',e=>{
-  if(!e.target.closest('a')&&!e.target.closest('.qbtn'))inp.focus();
-});
-
-document.querySelectorAll('.qbtn').forEach(b=>{
-  b.addEventListener('click',()=>{inp.value='';run(b.dataset.cmd)});
-});
-
-// ── Boot sequence ─────────────────────────────────────────────────────────────
-async function boot(){
-  const seq=[
-    {t:'BekzatOS v2.6.0-iot  [Build: 2025-06-16]',c:'dim',d:0},
-    {t:'Copyright (c) 2025 Bekzat Beketov. All rights reserved.',c:'dim',d:80},
-    {t:'',c:'empty',d:130},
-    {t:'Loading kernel modules...',c:'dim',d:170},
-    {t:'  [<span class="c-green"> OK </span>] iot.ko         — IoT subsystem',c:'',d:280},
-    {t:'  [<span class="c-green"> OK </span>] flutter.ko     — Mobile runtime',c:'',d:370},
-    {t:'  [<span class="c-green"> OK </span>] opencv.ko      — Vision engine',c:'',d:450},
-    {t:'  [<span class="c-green"> OK </span>] worldskills.ko — Trophy handler x2',c:'',d:530},
-    {t:'',c:'empty',d:590},
-    {t:'Mounting filesystems...',c:'dim',d:630},
-    {t:'  [<span class="c-green"> OK </span>] /dev/skills    → /home/bekzat/skills',c:'',d:710},
-    {t:'  [<span class="c-green"> OK </span>] /dev/projects  → /home/bekzat/projects',c:'',d:790},
-    {t:'',c:'empty',d:850},
-    {t:'<span class="c-green">  [READY] bekzat@portfolio daemon started</span>',c:'',d:960},
-    {t:'',c:'empty',d:1000},
-    {t:'━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',c:'dim',d:1040},
-    {t:'  <span class="c-white">Добро пожаловать!</span>  Введите <span class="c-cyan">help</span> для начала.','',d:1080},
-    {t:'━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',c:'dim',d:1120},
-    {t:'',c:'empty',d:1160},
-  ];
-  for(const l of seq)await print(l.t,l.c,l.d);
-  setTimeout(()=>inp.focus(),1250);
-}
-
-boot();
+// ── Nav active on scroll ────────────────────────────────────────────────────
+(function(){
+  const links=document.querySelectorAll('.nav-links a');
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting)links.forEach(l=>l.classList.toggle('act',l.getAttribute('href')==='#'+e.target.id));
+    });
+  },{threshold:.4});
+  ['hero','about','skills','projects','contact'].forEach(id=>{const s=document.getElementById(id);if(s)io.observe(s)});
+  // close mobile nav on link click
+  links.forEach(a=>a.addEventListener('click',()=>document.getElementById('nl').classList.remove('open')));
+})();
 </script>
 </body>
 </html>
