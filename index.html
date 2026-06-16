@@ -120,51 +120,85 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;back
 @keyframes bpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
 
 /* ── ABOUT ── */
-#p1 .pc{display:flex;flex-direction:column;justify-content:center;max-width:740px;margin:0 auto;width:100%}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0}
+#p1 .pc{max-width:900px;margin:0 auto;width:100%}
+.about-2col{display:grid;grid-template-columns:210px 1fr;gap:36px;align-items:start;height:100%;align-content:center}
+@media(max-width:680px){.about-2col{grid-template-columns:1fr;gap:22px}}
+.av-box{border-radius:14px;border:1px solid var(--b1);background:rgba(255,255,255,.025);padding:24px 18px;text-align:center}
+.av-init{font-family:var(--serif);font-size:54px;font-weight:900;color:var(--gold);line-height:1;margin-bottom:10px}
+.av-status{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--green);margin-bottom:16px}
+.av-sdot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:bpulse 2s ease-in-out infinite}
+.av-facts{list-style:none;text-align:left;display:flex;flex-direction:column;gap:8px;margin-top:2px}
+.av-facts li{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink2)}
+.av-facts li span{font-family:var(--mono);font-size:11px}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
 @media(max-width:520px){.stats-row{grid-template-columns:repeat(2,1fr)}}
-.st-box{padding:16px 12px;border-radius:10px;border:1px solid var(--b2);background:rgba(255,255,255,.02);text-align:center}
-.st-n{font-family:var(--serif);font-size:clamp(22px,3vw,34px);color:var(--gold);font-weight:700;line-height:1}
-.st-l{font-size:11px;color:var(--ink2);margin-top:5px;font-family:var(--mono)}
-.tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
-.ttag{padding:5px 12px;border-radius:6px;border:1px solid var(--b2);background:rgba(255,255,255,.025);font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.st-box{padding:14px 10px;border-radius:10px;border:1px solid var(--b2);background:rgba(255,255,255,.02);text-align:center}
+.st-n{font-family:var(--serif);font-size:clamp(20px,3vw,32px);color:var(--gold);font-weight:700;line-height:1}
+.st-l{font-size:11px;color:var(--ink2);margin-top:4px;font-family:var(--mono)}
+.tag-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+.ttag{padding:4px 11px;border-radius:6px;border:1px solid var(--b2);background:rgba(255,255,255,.025);font-family:var(--mono);font-size:11px;color:var(--ink2)}
+.about-list{margin:12px 0 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.about-list li{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:var(--ink2);line-height:1.5}
+.about-list li::before{content:'→';color:var(--gold);flex-shrink:0;font-size:12px;margin-top:2px}
 
 /* ── SKILLS ── */
-#p2 .pc{display:flex;flex-direction:column;justify-content:center;max-width:860px;margin:0 auto;width:100%}
-.sk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
+#p2 .pc{max-width:900px;margin:0 auto;width:100%}
+.sk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
 @media(max-width:580px){.sk-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:380px){.sk-grid{grid-template-columns:1fr}}
 .sk-card{padding:16px;border-radius:10px;border:1px solid var(--b2);background:rgba(255,255,255,.02);transition:border-color .2s}
 .sk-card:hover{border-color:var(--b1)}
-.sk-cat{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:9px;text-transform:uppercase}
-.sk-ts{display:flex;flex-wrap:wrap;gap:5px}
-.sk-t{font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:4px;background:rgba(255,255,255,.05);color:var(--ink2)}
+.sk-cat{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:5px;text-transform:uppercase}
+.sk-desc{font-size:12px;color:var(--ink2);line-height:1.5;margin-bottom:9px}
+.sk-ts{display:flex;flex-wrap:wrap;gap:4px}
+.sk-t{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(255,255,255,.05);color:var(--ink2)}
 
 /* ── PROJECTS ── */
-#p3 .pc{display:flex;flex-direction:column;justify-content:center;max-width:880px;margin:0 auto;width:100%}
-.pj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
-@media(max-width:660px){.pj-grid{grid-template-columns:1fr}}
-.pj-card{padding:20px;border-radius:10px;border:1px solid var(--b2);background:rgba(255,255,255,.02);transition:border-color .2s}
+#p3 .pc{max-width:920px;margin:0 auto;width:100%}
+.pj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
+@media(max-width:680px){.pj-grid{grid-template-columns:1fr}}
+.pj-card{padding:18px;border-radius:10px;border:1px solid var(--b2);background:rgba(255,255,255,.02);transition:border-color .2s;display:flex;flex-direction:column}
 .pj-card:hover{border-color:var(--b1)}
-.pj-st{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;padding:2px 9px;border-radius:100px;margin-bottom:11px}
+.pj-st{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;padding:2px 9px;border-radius:100px;margin-bottom:9px;align-self:flex-start}
 .pj-st.prod{color:var(--green);border:1px solid rgba(74,184,122,.3);background:rgba(74,184,122,.08)}
 .pj-st.wip{color:var(--gold2);border:1px solid rgba(240,201,122,.3);background:rgba(240,201,122,.07)}
 .pj-st.proto{color:var(--cyan);border:1px solid rgba(74,184,212,.3);background:rgba(74,184,212,.07)}
 .pj-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
-.pj-title{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px}
-.pj-desc{font-size:12px;color:var(--ink2);line-height:1.75;margin-bottom:12px}
-.pj-stack{display:flex;flex-wrap:wrap;gap:4px}
+.pj-title{font-family:var(--serif);font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.pj-desc{font-size:12px;color:var(--ink2);line-height:1.65;margin-bottom:10px}
+.pj-feats{list-style:none;display:flex;flex-direction:column;gap:4px;margin-bottom:12px;flex:1}
+.pj-feats li{display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--ink2);line-height:1.5}
+.pj-feats li::before{content:'✓';color:var(--gold);flex-shrink:0;font-size:10px;margin-top:1px}
+.pj-stack{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto}
 .pj-tech{font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.05);color:var(--ink2)}
 
+/* ── EXPERIENCE ── */
+#p4 .pc{max-width:780px;margin:0 auto;width:100%}
+.tl{position:relative;margin-top:22px;padding-left:80px}
+.tl::before{content:'';position:absolute;left:50px;top:6px;bottom:6px;width:1px;background:var(--b1)}
+.tl-row{position:relative;margin-bottom:22px;display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start}
+.tl-left{display:flex;flex-direction:column;align-items:center;gap:6px;position:absolute;left:-80px;width:60px;text-align:center}
+.tl-year{font-family:var(--serif);font-size:12px;color:var(--gold);font-weight:700;font-style:italic;line-height:1}
+.tl-dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--gold);background:var(--page);flex-shrink:0;position:absolute;left:-36px;top:3px}
+.tl-dot.fill{background:var(--gold)}
+.tl-body{padding-bottom:4px}
+.tl-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.tl-sub{font-size:12px;color:var(--ink2);line-height:1.55}
+.tl-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:100px;border:1px solid rgba(201,160,99,.3);background:rgba(201,160,99,.08);color:var(--gold);margin-top:5px}
+
 /* ── CONTACT ── */
-#p4 .pc{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;max-width:520px;margin:0 auto;width:100%}
-.ct-orn{font-size:22px;color:var(--gold);opacity:.6;margin-bottom:18px;font-family:var(--serif)}
-.ct-sub{color:var(--ink2);font-size:14px;line-height:1.75;max-width:380px;margin:8px auto 28px}
-.ct-links{display:flex;flex-direction:column;gap:11px;width:100%;max-width:360px}
-.clink{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:10px;border:1px solid var(--b2);background:rgba(255,255,255,.025);color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;transition:border-color .2s,background .2s,transform .2s}
+#p5 .pc{max-width:640px;margin:0 auto;width:100%;display:flex;flex-direction:column;justify-content:center}
+.svcs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0 28px}
+@media(max-width:540px){.svcs{grid-template-columns:1fr}}
+.svc{padding:16px 14px;border-radius:10px;border:1px solid var(--b2);background:rgba(255,255,255,.02);text-align:center}
+.svc-ico{font-size:22px;margin-bottom:8px}
+.svc-t{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.svc-d{font-size:11px;color:var(--ink2);line-height:1.5}
+.ct-links{display:flex;flex-direction:column;gap:10px}
+.clink{display:flex;align-items:center;gap:12px;padding:13px 18px;border-radius:10px;border:1px solid var(--b2);background:rgba(255,255,255,.025);color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;transition:border-color .2s,background .2s,transform .2s}
 .clink:hover{border-color:var(--b1);background:rgba(201,160,99,.07);transform:translateX(4px)}
 .clink svg{width:18px;height:18px;flex-shrink:0;fill:none;stroke:var(--gold);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.ct-fin{margin-top:30px;font-family:var(--serif);font-style:italic;color:var(--ink2);font-size:13px}
+.ct-fin{margin-top:22px;font-family:var(--serif);font-style:italic;color:var(--ink2);font-size:13px;text-align:center}
 
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important}
@@ -180,7 +214,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;back
   <button class="dot"    onclick="go(1)" aria-label="Обо мне"></button>
   <button class="dot"    onclick="go(2)" aria-label="Навыки"></button>
   <button class="dot"    onclick="go(3)" aria-label="Проекты"></button>
-  <button class="dot"    onclick="go(4)" aria-label="Контакты"></button>
+  <button class="dot"    onclick="go(4)" aria-label="Опыт"></button>
+  <button class="dot"    onclick="go(5)" aria-label="Контакты"></button>
 </nav>
 
 <div id="book">
@@ -198,31 +233,51 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;back
       <div class="cv-badge"><span class="cv-bdot"></span>🏆 WorldSkills Kazakhstan 2022 &amp; 2023</div>
     </div>
   </div>
-  <footer class="pf"><span class="pf-hint">Листайте вниз ↓</span><span class="pf-num">I</span></footer>
+  <footer class="pf"><span class="pf-hint">Листайте вниз ↓</span><span class="pf-num">I · VI</span></footer>
 </div>
 
 <!-- ② ABOUT -->
 <div class="page" id="p1" style="display:none">
-  <header class="ph"><span class="ph-site">bekzat.io</span><span class="ph-ch">About</span></header>
+  <header class="ph"><span class="ph-site">bekzat.io</span><span class="ph-ch">About Me</span></header>
   <div class="pc">
-    <h2 class="ch-title">Немного обо мне</h2>
-    <div class="ch-line"></div>
-    <p class="ch-text">Привет! Я Бекзат — инженер-программист из Астаны. Специализируюсь на IoT-системах, встраиваемом ПО и мобильной разработке на Flutter.</p>
-    <p class="ch-text">Победитель WorldSkills Kazakhstan 2022 и 2023 по направлению «Мобильная робототехника». Строю умные устройства и промышленные решения, которые работают в реальных условиях. Люблю паять, программировать микроконтроллеры и учить машины видеть.</p>
-    <div class="stats-row">
-      <div class="st-box"><div class="st-n" data-to="4">0</div><div class="st-l">года опыта</div></div>
-      <div class="st-box"><div class="st-n" data-to="3">0</div><div class="st-l">проекта</div></div>
-      <div class="st-box"><div class="st-n" data-to="2">0</div><div class="st-l">🥇 WorldSkills</div></div>
-      <div class="st-box"><div class="st-n" data-to="30">0</div><div class="st-l">технологий</div></div>
-    </div>
-    <div class="tag-row">
-      <span class="ttag">🇰🇿 Казахский</span>
-      <span class="ttag">🇷🇺 Русский</span>
-      <span class="ttag">🇬🇧 English</span>
-      <span class="ttag">📍 Астана</span>
+    <div class="about-2col">
+      <!-- Левая колонка: карточка -->
+      <div>
+        <div class="av-box">
+          <div class="av-init">BB</div>
+          <div class="av-status"><span class="av-sdot"></span>Open to work</div>
+          <ul class="av-facts">
+            <li>📍 <span>Астана, Казахстан</span></li>
+            <li>🎓 <span>Колледж «Технологии и бизнес»</span></li>
+            <li>📅 <span>Специальность: Инфокоммуникации</span></li>
+            <li>🏆 <span>WorldSkills Champion 2022, 2023</span></li>
+            <li>🇰🇿 <span>KZ · RU · EN</span></li>
+          </ul>
+        </div>
+      </div>
+      <!-- Правая колонка: текст -->
+      <div>
+        <h2 class="ch-title">Немного обо мне</h2>
+        <div class="ch-line"></div>
+        <p class="ch-text">Привет! Я Бекзат — инженер-программист из Астаны. 4 года занимаюсь IoT-системами, встраиваемым ПО и мобильной разработкой на Flutter.</p>
+        <p class="ch-text">Дважды становился победителем WorldSkills Kazakhstan по направлению «Мобильная робототехника» (2022, 2023). Умею создавать решения «под ключ»: от схемотехники и прошивки до мобильного приложения и облачной базы данных.</p>
+        <ul class="about-list">
+          <li>Разрабатываю прошивки для ESP8266/ESP32 с OTA-обновлениями и MQTT</li>
+          <li>Пишу кроссплатформенные приложения на Flutter (Android + iOS)</li>
+          <li>Строю системы машинного зрения на OpenCV, Python, Raspberry Pi</li>
+          <li>Проектирую PCB в KiCad, программирую ЧПУ-станки G-code</li>
+          <li>Люблю паять, читать даташиты и учить машины видеть</li>
+        </ul>
+        <div class="stats-row">
+          <div class="st-box"><div class="st-n" data-to="4">0</div><div class="st-l">года опыта</div></div>
+          <div class="st-box"><div class="st-n" data-to="3">0</div><div class="st-l">проекта</div></div>
+          <div class="st-box"><div class="st-n" data-to="2">0</div><div class="st-l">🥇 WorldSkills</div></div>
+          <div class="st-box"><div class="st-n" data-to="30">0</div><div class="st-l">технологий</div></div>
+        </div>
+      </div>
     </div>
   </div>
-  <footer class="pf"><span class="pf-hint">↑ ↓ листать</span><span class="pf-num">II</span></footer>
+  <footer class="pf"><span class="pf-hint">↑ ↓ листать</span><span class="pf-num">II · VI</span></footer>
 </div>
 
 <!-- ③ SKILLS -->
@@ -232,15 +287,39 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;back
     <h2 class="ch-title">Технологии и навыки</h2>
     <div class="ch-line"></div>
     <div class="sk-grid">
-      <div class="sk-card"><div class="sk-cat">IoT / Embedded</div><div class="sk-ts"><span class="sk-t">ESP8266</span><span class="sk-t">ESP32</span><span class="sk-t">Arduino</span><span class="sk-t">MQTT</span><span class="sk-t">Modbus</span><span class="sk-t">OTA</span></div></div>
-      <div class="sk-card"><div class="sk-cat">Mobile / Flutter</div><div class="sk-ts"><span class="sk-t">Flutter</span><span class="sk-t">Dart</span><span class="sk-t">Android</span><span class="sk-t">iOS</span><span class="sk-t">BLE</span><span class="sk-t">REST</span></div></div>
-      <div class="sk-card"><div class="sk-cat">Machine Vision</div><div class="sk-ts"><span class="sk-t">OpenCV</span><span class="sk-t">Python</span><span class="sk-t">YOLOv8</span><span class="sk-t">TF Lite</span><span class="sk-t">RPi</span></div></div>
-      <div class="sk-card"><div class="sk-cat">Cloud / DB</div><div class="sk-ts"><span class="sk-t">Firebase</span><span class="sk-t">SQLite</span><span class="sk-t">Docker</span><span class="sk-t">Linux</span><span class="sk-t">Git</span></div></div>
-      <div class="sk-card"><div class="sk-cat">CNC / Hardware</div><div class="sk-ts"><span class="sk-t">G-code</span><span class="sk-t">Mach3</span><span class="sk-t">KiCad</span><span class="sk-t">Fusion360</span><span class="sk-t">3D Print</span></div></div>
-      <div class="sk-card"><div class="sk-cat">Languages</div><div class="sk-ts"><span class="sk-t">C/C++</span><span class="sk-t">Python</span><span class="sk-t">Dart</span><span class="sk-t">Bash</span><span class="sk-t">SQL</span></div></div>
+      <div class="sk-card">
+        <div class="sk-cat">IoT / Embedded</div>
+        <div class="sk-desc">Прошивки микроконтроллеров, работа с датчиками и исполнительными устройствами, беспроводная связь, OTA-обновления</div>
+        <div class="sk-ts"><span class="sk-t">ESP8266</span><span class="sk-t">ESP32</span><span class="sk-t">Arduino</span><span class="sk-t">MQTT</span><span class="sk-t">Modbus RTU</span><span class="sk-t">I²C / SPI</span><span class="sk-t">OTA</span><span class="sk-t">FreeRTOS</span></div>
+      </div>
+      <div class="sk-card">
+        <div class="sk-cat">Mobile / Flutter</div>
+        <div class="sk-desc">Кроссплатформенные приложения для Android и iOS, интеграция с IoT через BLE и REST, push-уведомления, карты</div>
+        <div class="sk-ts"><span class="sk-t">Flutter</span><span class="sk-t">Dart</span><span class="sk-t">Android</span><span class="sk-t">iOS</span><span class="sk-t">BLE</span><span class="sk-t">REST API</span><span class="sk-t">Provider</span><span class="sk-t">GetX</span></div>
+      </div>
+      <div class="sk-card">
+        <div class="sk-cat">Machine Vision</div>
+        <div class="sk-desc">Обнаружение и классификация объектов, измерение геометрии, автоматизация производственного контроля</div>
+        <div class="sk-ts"><span class="sk-t">OpenCV</span><span class="sk-t">Python</span><span class="sk-t">YOLOv8</span><span class="sk-t">TF Lite</span><span class="sk-t">Raspberry Pi</span><span class="sk-t">NumPy</span></div>
+      </div>
+      <div class="sk-card">
+        <div class="sk-cat">Cloud / Database</div>
+        <div class="sk-desc">Облачные базы данных реального времени, локальное хранение, контейнеризация, администрирование Linux-серверов</div>
+        <div class="sk-ts"><span class="sk-t">Firebase RTDB</span><span class="sk-t">Firestore</span><span class="sk-t">SQLite</span><span class="sk-t">Docker</span><span class="sk-t">Linux</span><span class="sk-t">Git / GitHub</span></div>
+      </div>
+      <div class="sk-card">
+        <div class="sk-cat">CNC / Hardware</div>
+        <div class="sk-desc">Программирование ЧПУ-станков, проектирование печатных плат, прототипирование и 3D-печать корпусов</div>
+        <div class="sk-ts"><span class="sk-t">G-code</span><span class="sk-t">Mach3</span><span class="sk-t">LinuxCNC</span><span class="sk-t">KiCad</span><span class="sk-t">Fusion 360</span><span class="sk-t">3D Print</span><span class="sk-t">Soldering</span></div>
+      </div>
+      <div class="sk-card">
+        <div class="sk-cat">Языки программирования</div>
+        <div class="sk-desc">Системное программирование на C/C++ для МК, скрипты на Python и Bash, приложения на Dart, базы данных SQL</div>
+        <div class="sk-ts"><span class="sk-t">C / C++</span><span class="sk-t">Python</span><span class="sk-t">Dart</span><span class="sk-t">Bash</span><span class="sk-t">SQL</span><span class="sk-t">MicroPython</span></div>
+      </div>
     </div>
   </div>
-  <footer class="pf"><span class="pf-hint">↑ ↓ листать</span><span class="pf-num">III</span></footer>
+  <footer class="pf"><span class="pf-hint">↑ ↓ листать</span><span class="pf-num">III · VI</span></footer>
 </div>
 
 <!-- ④ PROJECTS -->
@@ -250,37 +329,140 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;back
     <h2 class="ch-title">Проекты</h2>
     <div class="ch-line"></div>
     <div class="pj-grid">
+
       <div class="pj-card">
         <div class="pj-st prod"><span class="pj-dot"></span>Production</div>
         <div class="pj-title">Smart Greenhouse</div>
-        <div class="pj-desc">Умная теплица с IoT-управлением. Мониторинг T° и влажности, автополив, управление шторами. OTA-обновления прошивки. Flutter-приложение с push-уведомлениями.</div>
-        <div class="pj-stack"><span class="pj-tech">ESP8266</span><span class="pj-tech">Firebase</span><span class="pj-tech">Flutter</span><span class="pj-tech">DHT22</span><span class="pj-tech">OTA</span></div>
+        <div class="pj-desc">Полноценная IoT-система автоматизации теплицы с мобильным управлением и облачной синхронизацией в реальном времени.</div>
+        <ul class="pj-feats">
+          <li>Мониторинг температуры, влажности и освещённости через датчики DHT22 и BH1750</li>
+          <li>Автополив и управление шторами через реле и сервоприводы</li>
+          <li>OTA-обновления прошивки ESP8266 по Wi-Fi без физического подключения</li>
+          <li>Flutter-приложение с графиками, историей и push-уведомлениями об отклонениях</li>
+          <li>Firebase Security Rules: защищённый доступ только авторизованного пользователя</li>
+        </ul>
+        <div class="pj-stack"><span class="pj-tech">ESP8266</span><span class="pj-tech">Firebase RTDB</span><span class="pj-tech">Flutter</span><span class="pj-tech">DHT22</span><span class="pj-tech">OTA</span><span class="pj-tech">Relay</span></div>
       </div>
+
       <div class="pj-card">
         <div class="pj-st wip"><span class="pj-dot"></span>В разработке</div>
         <div class="pj-title">РЭО Сканер</div>
-        <div class="pj-desc">Android-приложение для сканирования базовых станций GSM/LTE/UMTS. Показывает MCC, MNC, LAC, CellID, RSSI. История замеров, экспорт CSV, карта БС.</div>
-        <div class="pj-stack"><span class="pj-tech">Flutter</span><span class="pj-tech">Android</span><span class="pj-tech">SQLite</span><span class="pj-tech">Maps</span></div>
+        <div class="pj-desc">Android-приложение для инженеров радиосвязи — сканирование и картирование базовых станций сотовых операторов.</div>
+        <ul class="pj-feats">
+          <li>Сканирование БС GSM / LTE / UMTS через AT-команды модема</li>
+          <li>Отображение MCC, MNC, LAC, CellID, RSSI, уровня сигнала</li>
+          <li>Привязка замеров к GPS-координатам и отображение на карте</li>
+          <li>История замеров в SQLite, экспорт в CSV для дальнейшего анализа</li>
+          <li>Поддержка операторов Kcell, Beeline, Tele2, МТС Казахстан</li>
+        </ul>
+        <div class="pj-stack"><span class="pj-tech">Flutter</span><span class="pj-tech">Android</span><span class="pj-tech">SQLite</span><span class="pj-tech">Google Maps</span><span class="pj-tech">AT-команды</span></div>
       </div>
+
       <div class="pj-card">
         <div class="pj-st proto"><span class="pj-dot"></span>Прототип</div>
         <div class="pj-title">CNC Machine Vision</div>
-        <div class="pj-desc">Система технического зрения для ЧПУ-станка. Автоматически определяет смещение заготовки, вычисляет коррекцию и передаёт G-code в контроллер Mach3.</div>
-        <div class="pj-stack"><span class="pj-tech">OpenCV</span><span class="pj-tech">Python</span><span class="pj-tech">RPi</span><span class="pj-tech">G-code</span></div>
+        <div class="pj-desc">Система технического зрения для автоматической привязки нулевой точки на ЧПУ-станке без ручного замера.</div>
+        <ul class="pj-feats">
+          <li>Захват кадра с USB-камеры и обработка через OpenCV на Raspberry Pi</li>
+          <li>Определение угла поворота и смещения заготовки субпиксельной точностью</li>
+          <li>Автоматическое вычисление коррекционного G-code и отправка в Mach3</li>
+          <li>Сокращение времени наладки с 5–10 минут до 20 секунд</li>
+        </ul>
+        <div class="pj-stack"><span class="pj-tech">OpenCV</span><span class="pj-tech">Python</span><span class="pj-tech">Raspberry Pi</span><span class="pj-tech">G-code</span><span class="pj-tech">Mach3</span></div>
+      </div>
+
+    </div>
+  </div>
+  <footer class="pf"><span class="pf-hint">↑ ↓ листать</span><span class="pf-num">IV · VI</span></footer>
+</div>
+
+<!-- ⑤ EXPERIENCE -->
+<div class="page" id="p4" style="display:none">
+  <header class="ph"><span class="ph-site">bekzat.io</span><span class="ph-ch">Experience</span></header>
+  <div class="pc">
+    <h2 class="ch-title">Опыт и достижения</h2>
+    <div class="ch-line"></div>
+    <div class="tl">
+      <div class="tl-row">
+        <div class="tl-left"><span class="tl-year">2021</span><span class="tl-dot"></span></div>
+        <div class="tl-body">
+          <div class="tl-title">Поступление в колледж «Технологии и бизнес»</div>
+          <div class="tl-sub">Направление: Инфокоммуникации. Начало углублённого изучения электроники, программирования МК и сетевых технологий.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-left"><span class="tl-year">2022</span><span class="tl-dot fill"></span></div>
+        <div class="tl-body">
+          <div class="tl-title">🥇 WorldSkills Kazakhstan 2022 — 1 место</div>
+          <div class="tl-sub">Направление «Мобильная робототехника». Разработка автономного мобильного робота с навигацией и выполнением задач.</div>
+          <span class="tl-badge">Золотая медаль</span>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-left"><span class="tl-year">2023</span><span class="tl-dot fill"></span></div>
+        <div class="tl-body">
+          <div class="tl-title">🥇 WorldSkills Kazakhstan 2023 — 1 место</div>
+          <div class="tl-sub">Повторная победа в «Мобильной робототехнике». Подтверждение звания лучшего в Казахстане по данному направлению.</div>
+          <span class="tl-badge">Золотая медаль</span>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-left"><span class="tl-year">2023</span><span class="tl-dot"></span></div>
+        <div class="tl-body">
+          <div class="tl-title">Проект Smart Greenhouse</div>
+          <div class="tl-sub">Разработка и запуск в эксплуатацию IoT-системы управления теплицей на ESP8266 + Firebase + Flutter.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-left"><span class="tl-year">2024</span><span class="tl-dot"></span></div>
+        <div class="tl-body">
+          <div class="tl-title">🥉 WorldSkills Kazakhstan 2024 — 3 место</div>
+          <div class="tl-sub">Направление «Мобильная робототехника». Участие в более сложных заданиях с алгоритмами компьютерного зрения.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-left"><span class="tl-year">2024</span><span class="tl-dot"></span></div>
+        <div class="tl-body">
+          <div class="tl-title">Проект РЭО Сканер</div>
+          <div class="tl-sub">Flutter-приложение для Android — сканирование и картирование базовых станций GSM/LTE/UMTS с экспортом данных.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-left"><span class="tl-year">2025</span><span class="tl-dot"></span></div>
+        <div class="tl-body">
+          <div class="tl-title">Проект CNC Machine Vision + Выпуск</div>
+          <div class="tl-sub">Система технического зрения для ЧПУ-станка. Окончание колледжа, специальность «Инфокоммуникации». Открыт для работы.</div>
+        </div>
       </div>
     </div>
   </div>
-  <footer class="pf"><span class="pf-hint">↑ ↓ листать</span><span class="pf-num">IV</span></footer>
+  <footer class="pf"><span class="pf-hint">↑ ↓ листать</span><span class="pf-num">V · VI</span></footer>
 </div>
 
-<!-- ⑤ CONTACT -->
-<div class="page" id="p4" style="display:none">
+<!-- ⑥ CONTACT -->
+<div class="page" id="p5" style="display:none">
   <header class="ph"><span class="ph-site">bekzat.io</span><span class="ph-ch">Contact</span></header>
   <div class="pc">
-    <div class="ct-orn">✦</div>
     <h2 class="ch-title">Свяжитесь со мной</h2>
-    <div class="ch-line" style="margin:8px auto 0"></div>
-    <p class="ct-sub">Открыт для предложений о работе и интересных проектов. Пишите — отвечу быстро!</p>
+    <div class="ch-line"></div>
+    <p class="ch-text" style="margin-bottom:4px">Открыт для предложений о работе, фриланс-проектов и сотрудничества. Пишите — отвечу быстро!</p>
+    <div class="svcs">
+      <div class="svc">
+        <div class="svc-ico">🔌</div>
+        <div class="svc-t">IoT-разработка</div>
+        <div class="svc-d">Прошивки ESP32/ESP8266, MQTT, Firebase, OTA, датчики и реле</div>
+      </div>
+      <div class="svc">
+        <div class="svc-ico">📱</div>
+        <div class="svc-t">Мобильные приложения</div>
+        <div class="svc-d">Flutter-приложения под Android и iOS с интеграцией IoT и облака</div>
+      </div>
+      <div class="svc">
+        <div class="svc-ico">👁</div>
+        <div class="svc-t">Машинное зрение</div>
+        <div class="svc-d">OpenCV, YOLO, автоматизация контроля качества и навигации роботов</div>
+      </div>
+    </div>
     <div class="ct-links">
       <a href="mailto:beketovekb@gmail.com" class="clink">
         <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
@@ -297,7 +479,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;back
     </div>
     <p class="ct-fin">— Astana, Kazakhstan · 2025 —</p>
   </div>
-  <footer class="pf"><span class="pf-hint">↑ назад</span><span class="pf-num">V</span></footer>
+  <footer class="pf"><span class="pf-hint">↑ назад</span><span class="pf-num">VI · VI</span></footer>
 </div>
 
 </div><!-- /#book -->
