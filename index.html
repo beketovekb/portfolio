@@ -2,1004 +2,711 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#000000">
-<title>Бекзат Бекетов — Инженер-программист · IoT · Автоматизация · Астана</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>bekzat@portfolio:~</title>
+<meta name="description" content="Бекзат Бекетов — IoT Engineer, Flutter Developer, WorldSkills Champion">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700;800&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════
-   DESIGN TOKENS  ·  Dark OLED + Cyberpunk
-═══════════════════════════════════════════ */
-:root {
-  --bg-0:#000000;--bg-1:#060a10;--bg-2:#0b1220;--bg-3:#111827;--bg-4:#1a2235;
-  --cyan:#00d4ff;--cyan-dim:#007a95;--cyan-lo:rgba(0,212,255,.12);
-  --gold:#f59e0b;--green:#10b981;--purple:#8b5cf6;--pink:#ec4899;
-  --text-hi:#ffffff;--text-md:#e2e8f0;--text-lo:#94a3b8;--text-xs:#4b5563;
-  --border:rgba(0,212,255,.09);--border-h:rgba(0,212,255,.3);
-  --f-head:'Space Grotesk',system-ui,sans-serif;
-  --f-body:'DM Sans',system-ui,sans-serif;
-  --f-mono:'JetBrains Mono',monospace;
-  --s1:.5rem;--s2:1rem;--s3:1.5rem;--s4:2rem;--s6:3rem;--s8:4rem;--s12:6rem;
-  --ease:cubic-bezier(.25,.46,.45,.94);--spring:cubic-bezier(.34,1.56,.64,1);
-  --fast:150ms;--med:250ms;--slow:450ms;
-  --r-sm:8px;--r-md:14px;--r-lg:20px;--r-xl:28px;
-}
-
-/* ═══ @property for animated gradient border ═══ */
-@property --ga { syntax:'<angle>'; initial-value:0deg; inherits:false; }
-@keyframes ga-spin   { to { --ga: 360deg; } }
-@keyframes hc-float  { 0%,100%{transform:translateY(0) rotate(.4deg)} 50%{transform:translateY(-14px) rotate(-.4deg)} }
-@keyframes fb-float  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-@keyframes scan-line { 0%{top:-35%;opacity:0} 5%{opacity:1} 95%{opacity:1} 100%{top:110%;opacity:0} }
-@keyframes blink-cur { 0%,100%{opacity:1} 50%{opacity:0} }
-@keyframes led-blink { 0%,85%,100%{opacity:1} 92%{opacity:.1} }
-@keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.75)} }
-@keyframes reveal-up { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:none} }
-@keyframes counter-in{ from{opacity:0;transform:translateY(16px) scale(.9)} to{opacity:1;transform:none} }
-@keyframes shimmer   { 0%{background-position:200% center} 100%{background-position:-200% center} }
-@keyframes icon-glow { 0%,100%{filter:drop-shadow(0 0 6px rgba(0,212,255,.4))} 50%{filter:drop-shadow(0 0 14px rgba(0,212,255,.8))} }
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:16px}
-body{background:var(--bg-0);color:var(--text-md);font-family:var(--f-body);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:#000}::-webkit-scrollbar-thumb{background:var(--cyan-dim);border-radius:2px}
-
-/* ═══ Global effect layers ═══ */
-.grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.022;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
-.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:linear-gradient(rgba(0,212,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.028) 1px,transparent 1px);
-  background-size:68px 68px}
-#spotlight{position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:radial-gradient(480px circle at var(--sx,50%) var(--sy,50%),rgba(0,212,255,.035),transparent 80%)}
-
-section{position:relative;z-index:1}
-.wrap{max-width:1160px;margin:0 auto;padding:0 var(--s4)}
-.section-pad{padding:var(--s12) 0}
-
-/* ═══ NAV ═══ */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;
-  display:flex;align-items:center;justify-content:space-between;padding:0 var(--s4);
-  background:rgba(0,0,0,.7);backdrop-filter:blur(28px);border-bottom:1px solid var(--border);
-  transition:background var(--med) var(--ease)}
-.nav-logo{font-family:var(--f-head);font-weight:700;font-size:1.05rem;color:var(--text-hi);text-decoration:none;display:flex;align-items:center;gap:.5rem;cursor:pointer}
-.nav-logo .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:pulse-dot 2s ease-in-out infinite}
-.nav-links{display:flex;gap:var(--s4);list-style:none}
-.nav-links a{font-size:.825rem;font-weight:500;color:var(--text-lo);text-decoration:none;letter-spacing:.02em;transition:color var(--fast) var(--ease);cursor:pointer}
-.nav-links a:hover,.nav-links a.active{color:var(--cyan)}
-.nav-cta{font-family:var(--f-head);font-size:.825rem;font-weight:600;padding:.45rem 1.2rem;border-radius:var(--r-sm);border:1px solid var(--cyan);color:var(--cyan);background:transparent;text-decoration:none;cursor:pointer;transition:all var(--fast) var(--ease)}
-.nav-cta:hover{background:var(--cyan);color:#000}
-.nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
-.nav-burger span{display:block;width:22px;height:2px;background:var(--text-md);border-radius:2px;transition:all var(--med) var(--ease)}
-
-/* ═══ HERO ═══ */
-#hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;gap:var(--s8);align-items:center;
-  padding:calc(60px + var(--s8)) var(--s4) var(--s8);max-width:1160px;margin:0 auto;position:relative}
-#hero-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.85}
-#hero > *:not(#hero-canvas){position:relative;z-index:1}
-
-.hero-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem 1rem;border-radius:100px;
-  background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);
-  font-family:var(--f-mono);font-size:.7rem;font-weight:500;color:var(--cyan);letter-spacing:.08em;text-transform:uppercase;margin-bottom:var(--s3)}
-.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
-
-.hero-name{font-family:var(--f-head);font-size:clamp(2.6rem,6vw,4.5rem);font-weight:800;line-height:1.05;color:var(--text-hi);margin-bottom:var(--s1);letter-spacing:-.025em}
-.hero-name .accent{
-  background:linear-gradient(135deg,var(--cyan) 0%,var(--purple) 50%,var(--cyan) 100%);
-  background-size:200% auto;
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  animation:shimmer 4s linear infinite}
-
-.hero-roles{font-family:var(--f-mono);font-size:.9rem;color:var(--text-lo);margin-bottom:var(--s3);min-height:1.6em}
-.tw-cursor::after{content:'|';color:var(--cyan);animation:blink-cur .75s step-end infinite;margin-left:1px}
-
-.hero-desc{font-size:1rem;color:var(--text-lo);line-height:1.75;margin-bottom:var(--s4);max-width:500px}
-.hero-desc strong{color:var(--text-md);font-weight:500}
-.hero-btns{display:flex;gap:var(--s2);flex-wrap:wrap;margin-bottom:var(--s6)}
-
-.btn-primary{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.75rem;border-radius:var(--r-sm);
-  background:var(--cyan);color:#000;font-family:var(--f-head);font-size:.9rem;font-weight:700;
-  text-decoration:none;border:none;cursor:pointer;transition:all var(--med) var(--spring);will-change:transform}
-.btn-primary:hover{background:#33ddff;box-shadow:0 8px 28px rgba(0,212,255,.35)}
-.btn-secondary{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.75rem;border-radius:var(--r-sm);
-  background:transparent;color:var(--text-md);font-family:var(--f-head);font-size:.9rem;font-weight:600;
-  text-decoration:none;border:1px solid rgba(255,255,255,.1);cursor:pointer;transition:all var(--med) var(--ease);will-change:transform}
-.btn-secondary:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,.05)}
-
-.hero-stats{display:grid;grid-template-columns:repeat(3,auto);gap:var(--s4);width:fit-content}
-.stat-num{font-family:var(--f-head);font-size:1.9rem;font-weight:800;color:var(--cyan);line-height:1;margin-bottom:.2rem}
-.stat-label{font-size:.75rem;color:var(--text-xs);letter-spacing:.03em}
-.stat-ws{font-size:1.4rem}
-
-.hero-right{display:flex;justify-content:center;align-items:center;position:relative}
-
-/* ═══ HERO VISUAL — animated gradient border card ═══ */
-.hero-visual{width:100%;height:520px;position:relative;display:flex;align-items:center;justify-content:center}
-
-.card-wrap{
-  --ga:0deg;
-  width:356px;position:relative;z-index:2;
-  border-radius:var(--r-xl);padding:1px;
-  background:linear-gradient(var(--ga),rgba(0,212,255,.75),rgba(139,92,246,.5),rgba(16,185,129,.35),rgba(0,212,255,.75));
-  animation:hc-float 5s ease-in-out infinite, ga-spin 5s linear infinite;
-  will-change:transform;
-  filter:drop-shadow(0 0 24px rgba(0,212,255,.18)) drop-shadow(0 0 60px rgba(139,92,246,.1))}
-.hero-card{
-  border-radius:calc(var(--r-xl) - 1px);
-  background:linear-gradient(145deg,#0b1220,#06090f);
-  overflow:hidden;position:relative}
-
-/* scanline sweep */
-.hero-card::after{content:'';position:absolute;left:0;right:0;height:35%;
-  background:linear-gradient(180deg,transparent,rgba(0,212,255,.04),transparent);
-  pointer-events:none;z-index:10;top:-35%;animation:scan-line 4s ease-in-out infinite}
-
-.hc-bar{display:flex;align-items:center;gap:6px;padding:.7rem 1rem;
-  background:rgba(0,0,0,.35);border-bottom:1px solid rgba(0,212,255,.1)}
-.hc-dot{width:11px;height:11px;border-radius:50%}
-.hc-dot-r{background:#ff5f57}.hc-dot-y{background:#febc2e}.hc-dot-g{background:#28c840}
-.hc-bar-title{font-family:var(--f-mono);font-size:.68rem;color:var(--text-xs);margin:0 auto}
-
-.terminal-body{padding:1.2rem;font-family:var(--f-mono);font-size:.77rem;line-height:1.95;min-height:268px}
-.t-line{display:block;color:var(--text-lo)}
-.t-prompt{color:var(--cyan)}.t-cmd{color:var(--text-hi)}.t-key{color:var(--gold)}.t-val{color:var(--green)}.t-comment{color:var(--text-xs);font-style:italic}
-.t-cursor{display:inline-block;width:8px;height:14px;background:var(--cyan);animation:blink-cur .8s step-end infinite;vertical-align:middle}
-
-.hc-leds{display:flex;align-items:center;gap:.4rem;padding:.55rem 1rem;background:rgba(0,0,0,.35);border-top:1px solid rgba(0,212,255,.08)}
-.led-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.led-dot.g{background:#27c93f;box-shadow:0 0 7px #27c93f;animation:led-blink 1.6s ease-in-out infinite}
-.led-dot.c{background:var(--cyan);box-shadow:0 0 7px var(--cyan);animation:led-blink 2.4s ease-in-out infinite .4s}
-.led-dot.y{background:var(--gold);box-shadow:0 0 7px var(--gold);animation:led-blink 3.2s ease-in-out infinite .9s}
-.hc-led-lbl{font-family:var(--f-mono);font-size:.6rem;color:var(--text-xs);margin-right:.5rem}
-
-/* floating badges */
-.fb{position:absolute;z-index:3;background:rgba(6,9,15,.92);border:1px solid var(--border-h);
-  border-radius:var(--r-md);padding:.6rem 1rem;backdrop-filter:blur(20px);
-  display:flex;align-items:center;gap:.6rem;white-space:nowrap;
-  box-shadow:0 8px 28px rgba(0,0,0,.5);will-change:transform}
-.fb-icon{width:22px;height:22px;flex-shrink:0;color:var(--cyan)}
-.fb-text{font-family:var(--f-head);font-size:.78rem;font-weight:700;color:var(--text-hi);line-height:1.2}
-.fb-sub{font-family:var(--f-mono);font-size:.62rem;color:var(--text-xs)}
-.fb-1{top:28px;right:-12px;animation:fb-float 4s ease-in-out infinite .6s}
-.fb-2{bottom:96px;left:-20px;animation:fb-float 3.6s ease-in-out infinite 1.1s}
-.fb-3{bottom:22px;right:8px;animation:fb-float 4.8s ease-in-out infinite .3s}
-
-/* circuit deco */
-.circuit-deco{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.2}
-
-/* ═══ SECTION HEADERS ═══ */
-.sec-eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--f-mono);font-size:.72rem;font-weight:500;text-transform:uppercase;letter-spacing:.14em;color:var(--cyan);margin-bottom:.75rem}
-.sec-eyebrow::before{content:'';display:block;width:20px;height:1.5px;background:var(--cyan)}
-.sec-title{font-family:var(--f-head);font-size:clamp(1.75rem,3vw,2.5rem);font-weight:800;color:var(--text-hi);letter-spacing:-.02em;margin-bottom:var(--s2)}
-.sec-sub{font-size:.975rem;color:var(--text-lo);max-width:520px;line-height:1.7}
-
-/* ═══ SVG ICONS ═══ */
-.sk-icon,.srv-icon,.info-icon-svg{stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.skill-card .sk-icon{width:44px;height:44px;color:var(--cyan);margin-bottom:var(--s2);animation:icon-glow 3s ease-in-out infinite;transition:filter var(--med) var(--ease)}
-.skill-card:hover .sk-icon{filter:drop-shadow(0 0 16px rgba(0,212,255,1))}
-.info-icon-box{width:38px;height:38px;border-radius:9px;background:rgba(0,212,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.info-icon-box svg{width:18px;height:18px;color:var(--cyan)}
-.srv-card .srv-icon{width:38px;height:38px;color:var(--cyan);margin-bottom:var(--s2);transition:filter var(--med) var(--ease)}
-.srv-card:hover .srv-icon{filter:drop-shadow(0 0 12px rgba(0,212,255,.8))}
-
-/* ═══ ABOUT ═══ */
-#about{background:linear-gradient(180deg,var(--bg-0) 0%,var(--bg-1) 100%)}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s8);align-items:start}
-.about-body p{color:var(--text-lo);font-size:.975rem;line-height:1.8;margin-bottom:var(--s2)}
-.about-body p strong{color:var(--text-md);font-weight:500}
-.about-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:var(--s3)}
-.tag{padding:.28rem .75rem;border-radius:6px;font-family:var(--f-mono);font-size:.7rem;font-weight:500;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.12);color:var(--cyan);letter-spacing:.04em;cursor:default;transition:all var(--fast) var(--ease)}
-.tag:hover{background:rgba(0,212,255,.14);border-color:rgba(0,212,255,.3)}
-.info-list{display:flex;flex-direction:column;gap:var(--s2)}
-.info-item{display:flex;align-items:flex-start;gap:var(--s2);padding:var(--s2) var(--s3);background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-md);cursor:default;transition:border-color var(--fast) var(--ease),transform var(--med) var(--ease)}
-.info-item:hover{border-color:var(--border-h);transform:translateX(5px)}
-.info-item h4{font-family:var(--f-head);font-size:.85rem;font-weight:600;color:var(--text-hi);margin-bottom:.2rem}
-.info-item p{font-size:.8rem;color:var(--text-lo);line-height:1.55}
-
-/* ═══ EXPERIENCE ═══ */
-#experience{background:var(--bg-1)}
-.exp-header{text-align:center;margin-bottom:var(--s8)}
-.exp-header .sec-sub{margin:0 auto}
-.timeline{position:relative;max-width:800px;margin:0 auto}
-.timeline::before{content:'';position:absolute;left:18px;top:6px;bottom:0;width:1px;background:linear-gradient(180deg,var(--cyan) 0%,rgba(0,212,255,.08) 100%)}
-.t-item{position:relative;padding-left:56px;margin-bottom:var(--s4)}
-.t-item:last-child{margin-bottom:0}
-.t-node{position:absolute;left:11px;top:14px;width:16px;height:16px;border-radius:50%;background:var(--bg-1);border:2px solid var(--cyan);box-shadow:0 0 10px rgba(0,212,255,.4);transition:box-shadow var(--med) var(--ease)}
-.t-item:hover .t-node{box-shadow:0 0 20px rgba(0,212,255,.8)}
-.t-card{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s3) var(--s4);cursor:default;transition:border-color var(--fast) var(--ease),transform var(--med) var(--ease)}
-.t-card:hover{border-color:var(--border-h);transform:translateX(5px)}
-.t-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:.5rem;margin-bottom:.25rem}
-.t-company{font-family:var(--f-head);font-size:1rem;font-weight:700;color:var(--text-hi)}
-.t-period{font-family:var(--f-mono);font-size:.72rem;color:var(--cyan);font-weight:500;white-space:nowrap}
-.t-role{font-size:.85rem;font-weight:600;color:var(--gold);margin-bottom:var(--s1)}
-.t-desc{font-size:.875rem;color:var(--text-lo);line-height:1.65}
-.ws-card{margin-top:var(--s6);padding:var(--s4) var(--s6);background:linear-gradient(135deg,rgba(245,158,11,.07),rgba(0,212,255,.04));border:1px solid rgba(245,158,11,.22);border-radius:var(--r-lg);display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap}
-.ws-icon{flex-shrink:0;color:var(--gold)}
-.ws-card h4{font-family:var(--f-head);font-size:1.15rem;font-weight:700;color:var(--text-hi);margin-bottom:.3rem}
-.ws-card p{font-size:.875rem;color:var(--text-lo);line-height:1.6}
-
-/* ═══ SKILLS ═══ */
-#skills{background:var(--bg-0)}
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--s2)}
-.skill-card{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--s4);
-  transition:border-color var(--fast) var(--ease),box-shadow var(--med) var(--ease);position:relative;overflow:hidden;cursor:default;
-  will-change:transform}
-.skill-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--cyan),var(--purple),transparent);opacity:0;transition:opacity var(--med) var(--ease)}
-.skill-card:hover{border-color:var(--border-h);box-shadow:0 16px 44px rgba(0,0,0,.4)}
-.skill-card:hover::before{opacity:1}
-.sk-name{font-family:var(--f-head);font-size:1rem;font-weight:700;color:var(--text-hi);margin-bottom:.4rem}
-.sk-desc{font-size:.825rem;color:var(--text-lo);line-height:1.6;margin-bottom:var(--s2)}
-.sk-tags{display:flex;flex-wrap:wrap;gap:.3rem}
-.sk-tag{padding:.2rem .6rem;border-radius:5px;font-family:var(--f-mono);font-size:.68rem;background:rgba(255,255,255,.04);color:var(--text-xs);border:1px solid rgba(255,255,255,.07)}
-
-/* ═══ PROJECTS ═══ */
-#projects{background:var(--bg-1)}
-.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:var(--s2)}
-.proj-card{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;
-  display:flex;flex-direction:column;cursor:pointer;
-  transition:border-color var(--fast) var(--ease),box-shadow var(--med) var(--ease);will-change:transform}
-.proj-card:hover{border-color:var(--border-h);box-shadow:0 20px 56px rgba(0,0,0,.5)}
-.proj-thumb{height:150px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.proj-thumb svg{width:64px;height:64px;filter:drop-shadow(0 4px 16px rgba(0,0,0,.5));transition:transform var(--med) var(--ease)}
-.proj-card:hover .proj-thumb svg{transform:scale(1.1)}
-.pt-1{background:linear-gradient(135deg,#0a1628,#0d2010)}.pt-2{background:linear-gradient(135deg,#1a0d37,#0a0028)}
-.pt-3{background:linear-gradient(135deg,#0a1628,#002020)}.pt-4{background:linear-gradient(135deg,#1a0d0d,#200800)}
-.pt-5{background:linear-gradient(135deg,#0a1628,#001a10)}.pt-6{background:linear-gradient(135deg,#0a1628,#0d0a30)}
-.proj-body{padding:var(--s3);flex:1;display:flex;flex-direction:column}
-.proj-cat{font-family:var(--f-mono);font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--cyan);margin-bottom:.4rem}
-.proj-title{font-family:var(--f-head);font-size:1rem;font-weight:700;color:var(--text-hi);margin-bottom:.55rem}
-.proj-desc{font-size:.825rem;color:var(--text-lo);line-height:1.6;margin-bottom:var(--s2);flex:1}
-.proj-stack{display:flex;flex-wrap:wrap;gap:.3rem}
-.proj-tag{padding:.18rem .6rem;border-radius:5px;font-family:var(--f-mono);font-size:.68rem;background:rgba(0,212,255,.07);color:var(--cyan);border:1px solid rgba(0,212,255,.12)}
-
-/* ═══ SERVICES ═══ */
-#services{background:var(--bg-0)}
-.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s2)}
-.srv-card{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--s4);
-  position:relative;overflow:hidden;cursor:default;
-  transition:border-color var(--fast) var(--ease),box-shadow var(--med) var(--ease);will-change:transform}
-.srv-card::after{content:'';position:absolute;inset:0;border-radius:var(--r-lg);
-  background:radial-gradient(circle at bottom right,rgba(0,212,255,.06),transparent 60%);opacity:0;transition:opacity var(--slow) var(--ease)}
-.srv-card:hover{border-color:var(--border-h);box-shadow:0 12px 36px rgba(0,0,0,.35)}
-.srv-card:hover::after{opacity:1}
-.srv-num{font-family:var(--f-mono);font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);opacity:.5;margin-bottom:var(--s2)}
-.srv-name{font-family:var(--f-head);font-size:1rem;font-weight:700;color:var(--text-hi);margin-bottom:.55rem}
-.srv-desc{font-size:.825rem;color:var(--text-lo);line-height:1.65}
-
-/* ═══ CONTACT ═══ */
-#contact{background:var(--bg-1)}
-.contact-inner{max-width:780px;margin:0 auto}
-.contact-links{display:flex;flex-wrap:wrap;gap:var(--s2);margin-bottom:var(--s4)}
-.clink{display:flex;align-items:center;gap:.65rem;padding:.9rem 1.5rem;border-radius:var(--r-md);
-  background:var(--bg-2);border:1px solid var(--border);color:var(--text-md);text-decoration:none;
-  font-size:.875rem;font-weight:500;cursor:pointer;transition:all var(--med) var(--ease)}
-.clink:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
-.clink-icon{width:18px;height:18px;flex-shrink:0;color:var(--cyan)}
-.contact-form{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s4)}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)}
-.fg{margin-bottom:var(--s2)}
-.fg label{display:block;font-size:.8rem;font-weight:500;color:var(--text-lo);margin-bottom:.4rem;font-family:var(--f-mono);letter-spacing:.03em}
-.fg input,.fg textarea{width:100%;padding:.8rem 1rem;border-radius:var(--r-sm);background:var(--bg-3);
-  border:1px solid rgba(255,255,255,.07);color:var(--text-hi);font-family:var(--f-body);font-size:.9rem;outline:none;
-  transition:border-color var(--fast) var(--ease)}
-.fg input::placeholder,.fg textarea::placeholder{color:var(--text-xs)}
-.fg input:focus,.fg textarea:focus{border-color:var(--cyan);background:rgba(0,212,255,.03)}
-.fg textarea{resize:vertical;min-height:110px}
-.form-submit{width:100%;padding:.95rem;margin-top:.25rem;border-radius:var(--r-sm);background:var(--cyan);color:#000;
-  border:none;cursor:pointer;font-family:var(--f-head);font-size:.95rem;font-weight:700;
-  transition:all var(--med) var(--spring)}
-.form-submit:hover{background:#33ddff;transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,212,255,.35)}
-
-footer{padding:var(--s4);text-align:center;border-top:1px solid var(--border);font-size:.8rem;color:var(--text-xs)}
-footer a{color:var(--cyan);text-decoration:none}
-
-/* ═══ SCROLL ANIMATIONS ═══ */
-.reveal,.reveal-left,.reveal-right{opacity:0;transition:opacity var(--slow) var(--ease),transform var(--slow) var(--ease)}
-.reveal{transform:translateY(24px)}.reveal-left{transform:translateX(-24px)}.reveal-right{transform:translateX(24px)}
-.reveal.visible,.reveal-left.visible,.reveal-right.visible{opacity:1;transform:none}
-.d1{transition-delay:80ms}.d2{transition-delay:160ms}.d3{transition-delay:240ms}
-.d4{transition-delay:320ms}.d5{transition-delay:400ms}.d6{transition-delay:480ms}
-
-/* ═══ MOBILE MENU ═══ */
-.mob-menu{position:fixed;top:60px;left:0;right:0;z-index:99;background:rgba(6,10,16,.97);backdrop-filter:blur(28px);border-bottom:1px solid var(--border);padding:var(--s4);display:none;flex-direction:column;gap:var(--s3)}
-.mob-menu.open{display:flex}
-.mob-menu a{color:var(--text-md);text-decoration:none;font-size:1rem;font-weight:500;padding:.5rem 0;border-bottom:1px solid var(--border);cursor:pointer}
-.mob-menu a:last-child{border:none;color:var(--cyan)}
-
-/* ═══ RESPONSIVE ═══ */
-@media(max-width:900px){
-  #hero{grid-template-columns:1fr;padding-top:calc(60px + var(--s6))}
-  .hero-visual{height:380px}
-  .fb{display:none}
-  .about-grid{grid-template-columns:1fr}
-  .form-row{grid-template-columns:1fr}
-  .nav-links,.nav-cta{display:none}
-  .nav-burger{display:flex}
+:root{
+  --bg:#000;
+  --cyan:#00d4ff;
+  --green:#3fb950;
+  --gold:#f59e0b;
+  --red:#ff5f57;
+  --yellow:#febc2e;
+  --dim:#1e4620;
+  --muted:#4a9e5c;
+  --txt:#c9d1d9;
 }
-@media(max-width:600px){
-  .wrap{padding:0 var(--s2)}.section-pad{padding:var(--s8) 0}
-  .hero-stats{gap:var(--s2)}.stat-num{font-size:1.5rem}
-  .hero-visual{height:310px}.card-wrap{width:300px}
-  .ws-card{padding:var(--s3) var(--s4)}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:14px}
+
+/* CRT scanlines */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:999;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.18) 2px,rgba(0,0,0,.18) 4px);
+}
+/* Vignette */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:998;
+  background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.7) 100%);
 }
 
-/* ═══ REDUCED MOTION ═══ */
+#bg-canvas{position:fixed;inset:0;z-index:0;opacity:.18}
+
+/* Matrix overlay */
+#matrix-overlay{display:none;position:fixed;inset:0;z-index:100;background:#000}
+#matrix-overlay.active{display:block}
+#matrix-canvas{width:100%;height:100%}
+#matrix-hint{
+  position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+  color:var(--green);font-size:12px;animation:blink 1s step-end infinite;
+}
+
+/* Terminal */
+#terminal{
+  position:relative;z-index:10;
+  display:flex;flex-direction:column;
+  height:100vh;max-width:900px;margin:0 auto;
+}
+
+/* Title bar */
+#term-bar{
+  flex-shrink:0;display:flex;align-items:center;gap:8px;
+  padding:8px 14px;
+  background:rgba(30,30,30,.95);
+  border-bottom:1px solid rgba(0,212,255,.2);
+  user-select:none;
+}
+.dot{width:12px;height:12px;border-radius:50%}
+.dot.r{background:var(--red)}
+.dot.y{background:var(--yellow)}
+.dot.g{background:var(--green)}
+#term-title{margin:0 auto;color:rgba(255,255,255,.5);font-size:12px;letter-spacing:.5px}
+
+/* Output */
+#output{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  padding:14px 16px 6px;
+  scroll-behavior:smooth;
+}
+#output::-webkit-scrollbar{width:4px}
+#output::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
+
+/* Input row */
+#input-row{
+  flex-shrink:0;display:flex;align-items:center;
+  padding:8px 16px 10px;
+  border-top:1px solid rgba(0,212,255,.1);
+  background:rgba(0,0,0,.6);
+}
+.p-user{color:var(--cyan)}
+.p-host{color:var(--green)}
+.p-sym{color:var(--cyan);margin-right:6px}
+.p-sep{color:#4a9e5c}
+#cmd-input{
+  flex:1;background:transparent;border:none;outline:none;
+  color:var(--txt);font-family:inherit;font-size:14px;caret-color:var(--green);
+}
+
+/* Quick bar */
+#quick-bar{
+  display:none;flex-shrink:0;flex-wrap:wrap;gap:6px;
+  padding:8px 10px;
+  background:rgba(10,10,10,.95);
+  border-top:1px solid rgba(0,212,255,.15);
+}
+@media(max-width:640px){
+  #quick-bar{display:flex}
+  html,body{font-size:13px}
+}
+.qbtn{
+  padding:5px 10px;border-radius:4px;
+  border:1px solid rgba(0,212,255,.3);
+  background:rgba(0,212,255,.06);color:var(--cyan);
+  font-family:inherit;font-size:12px;cursor:pointer;
+  transition:background .15s,border-color .15s;
+}
+.qbtn:hover,.qbtn:active{background:rgba(0,212,255,.18);border-color:var(--cyan)}
+
+/* Line types */
+.line{display:block;white-space:pre-wrap;word-break:break-word;line-height:1.65;min-height:1.1em}
+.line.empty{min-height:.85em}
+.line.dim{color:var(--muted)}
+.line.success{color:var(--green)}
+.line.error{color:#f85149}
+.line.warn{color:var(--gold)}
+.line.cmd-echo{color:rgba(0,212,255,.45)}
+
+/* Inline helpers */
+.c-cyan{color:var(--cyan)}
+.c-green{color:var(--green)}
+.c-gold{color:var(--gold)}
+.c-red{color:#f85149}
+.c-dim{color:var(--muted)}
+.c-white{color:#e6edf3}
+
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* Progress bars */
+.bar-wrap{display:inline-block;width:160px;height:10px;background:#111;border:1px solid #333;border-radius:2px;vertical-align:middle}
+.bar-fill{height:100%;border-radius:2px}
+.bar-hp{background:linear-gradient(90deg,#3fb950,#56d364)}
+.bar-exp{background:linear-gradient(90deg,#00d4ff,#79c0ff)}
+.bar-gold{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+@keyframes prog-fill{from{width:0}to{width:var(--pw)}}
+.bar-anim{animation:prog-fill .8s ease forwards}
+
+.ascii{color:var(--green);white-space:pre;font-size:11px;line-height:1.3;display:block}
+
 @media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
-  #hero-canvas{display:none}
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  #bg-canvas,#matrix-canvas{display:none}
 }
 </style>
 </head>
 <body>
 
-<!-- Effect layers -->
-<div class="grain"></div>
-<div class="grid-bg"></div>
-<div id="spotlight"></div>
+<canvas id="bg-canvas"></canvas>
 
-<!-- NAV -->
-<nav id="navbar">
-  <a href="#hero" class="nav-logo">
-    <div class="dot"></div>
-    Бекзат <span style="color:var(--text-lo);font-weight:400">Бекетов</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#about">О себе</a></li>
-    <li><a href="#experience">Опыт</a></li>
-    <li><a href="#skills">Навыки</a></li>
-    <li><a href="#projects">Проекты</a></li>
-    <li><a href="#services">Услуги</a></li>
-    <li><a href="#contact">Контакты</a></li>
-  </ul>
-  <a href="#contact" class="nav-cta">Написать</a>
-  <div class="nav-burger" id="burger" onclick="toggleMenu()" role="button" aria-label="Меню">
-    <span></span><span></span><span></span>
-  </div>
-</nav>
-<div class="mob-menu" id="mobMenu">
-  <a href="#about" onclick="toggleMenu()">О себе</a>
-  <a href="#experience" onclick="toggleMenu()">Опыт</a>
-  <a href="#skills" onclick="toggleMenu()">Навыки</a>
-  <a href="#projects" onclick="toggleMenu()">Проекты</a>
-  <a href="#services" onclick="toggleMenu()">Услуги</a>
-  <a href="#contact" onclick="toggleMenu()">Написать →</a>
+<div id="matrix-overlay">
+  <canvas id="matrix-canvas"></canvas>
+  <div id="matrix-hint">[ Ctrl+C или подождите 10 секунд для выхода ]</div>
 </div>
 
-<!-- ═══ HERO ═══ -->
-<section id="hero">
-  <canvas id="hero-canvas" aria-hidden="true"></canvas>
-
-  <div style="max-width:580px">
-    <div class="hero-badge reveal">⚡ Открыт к проектам · Астана, Казахстан</div>
-    <h1 class="hero-name reveal d1">Бекзат<br><span class="accent">Бекетов</span></h1>
-    <div class="hero-roles reveal d2"><span id="typewriter" class="tw-cursor">Инженер-программист</span></div>
-    <p class="hero-desc reveal d3">
-      Создаю программно-аппаратные комплексы с нуля — от <strong>схемотехники и прошивок</strong> до <strong>веб-порталов и систем машинного зрения</strong>. Автоматизирую производства, разрабатываю IoT-устройства и станки на базе ЧПУ.
-    </p>
-    <div class="hero-btns reveal d4">
-      <a href="#projects" class="btn-primary">Мои проекты →</a>
-      <a href="#contact" class="btn-secondary">Связаться</a>
-    </div>
-    <div class="hero-stats reveal d5">
-      <div><div class="stat-num"><span data-count="9" data-suffix="+">9+</span></div><div class="stat-label">Лет опыта</div></div>
-      <div><div class="stat-num"><span data-count="50" data-suffix="+">50+</span></div><div class="stat-label">Проектов</div></div>
-      <div><div class="stat-num stat-ws">🏆</div><div class="stat-label">Главный эксперт РК</div></div>
-    </div>
+<div id="terminal">
+  <div id="term-bar">
+    <span class="dot r"></span>
+    <span class="dot y"></span>
+    <span class="dot g"></span>
+    <span id="term-title">bekzat@portfolio: ~</span>
   </div>
 
-  <div class="hero-right reveal-right">
-    <div class="hero-visual">
-      <!-- SVG circuit decoration -->
-      <svg class="circuit-deco" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M40 260H130V175H265V108" stroke="#00d4ff" stroke-width="1.2" fill="none"/>
-        <circle cx="265" cy="108" r="4" fill="#00d4ff"/>
-        <circle cx="130" cy="175" r="3" fill="rgba(0,212,255,.55)"/>
-        <path d="M480 260H390V345H265V412" stroke="#00d4ff" stroke-width="1.2" fill="none"/>
-        <circle cx="265" cy="412" r="4" fill="#00d4ff"/>
-        <circle cx="390" cy="345" r="3" fill="rgba(0,212,255,.55)"/>
-        <path d="M130 390H190V360" stroke="rgba(0,212,255,.4)" stroke-width="1" fill="none"/>
-        <path d="M390 98H330V135" stroke="rgba(0,212,255,.4)" stroke-width="1" fill="none"/>
-        <rect x="253" y="96" width="24" height="24" rx="4" stroke="rgba(0,212,255,.35)" stroke-width="1" fill="none"/>
-        <rect x="253" y="400" width="24" height="24" rx="4" stroke="rgba(0,212,255,.35)" stroke-width="1" fill="none"/>
-      </svg>
+  <div id="output" role="log" aria-live="polite" aria-label="Terminal output"></div>
 
-      <!-- Animated border card -->
-      <div class="card-wrap">
-        <div class="hero-card">
-          <div class="hc-bar">
-            <div class="hc-dot hc-dot-r"></div>
-            <div class="hc-dot hc-dot-y"></div>
-            <div class="hc-dot hc-dot-g"></div>
-            <div class="hc-bar-title">bekzat@iot:~</div>
-          </div>
-          <div class="terminal-body">
-            <span class="t-line"><span class="t-prompt">$</span> <span class="t-cmd">whoami</span></span>
-            <span class="t-line" style="color:var(--text-md)">Bekzat Beketov · Engineer</span>
-            <span class="t-line">&nbsp;</span>
-            <span class="t-line"><span class="t-prompt">$</span> <span class="t-cmd">cat skills.json</span></span>
-            <span class="t-line" style="color:var(--text-md)">{</span>
-            <span class="t-line">&nbsp;&nbsp;<span class="t-key">"embedded"</span>: <span class="t-val">["ESP32","STM32"]</span>,</span>
-            <span class="t-line">&nbsp;&nbsp;<span class="t-key">"vision"&nbsp;&nbsp;</span>: <span class="t-val">["OpenCV","YOLOv8"]</span>,</span>
-            <span class="t-line">&nbsp;&nbsp;<span class="t-key">"cnc"&nbsp;&nbsp;&nbsp;&nbsp;</span>: <span class="t-val">["GRBL","Modbus"]</span>,</span>
-            <span class="t-line">&nbsp;&nbsp;<span class="t-key">"iot"&nbsp;&nbsp;&nbsp;&nbsp;</span>: <span class="t-val">["MQTT","Firebase"]</span></span>
-            <span class="t-line" style="color:var(--text-md)">}</span>
-            <span class="t-line">&nbsp;</span>
-            <span class="t-line"><span class="t-prompt">$</span> <span class="t-cmd">status</span></span>
-            <span class="t-line"><span class="t-val">✓</span> Открыт к проектам <span class="t-comment">// 9+ лет</span></span>
-            <span class="t-line"><span class="t-prompt">$</span> <span class="t-cursor"></span></span>
-          </div>
-          <div class="hc-leds">
-            <div class="led-dot g"></div><span class="hc-led-lbl">Online</span>
-            <div class="led-dot c" style="margin-left:.6rem"></div><span class="hc-led-lbl">IoT</span>
-            <div class="led-dot y" style="margin-left:.6rem"></div><span class="hc-led-lbl">CNC</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Floating badges with SVG icons -->
-      <div class="fb fb-1">
-        <svg class="fb-icon" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 7V5M12 7V4M15 7V5M9 17v2M12 17v3M15 17v2M7 9H5M7 12H4M7 15H5M17 9h2M17 12h3M17 15h2"/></svg>
-        <div><div class="fb-text">ESP32 · STM32</div><div class="fb-sub">Embedded</div></div>
-      </div>
-      <div class="fb fb-2">
-        <svg class="fb-icon" viewBox="0 0 24 24" style="color:var(--gold)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        <div><div class="fb-text">WorldSkills</div><div class="fb-sub" style="color:var(--gold)">Главный эксперт РК</div></div>
-      </div>
-      <div class="fb fb-3">
-        <svg class="fb-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        <div><div class="fb-text">Machine Vision</div><div class="fb-sub">YOLOv8 · OpenCV</div></div>
-      </div>
-    </div>
+  <div id="input-row">
+    <span class="p-user">bekzat</span><span class="p-sep">@</span><span class="p-host">portfolio</span><span class="p-sep">:</span><span class="p-sym">~$&nbsp;</span>
+    <input id="cmd-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input">
   </div>
-</section>
 
-<!-- ═══ ABOUT ═══ -->
-<section id="about" class="section-pad">
-  <div class="wrap">
-    <div class="about-grid">
-      <div class="reveal-left">
-        <div class="sec-eyebrow">О себе</div>
-        <h2 class="sec-title">Инженер полного цикла</h2>
-        <div class="about-body">
-          <p>Более <strong>9 лет</strong> на стыке железа и программного обеспечения. От преподавания Arduino студентам — до позиции Главного инженера на заводе и собственного ИП.</p>
-          <p><strong>Веду проекты под ключ</strong>: принимаю заказ, составляю ТЗ, проектирую электронику, пишу прошивки, разрабатываю веб-порталы и сдаю клиенту готовый продукт.</p>
-          <p>Эксперт <strong>WorldSkills</strong> — Главный эксперт компетенции <strong>«Мобильная робототехника»</strong> города Астана, заместитель главного эксперта Республики Казахстан.</p>
-        </div>
-        <div class="about-tags">
-          <span class="tag">ESP32</span><span class="tag">STM32</span><span class="tag">Arduino</span>
-          <span class="tag">Raspberry Pi</span><span class="tag">OpenCV</span><span class="tag">YOLOv8</span>
-          <span class="tag">C/C++</span><span class="tag">C#</span><span class="tag">Java</span>
-          <span class="tag">Node.js</span><span class="tag">PHP</span><span class="tag">Android</span>
-          <span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span class="tag">Firebase</span>
-          <span class="tag">Docker</span><span class="tag">Fusion 360</span><span class="tag">G-code</span>
-          <span class="tag">MQTT</span><span class="tag">Modbus</span><span class="tag">3D-печать</span>
-        </div>
-      </div>
-      <div class="info-list reveal-right">
-        <div class="info-item reveal d1">
-          <div class="info-icon-box">
-            <svg class="info-icon-svg sk-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <div><h4>Местоположение</h4><p>Астана, Казахстан · Готов к командировкам · Удалённо</p></div>
-        </div>
-        <div class="info-item reveal d2">
-          <div class="info-icon-box">
-            <svg class="info-icon-svg sk-icon" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/></svg>
-          </div>
-          <div><h4>Текущий статус</h4><p>ИП Бекетов — принимаю заказы, веду проекты, управляю командой</p></div>
-        </div>
-        <div class="info-item reveal d3">
-          <div class="info-icon-box">
-            <svg class="info-icon-svg sk-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>
-          </div>
-          <div><h4>Специализация</h4><p>Встраиваемые системы, IoT, CNC/ЧПУ, машинное зрение, автоматизация, Web</p></div>
-        </div>
-        <div class="info-item reveal d4">
-          <div class="info-icon-box">
-            <svg class="info-icon-svg sk-icon" viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
-          </div>
-          <div><h4>Языки</h4><p>Казахский — родной &nbsp;·&nbsp; Русский — C2 &nbsp;·&nbsp; English — B1</p></div>
-        </div>
-        <div class="info-item reveal d5">
-          <div class="info-icon-box">
-            <svg class="info-icon-svg sk-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.72 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.66 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          </div>
-          <div><h4>Контакт</h4><p><a href="tel:+77008001233" style="color:var(--cyan);text-decoration:none">+7 (700) 800-12-33</a> &nbsp;·&nbsp; beketovekb@gmail.com</p></div>
-        </div>
-      </div>
-    </div>
+  <div id="quick-bar">
+    <button class="qbtn" data-cmd="help">help</button>
+    <button class="qbtn" data-cmd="whoami">whoami</button>
+    <button class="qbtn" data-cmd="ls skills">ls skills</button>
+    <button class="qbtn" data-cmd="ls projects">ls projects</button>
+    <button class="qbtn" data-cmd="cat about.txt">about</button>
+    <button class="qbtn" data-cmd="./experience">experience</button>
+    <button class="qbtn" data-cmd="contact">contact</button>
+    <button class="qbtn" data-cmd="matrix">matrix</button>
   </div>
-</section>
-
-<!-- ═══ EXPERIENCE ═══ -->
-<section id="experience" class="section-pad">
-  <div class="wrap">
-    <div class="exp-header reveal">
-      <div class="sec-eyebrow" style="justify-content:center">Карьера</div>
-      <h2 class="sec-title">9 лет опыта</h2>
-      <p class="sec-sub">От преподавателя до руководителя ИП и главного инженера завода</p>
-    </div>
-    <div class="timeline">
-      <div class="t-item reveal d1"><div class="t-node"></div>
-        <div class="t-card">
-          <div class="t-head"><span class="t-company">ИП Бекетов</span><span class="t-period">Окт 2024 — настоящее время</span></div>
-          <div class="t-role">Руководитель / Фрилансер</div>
-          <div class="t-desc">Работа с клиентами: принятие заказа, составление ТЗ, ведение проекта, управление командой. Типы: Web-порталы, Smart-устройства, станки, 3D-печать, машинное зрение, голосовые ассистенты, игры.</div>
-        </div>
-      </div>
-      <div class="t-item reveal d2"><div class="t-node"></div>
-        <div class="t-card">
-          <div class="t-head"><span class="t-company">PowerTech — Казахстанский завод энергетических решений</span><span class="t-period">Янв 2024 — Окт 2024</span></div>
-          <div class="t-role">Главный инженер</div>
-          <div class="t-desc">Пусконаладка оборудования, разработка плат, прошивок, ПО и веб-порталов. Автоматизация производственной линии завода.</div>
-        </div>
-      </div>
-      <div class="t-item reveal d3"><div class="t-node"></div>
-        <div class="t-card">
-          <div class="t-head"><span class="t-company">Advanced System Hardware</span><span class="t-period">Май 2023 — Фев 2024</span></div>
-          <div class="t-role">Инженер-программист</div>
-          <div class="t-desc">Пусконаладка оборудования, разработка плат, прошивок и веб-порталов. Автоматизация производственных процессов.</div>
-        </div>
-      </div>
-      <div class="t-item reveal d4"><div class="t-node"></div>
-        <div class="t-card">
-          <div class="t-head"><span class="t-company">Regulus Robotics Machine</span><span class="t-period">Дек 2021 — Июн 2022</span></div>
-          <div class="t-role">Инженер-разработчик</div>
-          <div class="t-desc">Робототехника, разработка программного обеспечения для роботизированных систем.</div>
-        </div>
-      </div>
-      <div class="t-item reveal d5"><div class="t-node"></div>
-        <div class="t-card">
-          <div class="t-head"><span class="t-company">Высший колледж "Astana Polytechnic"</span><span class="t-period">Ноя 2019 — Июн 2022</span></div>
-          <div class="t-role">Руководитель лаборатории робототехники</div>
-          <div class="t-desc">C#, C++, JS, Java, Android. Подготовка участников к WorldSkills. Главный эксперт г. Астана, заместитель главного эксперта РК.</div>
-        </div>
-      </div>
-      <div class="t-item reveal d6"><div class="t-node"></div>
-        <div class="t-card">
-          <div class="t-head"><span class="t-company">АЙТИ ШАГ</span><span class="t-period">Ноя 2015 — Май 2018</span></div>
-          <div class="t-role">Преподаватель</div>
-          <div class="t-desc">Преподавание робототехники (Arduino, Lego EV3), программирования (C#, C++). Обслуживание компьютерной техники.</div>
-        </div>
-      </div>
-      <div class="ws-card reveal">
-        <svg class="ws-icon" width="48" height="48" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        <div>
-          <h4>WorldSkills — Главный эксперт · Мобильная робототехника</h4>
-          <p>Главный эксперт компетенции <strong style="color:var(--gold)">«Мобильная робототехника»</strong> города Астана · Заместитель главного эксперта Республики Казахстан · Подготовка участников к международным чемпионатам профессионального мастерства</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ SKILLS ═══ -->
-<section id="skills" class="section-pad">
-  <div class="wrap">
-    <div class="reveal" style="text-align:center;margin-bottom:var(--s8)">
-      <div class="sec-eyebrow" style="justify-content:center">Технологии</div>
-      <h2 class="sec-title">Стек и навыки</h2>
-    </div>
-    <div class="skills-grid">
-      <!-- Embedded Systems -->
-      <div class="skill-card reveal d1">
-        <svg class="sk-icon" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 7V5M12 7V4M15 7V5M9 17v2M12 17v3M15 17v2M7 9H5M7 12H4M7 15H5M17 9h2M17 12h3M17 15h2"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
-        <div class="sk-name">Встраиваемые системы</div>
-        <div class="sk-desc">Разработка устройств на микроконтроллерах, схемотехника, PCB-дизайн, прошивки.</div>
-        <div class="sk-tags"><span class="sk-tag">STM32</span><span class="sk-tag">ESP32/8266</span><span class="sk-tag">Arduino</span><span class="sk-tag">AVR</span><span class="sk-tag">C/C++</span></div>
-      </div>
-      <!-- Machine Vision -->
-      <div class="skill-card reveal d2">
-        <svg class="sk-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="1" fill="currentColor"/><line x1="12" y1="4" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="20"/></svg>
-        <div class="sk-name">Машинное зрение</div>
-        <div class="sk-desc">Обработка изображений, распознавание объектов и дефектов, нейросети на устройствах.</div>
-        <div class="sk-tags"><span class="sk-tag">OpenCV</span><span class="sk-tag">YOLOv8</span><span class="sk-tag">Python</span><span class="sk-tag">Raspberry Pi</span></div>
-      </div>
-      <!-- CNC -->
-      <div class="skill-card reveal d3">
-        <svg class="sk-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        <div class="sk-name">ЧПУ · Станки</div>
-        <div class="sk-desc">Разработка и пусконаладка станков: фрезер, пескоструй, лазер. G-code, кинематика.</div>
-        <div class="sk-tags"><span class="sk-tag">G-code</span><span class="sk-tag">GRBL</span><span class="sk-tag">Modbus</span><span class="sk-tag">Fusion 360</span></div>
-      </div>
-      <!-- IoT -->
-      <div class="skill-card reveal d4">
-        <svg class="sk-icon" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
-        <div class="sk-name">IoT системы</div>
-        <div class="sk-desc">Подключённые устройства, облачная интеграция, мониторинг в реальном времени.</div>
-        <div class="sk-tags"><span class="sk-tag">MQTT</span><span class="sk-tag">LoRa</span><span class="sk-tag">Firebase</span><span class="sk-tag">Node-RED</span></div>
-      </div>
-      <!-- Web -->
-      <div class="skill-card reveal d5">
-        <svg class="sk-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        <div class="sk-name">Web-разработка</div>
-        <div class="sk-desc">Порталы управления устройствами, дашборды, мобильные Android-приложения.</div>
-        <div class="sk-tags"><span class="sk-tag">Node.js</span><span class="sk-tag">PHP</span><span class="sk-tag">Android</span><span class="sk-tag">PostgreSQL</span><span class="sk-tag">Docker</span></div>
-      </div>
-      <!-- 3D Print -->
-      <div class="skill-card reveal d6">
-        <svg class="sk-icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-        <div class="sk-name">3D-печать и прототипинг</div>
-        <div class="sk-desc">Проектирование корпусов в Fusion 360, FDM-печать, мелкосерийное производство.</div>
-        <div class="sk-tags"><span class="sk-tag">Fusion 360</span><span class="sk-tag">FDM</span><span class="sk-tag">Слайсеры</span><span class="sk-tag">3D-моделирование</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ PROJECTS ═══ -->
-<section id="projects" class="section-pad">
-  <div class="wrap">
-    <div class="reveal" style="text-align:center;margin-bottom:var(--s8)">
-      <div class="sec-eyebrow" style="justify-content:center">Портфолио</div>
-      <h2 class="sec-title">Избранные проекты</h2>
-    </div>
-    <div class="proj-grid">
-      <div class="proj-card reveal d1">
-        <div class="proj-thumb pt-1">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-cat">ЧПУ · Станки</div>
-          <div class="proj-title">Фрезерный станок с ЧПУ</div>
-          <div class="proj-desc">Проектирование и сборка фрезерного станка с нуля: кинематика, электроника, прошивка, веб-интерфейс управления. Пусконаладка на объекте клиента.</div>
-          <div class="proj-stack"><span class="proj-tag">GRBL</span><span class="proj-tag">ESP32</span><span class="proj-tag">Fusion 360</span><span class="proj-tag">Node.js</span></div>
-        </div>
-      </div>
-      <div class="proj-card reveal d2">
-        <div class="proj-thumb pt-2">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-cat">Machine Vision</div>
-          <div class="proj-title">Контроль качества на производстве</div>
-          <div class="proj-desc">Автоматическое обнаружение дефектов на производственной линии. Обучение нейросети на собственном датасете, интеграция с оборудованием.</div>
-          <div class="proj-stack"><span class="proj-tag">OpenCV</span><span class="proj-tag">YOLOv8</span><span class="proj-tag">Python</span><span class="proj-tag">Raspberry Pi</span></div>
-        </div>
-      </div>
-      <div class="proj-card reveal d3">
-        <div class="proj-thumb pt-3">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="#00d4ff"/></svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-cat">IoT · Автоматизация завода</div>
-          <div class="proj-title">PowerTech — автоматизация производства</div>
-          <div class="proj-desc">Разработка плат, прошивок и веб-портала для мониторинга и управления производством на Казахстанском заводе энергетических решений.</div>
-          <div class="proj-stack"><span class="proj-tag">STM32</span><span class="proj-tag">MQTT</span><span class="proj-tag">PHP</span><span class="proj-tag">PostgreSQL</span></div>
-        </div>
-      </div>
-      <div class="proj-card reveal d4">
-        <div class="proj-thumb pt-4">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-cat">Разработка игр</div>
-          <div class="proj-title">Мобильная игра под Android</div>
-          <div class="proj-desc">Разработка мобильной игры: геймплей, физика, графика, публикация в Google Play, интеграция с Firebase.</div>
-          <div class="proj-stack"><span class="proj-tag">Android SDK</span><span class="proj-tag">Java</span><span class="proj-tag">Firebase</span></div>
-        </div>
-      </div>
-      <div class="proj-card reveal d5">
-        <div class="proj-thumb pt-5">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-cat">AI · Голосовой ассистент</div>
-          <div class="proj-title">Голосовой ассистент на базе ИИ</div>
-          <div class="proj-desc">Кастомный голосовой ассистент: распознавание речи, NLU, интеграция с умным домом и API. Работа офлайн на встраиваемом устройстве.</div>
-          <div class="proj-stack"><span class="proj-tag">Python</span><span class="proj-tag">STT/TTS</span><span class="proj-tag">Raspberry Pi</span><span class="proj-tag">MQTT</span></div>
-        </div>
-      </div>
-      <div class="proj-card reveal d6">
-        <div class="proj-thumb pt-6">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-cat">Web · Порталы</div>
-          <div class="proj-title">Веб-порталы управления оборудованием</div>
-          <div class="proj-desc">Корпоративные порталы для удалённого мониторинга и управления оборудованием в реальном времени с WebSocket.</div>
-          <div class="proj-stack"><span class="proj-tag">Node.js</span><span class="proj-tag">PHP</span><span class="proj-tag">Docker</span><span class="proj-tag">MySQL</span><span class="proj-tag">WebSocket</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ SERVICES ═══ -->
-<section id="services" class="section-pad">
-  <div class="wrap">
-    <div class="reveal" style="text-align:center;margin-bottom:var(--s8)">
-      <div class="sec-eyebrow" style="justify-content:center">Услуги</div>
-      <h2 class="sec-title">Чем могу помочь</h2>
-      <p class="sec-sub" style="margin:0 auto">Берусь за проект от идеи до сдачи клиенту — под ключ</p>
-    </div>
-    <div class="services-grid">
-      <div class="srv-card reveal d1">
-        <div class="srv-num">01</div>
-        <svg class="srv-icon sk-icon" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 7V5M12 7V4M15 7V5M9 17v2M12 17v3M15 17v2M7 9H5M7 12H4M7 15H5M17 9h2M17 12h3M17 15h2"/></svg>
-        <div class="srv-name">Разработка устройств под ключ</div>
-        <div class="srv-desc">Проектирование PCB, прошивки, корпус (3D-печать). От ТЗ до готового устройства.</div>
-      </div>
-      <div class="srv-card reveal d2">
-        <div class="srv-num">02</div>
-        <svg class="srv-icon sk-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        <div class="srv-name">Разработка и пусконаладка станков</div>
-        <div class="srv-desc">Фрезерные, пескоструйные, лазерные станки. Модернизация оборудования.</div>
-      </div>
-      <div class="srv-card reveal d3">
-        <div class="srv-num">03</div>
-        <svg class="srv-icon sk-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
-        <div class="srv-name">Машинное зрение</div>
-        <div class="srv-desc">Контроль качества, распознавание объектов, считывание кодов, дефектоскопия.</div>
-      </div>
-      <div class="srv-card reveal d4">
-        <div class="srv-num">04</div>
-        <svg class="srv-icon sk-icon" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
-        <div class="srv-name">IoT · Smart-устройства</div>
-        <div class="srv-desc">Умные устройства с облачной интеграцией, мониторинг в реальном времени.</div>
-      </div>
-      <div class="srv-card reveal d5">
-        <div class="srv-num">05</div>
-        <svg class="srv-icon sk-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        <div class="srv-name">Web-порталы и автоматизация</div>
-        <div class="srv-desc">Порталы управления оборудованием, автоматизация бизнес-процессов.</div>
-      </div>
-      <div class="srv-card reveal d6">
-        <div class="srv-num">06</div>
-        <svg class="srv-icon sk-icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-        <div class="srv-name">3D-печать и прототипирование</div>
-        <div class="srv-desc">Fusion 360, печать прототипов, корпусов, мелкосерийное производство.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ CONTACT ═══ -->
-<section id="contact" class="section-pad">
-  <div class="wrap">
-    <div class="reveal" style="text-align:center;margin-bottom:var(--s6)">
-      <div class="sec-eyebrow" style="justify-content:center">Контакты</div>
-      <h2 class="sec-title">Обсудим проект</h2>
-      <p class="sec-sub" style="margin:.5rem auto 0">Опишите задачу — отвечу в течение нескольких часов</p>
-    </div>
-    <div class="contact-inner">
-      <div class="contact-links reveal">
-        <a href="tel:+77008001233" class="clink">
-          <svg class="clink-icon sk-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.72 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.66 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          +7 (700) 800-12-33
-        </a>
-        <a href="mailto:beketovekb@gmail.com" class="clink">
-          <svg class="clink-icon sk-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          beketovekb@gmail.com
-        </a>
-        <a href="https://t.me/beketovekb" class="clink" target="_blank" rel="noopener">
-          <svg class="clink-icon sk-icon" viewBox="0 0 24 24"><path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-16.5 6.75a2.25 2.25 0 0 0 .126 4.238l3.918 1.176 1.56 5.043a.75.75 0 0 0 1.284.249l2.316-2.671 4.365 3.207a2.25 2.25 0 0 0 3.438-1.444l2.52-15.75a2.25 2.25 0 0 0-2.005-2.013z"/></svg>
-          Telegram
-        </a>
-        <a href="https://wa.me/77008001233" class="clink" target="_blank" rel="noopener">
-          <svg class="clink-icon sk-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
-          WhatsApp
-        </a>
-      </div>
-      <div class="contact-form reveal">
-        <form onsubmit="handleForm(event)">
-          <div class="form-row">
-            <div class="fg"><label for="f-name">Ваше имя</label><input id="f-name" type="text" placeholder="Алмас Сейткали" required></div>
-            <div class="fg"><label for="f-phone">Телефон / Telegram</label><input id="f-phone" type="text" placeholder="+7 777 000 00 00"></div>
-          </div>
-          <div class="fg"><label for="f-email">Email</label><input id="f-email" type="email" placeholder="example@mail.kz"></div>
-          <div class="fg"><label for="f-msg">Опишите задачу</label><textarea id="f-msg" placeholder="Расскажите о проекте: что нужно сделать, сроки, бюджет…"></textarea></div>
-          <button type="submit" class="form-submit">Отправить заявку →</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <p>© 2026 &nbsp;<strong style="color:var(--cyan)">Бекзат Бекетов</strong> &nbsp;—&nbsp; Инженер-программист · IoT · Автоматизация · Астана, Казахстан</p>
-  <p style="margin-top:.4rem"><a href="mailto:beketovekb@gmail.com">beketovekb@gmail.com</a> &nbsp;·&nbsp; <a href="tel:+77008001233">+7 (700) 800-12-33</a></p>
-</footer>
+</div>
 
 <script>
-/* ─── Scroll reveal ─── */
-const revealObs = new IntersectionObserver(
-  entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-  { threshold: 0.07, rootMargin: '0px 0px -40px 0px' }
-);
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => revealObs.observe(el));
+'use strict';
 
-/* ─── Nav scroll ─── */
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-links a');
-window.addEventListener('scroll', () => {
-  let cur = '';
-  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 90) cur = s.id; });
-  navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + cur));
-  document.getElementById('navbar').style.background =
-    window.scrollY > 40 ? 'rgba(0,0,0,.9)' : 'rgba(0,0,0,.7)';
-}, { passive: true });
+// ── Background rain ──────────────────────────────────────────────────────────
+(function(){
+  const cv=document.getElementById('bg-canvas');
+  const ctx=cv.getContext('2d');
+  const chars='01アイウエオカキクケコABCDEF0123456789';
+  let cols,drops;
+  function resize(){
+    cv.width=innerWidth;cv.height=innerHeight;
+    cols=Math.floor(innerWidth/16);
+    drops=Array.from({length:cols},()=>Math.random()*-100|0);
+  }
+  resize();addEventListener('resize',resize);
+  let last=0;
+  function draw(ts){
+    if(document.hidden){requestAnimationFrame(draw);return}
+    if(ts-last<80){requestAnimationFrame(draw);return}
+    last=ts;
+    ctx.fillStyle='rgba(0,0,0,0.08)';ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.fillStyle='#3fb950';ctx.font='13px JetBrains Mono,monospace';
+    for(let i=0;i<cols;i++){
+      ctx.fillText(chars[Math.random()*chars.length|0],i*16,drops[i]*16);
+      if(drops[i]*16>cv.height&&Math.random()>.975)drops[i]=0;
+      drops[i]++;
+    }
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
 
-/* ─── Mobile menu ─── */
-function toggleMenu() { document.getElementById('mobMenu').classList.toggle('open'); }
+// ── Matrix fullscreen ────────────────────────────────────────────────────────
+let matrixActive=false,matrixTimer=null;
+(function(){
+  const overlay=document.getElementById('matrix-overlay');
+  const cv=document.getElementById('matrix-canvas');
+  const ctx=cv.getContext('2d');
+  const chars='アイウエオカキクケコサシスセソ0123456789ABCDEF';
+  let cols,drops,raf;
+  function resize(){cv.width=innerWidth;cv.height=innerHeight;cols=Math.floor(innerWidth/14);drops=Array(cols).fill(1)}
+  function step(){
+    ctx.fillStyle='rgba(0,0,0,0.05)';ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.font='13px JetBrains Mono,monospace';
+    for(let i=0;i<cols;i++){
+      ctx.fillStyle=Math.random()>.98?'#fff':'#3fb950';
+      ctx.fillText(chars[Math.random()*chars.length|0],i*14,drops[i]*14);
+      if(drops[i]*14>cv.height&&Math.random()>.975)drops[i]=0;
+      drops[i]++;
+    }
+    raf=requestAnimationFrame(step);
+  }
+  window.startMatrix=function(dur){
+    if(matrixActive)return;
+    matrixActive=true;resize();
+    ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
+    overlay.classList.add('active');step();
+    if(dur)matrixTimer=setTimeout(stopMatrix,dur);
+  };
+  window.stopMatrix=function(){
+    if(!matrixActive)return;
+    matrixActive=false;cancelAnimationFrame(raf);
+    overlay.classList.remove('active');
+    if(matrixTimer){clearTimeout(matrixTimer);matrixTimer=null}
+  };
+  document.addEventListener('keydown',e=>{
+    if(matrixActive&&e.key==='c'&&e.ctrlKey){e.preventDefault();stopMatrix()}
+  });
+  addEventListener('resize',()=>{if(matrixActive)resize()});
+})();
 
-/* ─── Form ─── */
-function handleForm(e) {
-  e.preventDefault();
-  const btn = e.target.querySelector('.form-submit');
-  btn.textContent = '✓ Отправлено! Скоро свяжусь.';
-  btn.style.background = '#10b981';
-  setTimeout(() => { btn.textContent = 'Отправить заявку →'; btn.style.background = ''; e.target.reset(); }, 3500);
+// ── Terminal ─────────────────────────────────────────────────────────────────
+const out=document.getElementById('output');
+const inp=document.getElementById('cmd-input');
+let hist=[],hIdx=-1;
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function print(html,cls,delay){
+  return new Promise(res=>{
+    setTimeout(()=>{
+      const s=document.createElement('span');
+      s.className='line '+(cls||'');
+      s.innerHTML=html;
+      out.appendChild(s);
+      out.scrollTop=out.scrollHeight;
+      res();
+    },delay||0);
+  });
+}
+const nl=(d)=>print('','empty',d);
+
+async function lines(arr,base,step){
+  base=base||0;step=step||0;
+  for(let i=0;i<arr.length;i++){
+    const l=arr[i];
+    if(typeof l==='string')await print(l,'',base+i*step);
+    else await print(l.t||'',l.c||'',base+(l.d!=null?l.d:i*step));
+  }
 }
 
-/* ─── Spotlight ─── */
-const spotlight = document.getElementById('spotlight');
-document.addEventListener('mousemove', e => {
-  spotlight.style.setProperty('--sx', e.clientX + 'px');
-  spotlight.style.setProperty('--sy', e.clientY + 'px');
-}, { passive: true });
+// ── Commands ─────────────────────────────────────────────────────────────────
+async function cmdHelp(){
+  await lines([
+    {t:'',c:'empty'},
+    {t:'<span class="c-cyan">╔══════════════════════════════════════════════════╗</span>'},
+    {t:'<span class="c-cyan">║</span>  <span class="c-white">BEKZAT PORTFOLIO OS v2.6</span>  —  Available commands  <span class="c-cyan">║</span>'},
+    {t:'<span class="c-cyan">╚══════════════════════════════════════════════════╝</span>'},
+    {t:'',c:'empty'},
+    {t:'  <span class="c-cyan">whoami</span>          — Профиль и статистика'},
+    {t:'  <span class="c-cyan">ls skills</span>       — Навыки и технологии'},
+    {t:'  <span class="c-cyan">ls projects</span>     — Список проектов'},
+    {t:'  <span class="c-cyan">cat about.txt</span>   — О себе'},
+    {t:'  <span class="c-cyan">cat cv.txt</span>      — Резюме краткое'},
+    {t:'  <span class="c-cyan">cat [project].txt</span>— Детали проекта'},
+    {t:'  <span class="c-cyan">./experience</span>    — Опыт работы / Timeline'},
+    {t:'  <span class="c-cyan">contact</span>         — Контакты'},
+    {t:'  <span class="c-cyan">clear</span>           — Очистить терминал'},
+    {t:'',c:'empty'},
+    {t:'  <span class="c-gold">★ Easter eggs:</span>  sudo hire me · matrix · ping bekzat · nmap skills'},
+    {t:'',c:'empty'},
+  ]);
+}
 
-/* ─── Hero canvas — particle network ─── */
-(function () {
-  const canvas = document.getElementById('hero-canvas');
-  if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const ctx = canvas.getContext('2d');
-  const NODES = ['ESP32','STM32','MQTT','OpenCV','GRBL','Docker','Firebase','Python','YOLOv8','Node.js'];
-  const N = 52;
-  const DIST = 130;
-  const DIST_SQ = DIST * DIST;
-  let W, H, pts, raf;
-  let mouse = { x: -9999, y: -9999 };
-
-  function resize() {
-    W = canvas.offsetWidth; H = canvas.offsetHeight;
-    canvas.width = W; canvas.height = H;
-  }
-
-  class Pt {
-    constructor(i) {
-      this.x = Math.random() * W; this.y = Math.random() * H;
-      this.vx = (Math.random() - .5) * .32; this.vy = (Math.random() - .5) * .32;
-      this.r = Math.random() * 1.1 + .4;
-      this.label = i < NODES.length ? NODES[i] : null;
-      this.phase = Math.random() * Math.PI * 2;
+async function cmdWhoami(){
+  await lines([
+    {t:'',c:'empty'},
+    {t:'<span class="c-green">┌─────────────────────────────────────────────┐</span>'},
+    {t:'<span class="c-green">│</span>  <span class="c-cyan">BEKZAT BEKETOV</span>  <span class="c-dim">// IoT &amp; Flutter Engineer</span>     <span class="c-green">│</span>'},
+    {t:'<span class="c-green">│</span>  📍 Astana, Kazakhstan                      <span class="c-green">│</span>'},
+    {t:'<span class="c-green">│</span>  🏆 WorldSkills Kazakhstan Champion 2022/23  <span class="c-green">│</span>'},
+    {t:'<span class="c-green">└─────────────────────────────────────────────┘</span>'},
+    {t:'',c:'empty'},
+    {t:'  HP    <span id="bar-hp"></span>  <span class="c-green">100/100</span>  <span class="c-dim">(motivated)</span>'},
+    {t:'  EXP   <span id="bar-exp"></span>  <span class="c-cyan">4 years</span>'},
+    {t:'  GOLD  <span id="bar-gld"></span>  <span class="c-gold">WorldSkills x2</span>'},
+    {t:'',c:'empty'},
+    {t:'  Role:    <span class="c-white">Инженер-программист · IoT · Flutter · Machine Vision</span>'},
+    {t:'  Lang:    <span class="c-white">Казахский 🇰🇿  Русский 🇷🇺  English 🇬🇧</span>'},
+    {t:'  Status:  <span class="c-green">● OPEN TO WORK</span>'},
+    {t:'',c:'empty'},
+    {t:'<span class="c-dim">  Введите <span class="c-cyan">help</span> для списка команд.</span>'},
+    {t:'',c:'empty'},
+  ]);
+  setTimeout(()=>{
+    function bar(id,pct,cls){
+      const el=document.getElementById(id);
+      if(el)el.innerHTML=`<span class="bar-wrap"><span class="bar-fill ${cls} bar-anim" style="--pw:${pct}%;width:0"></span></span>`;
     }
-    update() {
-      const dx = this.x - mouse.x, dy = this.y - mouse.y, d2 = dx*dx + dy*dy;
-      if (d2 < 8000) { const f = .045 / Math.sqrt(d2); this.vx += dx*f; this.vy += dy*f; }
-      this.vx *= .985; this.vy *= .985;
-      this.x += this.vx; this.y += this.vy;
-      this.phase += .014;
-      if (this.x < -50) this.x = W+50;
-      else if (this.x > W+50) this.x = -50;
-      if (this.y < -50) this.y = H+50;
-      else if (this.y > H+50) this.y = -50;
-    }
-    draw() {
-      const p = .5 + .5 * Math.sin(this.phase);
-      if (this.label) {
-        ctx.save();
-        ctx.shadowColor = '#00d4ff'; ctx.shadowBlur = 10 + p*8;
-        ctx.beginPath(); ctx.arc(this.x, this.y, 3.5 + p*1.5, 0, Math.PI*2);
-        ctx.fillStyle = `rgba(0,212,255,${.65 + p*.35})`; ctx.fill();
-        ctx.restore();
-        ctx.font = '500 10px JetBrains Mono,monospace';
-        ctx.fillStyle = `rgba(0,212,255,${.4 + p*.25})`;
-        ctx.fillText(this.label, this.x + 8, this.y + 4);
-      } else {
-        ctx.beginPath(); ctx.arc(this.x, this.y, this.r + p*.4, 0, Math.PI*2);
-        ctx.fillStyle = `rgba(0,212,255,${.2 + p*.15})`; ctx.fill();
-      }
-    }
+    bar('bar-hp',100,'bar-hp');
+    bar('bar-exp',78,'bar-exp');
+    bar('bar-gld',100,'bar-gold');
+  },60);
+}
+
+async function cmdLs(args){
+  const sub=(args||'').trim().toLowerCase();
+  if(sub==='skills'){
+    await lines([
+      {t:'',c:'empty'},
+      {t:'<span class="c-cyan">~/skills/</span>'},
+      {t:'',c:'empty'},
+      {t:'  <span class="c-green">iot/</span>          ESP8266  ESP32  MQTT  Firebase  Arduino  Modbus'},
+      {t:'  <span class="c-green">mobile/</span>       Flutter  Dart  Android  iOS  BLE  REST API'},
+      {t:'  <span class="c-green">vision/</span>       OpenCV  Python  YOLOv8  TensorFlow Lite'},
+      {t:'  <span class="c-green">cnc/</span>          G-code  Mach3  LinuxCNC  Fusion 360'},
+      {t:'  <span class="c-green">infra/</span>        Linux  Git  Docker  CI/CD  OTA Updates'},
+      {t:'  <span class="c-green">hardware/</span>     PCB Design  KiCad  3D Printing  Soldering'},
+      {t:'',c:'empty'},
+      {t:'<span class="c-dim">  6 directories, 30 skills</span>'},
+      {t:'',c:'empty'},
+    ]);
+    return;
   }
-
-  function init() { resize(); pts = Array.from({ length: N }, (_, i) => new Pt(i)); }
-
-  function frame() {
-    ctx.clearRect(0, 0, W, H);
-    for (let i = 0; i < N; i++) for (let j = i+1; j < N; j++) {
-      const a = pts[i], b = pts[j];
-      const dx = a.x-b.x, dy = a.y-b.y, d2 = dx*dx+dy*dy;
-      if (d2 < DIST_SQ) {
-        const alpha = (1 - Math.sqrt(d2)/DIST) * .28;
-        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = `rgba(0,212,255,${alpha})`; ctx.lineWidth = .75; ctx.stroke();
-      }
-    }
-    pts.forEach(p => { p.update(); p.draw(); });
-    raf = requestAnimationFrame(frame);
+  if(sub==='projects'){
+    await lines([
+      {t:'',c:'empty'},
+      {t:'<span class="c-cyan">~/projects/</span>'},
+      {t:'',c:'empty'},
+      {t:'  <span class="c-green">greenhouse.txt</span>      ESP8266 Smart Greenhouse + Firebase + Flutter'},
+      {t:'  <span class="c-green">reo-scanner.txt</span>     GSM/LTE/UMTS Base Station Scanner (Flutter)'},
+      {t:'  <span class="c-green">cnc.txt</span>             CNC Machine Vision Alignment (OpenCV)'},
+      {t:'',c:'empty'},
+      {t:'<span class="c-dim">  Используйте  cat [filename].txt  для деталей</span>'},
+      {t:'',c:'empty'},
+    ]);
+    return;
   }
+  await lines([
+    {t:'',c:'empty'},
+    {t:'<span class="c-green">about.txt</span>   <span class="c-green">cv.txt</span>   <span class="c-cyan">skills/</span>   <span class="c-cyan">projects/</span>   <span class="c-cyan">experience/</span>'},
+    {t:'',c:'empty'},
+    {t:'<span class="c-dim">  ls skills · ls projects  для деталей</span>'},
+    {t:'',c:'empty'},
+  ]);
+}
 
-  const heroEl = document.getElementById('hero');
-  if (heroEl) {
-    heroEl.addEventListener('mousemove', e => {
-      const r = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
-    }, { passive: true });
-    heroEl.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+async function cmdCat(args){
+  const f=(args||'').trim().toLowerCase();
+  if(f==='about.txt'){
+    await lines([
+      {t:'',c:'empty'},
+      {t:'<span class="c-cyan">## about.txt</span>'},
+      {t:'',c:'empty'},
+      {t:'  Привет! Я <span class="c-white">Бекзат Бекетов</span> — инженер-программист из Астаны.'},
+      {t:'  Специализируюсь на IoT-системах, встраиваемом ПО,'},
+      {t:'  компьютерном зрении и мобильной разработке на Flutter.'},
+      {t:'',c:'empty'},
+      {t:'  Победитель WorldSkills Kazakhstan 2022 и 2023 по направлению'},
+      {t:'  «Электроника» — строю умные устройства и промышленные решения.'},
+      {t:'',c:'empty'},
+      {t:'  Люблю паять, программировать МК в 3 ночи и учить машины видеть.'},
+      {t:'',c:'empty'},
+    ]);
+    return;
   }
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) { cancelAnimationFrame(raf); raf = null; }
-    else if (!raf) raf = requestAnimationFrame(frame);
-  });
-  window.addEventListener('resize', () => { resize(); }, { passive: true });
-
-  init(); frame();
-})();
-
-/* ─── Typewriter ─── */
-(function () {
-  const el = document.getElementById('typewriter');
-  if (!el) return;
-  const roles = ['Инженер-программист','IoT разработчик','Machine Vision','ЧПУ / CNC инженер','Автоматизатор'];
-  let ri = 0, ci = 0, del = false;
-  function tick() {
-    const cur = roles[ri];
-    if (!del) {
-      ci++; el.textContent = cur.slice(0, ci);
-      if (ci === cur.length) { del = true; return setTimeout(tick, 2200); }
-      setTimeout(tick, 55 + Math.random()*35);
-    } else {
-      ci--; el.textContent = cur.slice(0, ci);
-      if (ci === 0) { del = false; ri = (ri+1) % roles.length; return setTimeout(tick, 350); }
-      setTimeout(tick, 28);
-    }
+  if(f==='cv.txt'){
+    await lines([
+      {t:'',c:'empty'},
+      {t:'<span class="c-cyan">## cv.txt — Бекзат Бекетов</span>'},
+      {t:'',c:'empty'},
+      {t:'  <span class="c-gold">ОБРАЗОВАНИЕ</span>'},
+      {t:'  Колледж «Технологии и бизнес»  —  Инфокоммуникации  (2021–2025)'},
+      {t:'',c:'empty'},
+      {t:'  <span class="c-gold">ДОСТИЖЕНИЯ</span>'},
+      {t:'  🥇 WorldSkills Kazakhstan 2023  —  Электроника (1 место)'},
+      {t:'  🥇 WorldSkills Kazakhstan 2022  —  Электроника (1 место)'},
+      {t:'  🏅 WorldSkills Kazakhstan 2024  —  Электроника (3 место)'},
+      {t:'',c:'empty'},
+      {t:'  <span class="c-gold">КЛЮЧЕВЫЕ НАВЫКИ</span>'},
+      {t:'  ESP8266/ESP32 · MQTT · Firebase · Flutter · OpenCV · G-code'},
+      {t:'',c:'empty'},
+      {t:'  <span class="c-dim">Полное резюме — напишите в Telegram: @beketov_b</span>'},
+      {t:'',c:'empty'},
+    ]);
+    return;
   }
-  setTimeout(tick, 900);
-})();
+  if(f==='greenhouse.txt'){
+    await lines([
+      {t:'',c:'empty'},
+      {t:'<span class="c-cyan">## greenhouse.txt — Smart Greenhouse</span>'},
+      {t:'',c:'empty'},
+      {t:'  Стек:  <span class="c-white">ESP8266 · Firebase RTDB · Flutter · DHT22 · Servo · Relay</span>'},
+      {t:'',c:'empty'},
+      {t:'  OTA-обновления прошивки по Wi-Fi без USB.'},
+      {t:'  Flutter-приложение: мониторинг T°/влажности, управление шторами,'},
+      {t:'  автополив, push-уведомления при критических значениях.'},
+      {t:'  Firebase Security Rules: только авторизованный пользователь.'},
+      {t:'',c:'empty'},
+      {t:'  Статус: <span class="c-green">● Production</span>'},
+      {t:'',c:'empty'},
+    ]);
+    return;
+  }
+  if(f==='reo-scanner.txt'){
+    await lines([
+      {t:'',c:'empty'},
+      {t:'<span class="c-cyan">## reo-scanner.txt — РЭО Сканер</span>'},
+      {t:'',c:'empty'},
+      {t:'  Стек:  <span class="c-white">Flutter · Android · GSM AT-команды · SQLite · Maps</span>'},
+      {t:'',c:'empty'},
+      {t:'  Сканирует соседние БС операторов (Kcell, Beeline, Tele2, МТС).'},
+      {t:'  Отображает: MCC, MNC, LAC, CellID, RSSI, уровень сигнала.'},
+      {t:'  Экспорт в CSV, история замеров, карта базовых станций.'},
+      {t:'',c:'empty'},
+      {t:'  Статус: <span class="c-gold">● В разработке</span>'},
+      {t:'',c:'empty'},
+    ]);
+    return;
+  }
+  if(f==='cnc.txt'){
+    await lines([
+      {t:'',c:'empty'},
+      {t:'<span class="c-cyan">## cnc.txt — CNC Machine Vision</span>'},
+      {t:'',c:'empty'},
+      {t:'  Стек:  <span class="c-white">OpenCV · Python · Raspberry Pi · G-code · Mach3</span>'},
+      {t:'',c:'empty'},
+      {t:'  Система технического зрения для автоматического выравнивания'},
+      {t:'  заготовки на ЧПУ-станке. Определяет смещение/поворот,'},
+      {t:'  вычисляет коррекцию и передаёт G-code в контроллер.'},
+      {t:'',c:'empty'},
+      {t:'  Статус: <span class="c-gold">● Прототип</span>'},
+      {t:'',c:'empty'},
+    ]);
+    return;
+  }
+  await print(`<span class="c-red">cat: ${esc(f)}: No such file or directory</span>`,'error');
+}
 
-/* ─── Counter animation ─── */
-(function () {
-  const els = document.querySelectorAll('[data-count]');
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
-      const target = +el.dataset.count, suf = el.dataset.suffix || '';
-      let start = null;
-      (function step(ts) {
-        if (!start) start = ts;
-        const p = Math.min((ts-start)/1400, 1);
-        el.textContent = Math.floor((1-Math.pow(1-p,3)) * target) + suf;
-        if (p < 1) requestAnimationFrame(step);
-      })(performance.now());
-      obs.unobserve(el);
-    });
-  }, { threshold: .5 });
-  els.forEach(e => obs.observe(e));
-})();
+async function cmdExperience(){
+  await lines([
+    {t:'',c:'empty'},
+    {t:'<span class="c-cyan">## ./experience — Timeline</span>'},
+    {t:'',c:'empty'},
+  ]);
+  const rows=[
+    ['2021','Поступил в колледж «Технологии и бизнес»','Инфокоммуникации'],
+    ['2022','🥇 WorldSkills KZ 2022','1 место — Электроника'],
+    ['2022','Первый IoT проект','Автоматизация полива ESP8266'],
+    ['2023','🥇 WorldSkills KZ 2023','1 место — Электроника'],
+    ['2023','Smart Greenhouse','ESP8266 + Firebase + Flutter'],
+    ['2024','РЭО Сканер','Flutter Android App'],
+    ['2024','🏅 WorldSkills KZ 2024','3 место — Электроника'],
+    ['2025','CNC Machine Vision','OpenCV + Raspberry Pi'],
+    ['2025','Выпуск из колледжа','Специалист по инфокоммуникациям'],
+  ];
+  for(let i=0;i<rows.length;i++){
+    const [yr,title,desc]=rows[i];
+    await print(`  <span class="c-gold">${yr}</span>  <span class="c-white">${esc(title)}</span>  <span class="c-dim">— ${esc(desc)}</span>`,'',i*45);
+  }
+  await nl(rows.length*45+30);
+}
 
-/* ─── 3D card tilt ─── */
-(function () {
-  const cards = document.querySelectorAll('.skill-card,.proj-card,.srv-card');
-  cards.forEach(c => {
-    c.addEventListener('mousemove', e => {
-      const r = c.getBoundingClientRect();
-      const x = (e.clientX-r.left)/r.width-.5, y = (e.clientY-r.top)/r.height-.5;
-      c.style.transform = `perspective(700px) rotateX(${-y*9}deg) rotateY(${x*9}deg) translateZ(10px) scale(1.01)`;
-      c.style.transition = 'transform .06s ease';
-    });
-    c.addEventListener('mouseleave', () => {
-      c.style.transform = '';
-      c.style.transition = 'transform .5s cubic-bezier(.25,.46,.45,.94)';
-    });
-  });
-})();
+async function cmdContact(){
+  await lines([
+    {t:'',c:'empty'},
+    {t:'<span class="c-cyan">## contact</span>'},
+    {t:'',c:'empty'},
+    {t:'  <span class="c-green">📞</span>  <a href="tel:+77001234567" style="color:#79c0ff;text-decoration:none">+7 700 123 45 67</a>'},
+    {t:'  <span class="c-cyan">✉</span>   <a href="mailto:beketovekb@gmail.com" style="color:#79c0ff;text-decoration:none">beketovekb@gmail.com</a>'},
+    {t:'  <span class="c-gold">✈</span>   <a href="https://t.me/beketov_b" target="_blank" rel="noopener" style="color:#79c0ff;text-decoration:none">t.me/beketov_b</a>'},
+    {t:'  <span class="c-dim">🔗</span>  <a href="https://github.com/beketovekb" target="_blank" rel="noopener" style="color:#79c0ff;text-decoration:none">github.com/beketovekb</a>'},
+    {t:'',c:'empty'},
+    {t:'<span class="c-dim">  Для предложений о работе — пишите в Telegram!</span>'},
+    {t:'',c:'empty'},
+  ]);
+}
 
-/* ─── Magnetic buttons ─── */
-(function () {
-  document.querySelectorAll('.btn-primary,.btn-secondary').forEach(btn => {
-    btn.addEventListener('mousemove', e => {
-      const r = btn.getBoundingClientRect();
-      btn.style.transform = `translate(${(e.clientX-r.left-r.width/2)*.22}px,${(e.clientY-r.top-r.height/2)*.22}px)`;
-    });
-    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
-  });
-})();
+function cmdClear(){out.innerHTML='';return Promise.resolve()}
+
+async function cmdMatrix(){
+  await print('<span class="c-green">Initiating matrix protocol...</span>','success');
+  setTimeout(()=>startMatrix(10000),400);
+}
+
+async function cmdHire(){
+  const art=
+`  ██╗  ██╗██╗██████╗ ███████╗    ██╗
+  ██║  ██║██║██╔══██╗██╔════╝    ██║
+  ███████║██║██████╔╝█████╗      ██║
+  ██╔══██║██║██╔══██╗██╔══╝      ╚═╝
+  ██║  ██║██║██║  ██║███████╗    ██╗
+  ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚══════╝    ╚═╝`;
+
+  await print('','empty');
+  await print('[sudo] Analyzing candidate profile...','dim');
+  const skills=['IoT Experience','Flutter Skills','WorldSkills Gold','Problem Solving','Coffee Tolerance'];
+  const pcts=[98,92,100,95,87];
+  for(let i=0;i<skills.length;i++){
+    await new Promise(r=>setTimeout(r,160));
+    const id='hb'+i;
+    await print(`  Scanning: <span class="c-cyan">${skills[i]}</span> <span id="${id}"></span>`);
+    setTimeout(()=>{
+      const el=document.getElementById(id);
+      if(el)el.innerHTML=`<span class="bar-wrap"><span class="bar-fill bar-exp bar-anim" style="--pw:${pcts[i]}%;width:0"></span></span> <span class="c-green">${pcts[i]}%</span>`;
+    },80);
+  }
+  await new Promise(r=>setTimeout(r,700));
+  await nl();
+  await print('<span class="c-gold">sudo: ACCESS GRANTED — DECISION OVERRIDE ACTIVE</span>','warn');
+  await nl();
+  const s=document.createElement('span');s.className='ascii';s.textContent=art;
+  out.appendChild(s);out.scrollTop=out.scrollHeight;
+  await nl(50);
+  await print('<span class="c-green">  Result: HIRE IMMEDIATELY ✓✓✓</span>','success');
+  await print('<span class="c-dim">  (Это сообщение самоуничтожится через 30 сек)</span>','dim');
+  await nl();
+}
+
+async function cmdPing(){
+  await nl();
+  await print('PING bekzat.io (0.0.0.42): 56 data bytes','dim');
+  const ms=[12,14,11,13];
+  for(let i=0;i<ms.length;i++){
+    await new Promise(r=>setTimeout(r,200));
+    await print(`64 bytes from bekzat: icmp_seq=${i} ttl=64 time=<span class="c-green">${ms[i]} ms</span>`);
+  }
+  await nl(80);
+  await print('--- bekzat.io ping statistics ---','dim');
+  await print('<span class="c-green">4 packets transmitted, 4 received, 0% packet loss, time 3.2s</span>','success');
+  await nl();
+}
+
+async function cmdNmap(){
+  await nl();
+  await print('Starting Nmap 7.94 ( https://nmap.org )','dim');
+  await print('Scanning bekzat-skills.io...','dim');
+  await nl();
+  const ports=[
+    ['8266','open','ESP8266/Wi-Fi driver'],
+    ['8883','open','MQTT/TLS broker'],
+    ['443', 'open','Firebase HTTPS'],
+    ['5556','open','Flutter DevTools'],
+    ['9000','open','OpenCV Stream'],
+    ['3001','open','G-code Server'],
+    ['22',  'open','SSH (Linux)'],
+  ];
+  for(let i=0;i<ports.length;i++){
+    await new Promise(r=>setTimeout(r,130));
+    const [p,s,d]=ports[i];
+    await print(`  <span class="c-gold">${p.padEnd(6)}</span> <span class="c-green">${s}</span>   ${d}`);
+  }
+  await nl(80);
+  await print('<span class="c-green">Nmap done: 7 open ports — full skill stack operational</span>','success');
+  await nl();
+}
+
+async function cmdDate(){await print(new Date().toString())}
+async function cmdUname(){await print('BekzatOS 2.6.0-iot #1 SMP 2025 x86_64 GNU/Linux')}
+async function cmdEcho(a){await print(esc(a||''))}
+async function cmdHistory(){
+  if(!hist.length){await print('<span class="c-dim">(no history)</span>','dim');return}
+  for(let i=0;i<Math.min(hist.length,20);i++)await print(`  ${String(i+1).padStart(3,'0')}  ${esc(hist[i])}`,'dim');
+}
+async function cmdExit(){
+  await nl();await print('<span class="c-dim">logout — reload page to restart session.</span>','dim');
+  inp.disabled=true;
+}
+
+// ── Tab completion ────────────────────────────────────────────────────────────
+const ALL=['help','whoami','ls','ls skills','ls projects','cat about.txt','cat cv.txt',
+  'cat greenhouse.txt','cat reo-scanner.txt','cat cnc.txt','./experience','contact',
+  'clear','matrix','sudo hire me','ping bekzat','nmap skills','date','uname','history','exit'];
+
+function tabComplete(v){
+  const m=ALL.filter(c=>c.startsWith(v));
+  if(m.length===1)return m[0];
+  if(m.length>1){
+    print(m.join('  '),'dim');
+    let pfx=m[0];for(const c of m)while(!c.startsWith(pfx))pfx=pfx.slice(0,-1);
+    return pfx;
+  }
+  return v;
+}
+
+// ── Run command ───────────────────────────────────────────────────────────────
+async function run(raw){
+  const cmd=raw.trim();if(!cmd)return;
+  hist.push(cmd);hIdx=-1;
+  // echo
+  const e=document.createElement('span');
+  e.className='line cmd-echo';
+  e.innerHTML='<span style="color:var(--cyan)">$</span> '+esc(cmd);
+  out.appendChild(e);out.scrollTop=out.scrollHeight;
+
+  const lo=cmd.toLowerCase();
+  if(lo==='sudo hire me'||lo==='sudo hire'){await cmdHire();return}
+  if(lo==='ping bekzat'||lo==='ping'){await cmdPing();return}
+  if(lo==='nmap skills'||lo==='nmap'){await cmdNmap();return}
+
+  const [v,...rest]=cmd.split(' ');const a=rest.join(' ');const vl=v.toLowerCase();
+  if(vl==='help')await cmdHelp();
+  else if(vl==='whoami')await cmdWhoami();
+  else if(vl==='ls')await cmdLs(a);
+  else if(vl==='cat')await cmdCat(a);
+  else if(vl==='./experience'||vl==='experience')await cmdExperience();
+  else if(vl==='contact')await cmdContact();
+  else if(vl==='clear')await cmdClear();
+  else if(vl==='matrix')await cmdMatrix();
+  else if(vl==='exit'||vl==='quit')await cmdExit();
+  else if(vl==='date')await cmdDate();
+  else if(vl==='uname')await cmdUname();
+  else if(vl==='echo')await cmdEcho(a);
+  else if(vl==='history')await cmdHistory();
+  else await print(`<span class="c-red">bash: ${esc(v)}: command not found</span> <span class="c-dim">— type <span class="c-cyan">help</span></span>`,'error');
+}
+
+// ── Input events ──────────────────────────────────────────────────────────────
+inp.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    e.preventDefault();const v=inp.value;inp.value='';run(v);
+  }else if(e.key==='ArrowUp'){
+    e.preventDefault();
+    if(!hist.length)return;
+    if(hIdx===-1)hIdx=hist.length-1;else if(hIdx>0)hIdx--;
+    inp.value=hist[hIdx];
+  }else if(e.key==='ArrowDown'){
+    e.preventDefault();
+    if(hIdx===-1)return;
+    if(hIdx<hist.length-1){hIdx++;inp.value=hist[hIdx]}else{hIdx=-1;inp.value=''}
+  }else if(e.key==='Tab'){
+    e.preventDefault();inp.value=tabComplete(inp.value);
+  }else if(e.key==='c'&&e.ctrlKey){
+    e.preventDefault();print('^C','dim');inp.value='';hIdx=-1;
+  }else if(e.key==='l'&&e.ctrlKey){
+    e.preventDefault();cmdClear();
+  }
+});
+
+document.addEventListener('click',e=>{
+  if(!e.target.closest('a')&&!e.target.closest('.qbtn'))inp.focus();
+});
+
+document.querySelectorAll('.qbtn').forEach(b=>{
+  b.addEventListener('click',()=>{inp.value='';run(b.dataset.cmd)});
+});
+
+// ── Boot sequence ─────────────────────────────────────────────────────────────
+async function boot(){
+  const seq=[
+    {t:'BekzatOS v2.6.0-iot  [Build: 2025-06-16]',c:'dim',d:0},
+    {t:'Copyright (c) 2025 Bekzat Beketov. All rights reserved.',c:'dim',d:80},
+    {t:'',c:'empty',d:130},
+    {t:'Loading kernel modules...',c:'dim',d:170},
+    {t:'  [<span class="c-green"> OK </span>] iot.ko         — IoT subsystem',c:'',d:280},
+    {t:'  [<span class="c-green"> OK </span>] flutter.ko     — Mobile runtime',c:'',d:370},
+    {t:'  [<span class="c-green"> OK </span>] opencv.ko      — Vision engine',c:'',d:450},
+    {t:'  [<span class="c-green"> OK </span>] worldskills.ko — Trophy handler x2',c:'',d:530},
+    {t:'',c:'empty',d:590},
+    {t:'Mounting filesystems...',c:'dim',d:630},
+    {t:'  [<span class="c-green"> OK </span>] /dev/skills    → /home/bekzat/skills',c:'',d:710},
+    {t:'  [<span class="c-green"> OK </span>] /dev/projects  → /home/bekzat/projects',c:'',d:790},
+    {t:'',c:'empty',d:850},
+    {t:'<span class="c-green">  [READY] bekzat@portfolio daemon started</span>',c:'',d:960},
+    {t:'',c:'empty',d:1000},
+    {t:'━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',c:'dim',d:1040},
+    {t:'  <span class="c-white">Добро пожаловать!</span>  Введите <span class="c-cyan">help</span> для начала.','',d:1080},
+    {t:'━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',c:'dim',d:1120},
+    {t:'',c:'empty',d:1160},
+  ];
+  for(const l of seq)await print(l.t,l.c,l.d);
+  setTimeout(()=>inp.focus(),1250);
+}
+
+boot();
 </script>
 </body>
 </html>
